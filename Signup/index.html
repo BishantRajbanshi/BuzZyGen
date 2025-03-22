@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="image-section">
+            <img src="man-sitting.png" alt="Signup Image">
+            <div class="line-6"></div> <!-- The vector element -->
+        </div>
+        <div class="form-section">
+            <h2>Sign Up</h2>
+            <form>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password"
+                    required>
+                <button type="submit" class="login-btn">Sign Up</button>
+            </form>
+            <p class="register-text">Or Sign Up With</p>
+            <button class="google-login">
+                <img src="google.png" alt="Google Logo">Google
+            </button>
+            <p class="register-text">Already have an account? <a href="#">Login</a></p>
+        </div>
+    </div>
+</body>
+
+</html>

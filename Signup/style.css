@@ -1,0 +1,140 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    width: 1280px;
+    height: 832px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.image-section {
+    width: 50%;
+    position: relative;
+    /* Keep relative positioning for the container */
+    background: url(freepik__the-style-is-candid-image-photography-with-natural__20326.jpg);
+}
+
+.image-section img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    /* Image goes behind the vector */
+}
+
+.line-6 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* Align the vector to the right side */
+    width: 1000px;
+        height: 900px;
+    /* Match height to cover the right side */
+    transform: rotate(0deg);
+    /* No rotation */
+    z-index: 1;
+    /* Vector stays in front of the image */
+}
+
+.form-section {
+    width: 50%;
+    padding: 40px;
+    color: #F7FBFC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: #333333;
+    border-radius: 60px;
+    border: 1px solid #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+h2 {
+    font-size: 32px;
+    text-align: center;
+    color: #FFFFFF;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+label {
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 10px;
+    display: block;
+    color: #FFFFFF;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0 15px;
+    border-radius: 25px;
+    border: 2px solid #000000;
+    background: #FFFFFF;
+    color: #000;
+}
+
+.forgot-password {
+    font-size: 13px;
+    text-align: right;
+    display: block;
+    margin-bottom: 15px;
+    color: #ddd;
+    text-decoration: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 2px solid #000;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.google-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #FFFFFF;
+    border: 2px solid #000;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.google-login img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.register-text {
+    text-align: center;
+    margin-top: 20px;
+    color: #FFFFFF;
+}
+
+.register-text a {
+    color: #B8DEF6;
+    font-weight: bold;
+    text-decoration: none;
+}
