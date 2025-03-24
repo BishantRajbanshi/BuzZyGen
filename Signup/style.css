@@ -1,140 +1,159 @@
-body {
+* {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: #333;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: #333;
+    background: url('background.gif') no-repeat center center/cover;
+    backdrop-filter: blur(6px);
 }
 
-.login-container {
+.container {
     display: flex;
-    width: 1280px;
-    height: 832px;
-    background: #FFFFFF;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-}
-
-.image-section {
-    width: 50%;
-    position: relative;
-    /* Keep relative positioning for the container */
-    background: url(freepik__the-style-is-candid-image-photography-with-natural__20326.jpg);
-}
-
-.image-section img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    /* Image goes behind the vector */
-}
-
-.line-6 {
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* Align the vector to the right side */
-    width: 1000px;
-        height: 900px;
-    /* Match height to cover the right side */
-    transform: rotate(0deg);
-    /* No rotation */
-    z-index: 1;
-    /* Vector stays in front of the image */
-}
-
-.form-section {
-    width: 50%;
-    padding: 40px;
-    color: #F7FBFC;
-    display: flex;
-    flex-direction: column;
     justify-content: center;
-    background: #333333;
-    border-radius: 60px;
-    border: 1px solid #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    align-items: center;
+    width: 100%;
 }
 
-h2 {
-    font-size: 32px;
+.form-card {
+    background: rgba(51, 51, 51, 0.5);
+    /* Reduced opacity for more transparency */
+    padding: 4rem;
+    border-radius: 40px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     text-align: center;
-    color: #FFFFFF;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    color: white;
+    width: 600px;
+    backdrop-filter: blur(10px);
+    /* Optional: Increase blur to emphasize transparency */
 }
 
-label {
-    font-weight: 600;
-    font-size: 20px;
-    margin-top: 10px;
-    display: block;
-    color: #FFFFFF;
+.title {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
 }
 
-input {
+.subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
     width: 100%;
-    padding: 12px;
-    margin: 5px 0 15px;
-    border-radius: 25px;
-    border: 2px solid #000000;
-    background: #FFFFFF;
-    color: #000;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    padding-right: 40px;
+    /* Space for the icon inside the input */
 }
 
-.forgot-password {
-    font-size: 13px;
-    text-align: right;
-    display: block;
-    margin-bottom: 15px;
-    color: #ddd;
-    text-decoration: none;
+/* Icons for password fields inside the input */
+.password-field {
+    position: relative;
 }
 
-.login-btn {
-    width: 100%;
-    padding: 12px;
-    background: #FFFFFF;
-    border: 2px solid #000;
-    border-radius: 25px;
-    font-size: 16px;
+.key-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+/* Increased spacing between Confirm Password and Sign Up Button */
+.form-group:last-of-type {
+    margin-bottom: 2.5rem;
+}
+
+.btn {
+    width: 80%;
+    padding: 1rem;
+    border: none;
+    border-radius: 50px;
     font-weight: bold;
     cursor: pointer;
+    font-size: 1.2rem;
+    display: block;
+    margin: 0 auto;
 }
 
-.google-login {
+.btn-primary {
+    background: white;
+    color: #333;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #ddd;
+}
+
+.btn-google {
+    width: 80% !important;
+    background: white;
+    color: #333;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    padding: 12px;
-    background: #FFFFFF;
-    border: 2px solid #000;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.google-login img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.register-text {
+    gap: 0.5rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
     text-align: center;
-    margin-top: 20px;
-    color: #FFFFFF;
+    margin: 0 auto;
 }
 
-.register-text a {
-    color: #B8DEF6;
-    font-weight: bold;
-    text-decoration: none;
+.btn-google:hover {
+    background: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.divider {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* Accessibility: Focus Styles */
+.form-group input:focus {
+    outline: 2px solid #4D90FE;
+    border: 1px solid #4D90FE;
+}
+
+/* Media Query for Responsiveness */
+@media (max-width: 768px) {
+    .form-card {
+        width: 90%;
+        padding: 2rem;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .google-icon {
+        width: 20px;
+        height: 20px;
+    }
 }
