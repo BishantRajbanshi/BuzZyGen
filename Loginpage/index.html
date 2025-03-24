@@ -4,27 +4,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <meta name="description" content="Login page for our website.">
+    <meta name="keywords" content="login, authentication, user account">
+    <title>Welcome - Login</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
 </head>
 
 <body>
+    <!-- Logo positioned at the top-left corner -->
+    <div class="logo-container">
+        <img src="logo.png" alt="Website Logo" class="logo">
+    </div>
+
     <div class="container">
-        <div class="left-section"></div>
-        <div class="right-section" id="content">
-            <h1 class="quote">Where news meets clarity</h1>
-            <button class="login-btn" id="loginBtn">Login</button>
-        </div>
-        <div class="login-card" id="loginCard">
-            <span class="close-btn" id="closeBtn">&times;</span>
-            <h2>Login</h2>
-            <label for="email">Email</label>
-            <input type="text" id="email" placeholder="Enter your email">
-            <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Enter your password">
-            <button class="submit-btn">Login</button>
-            <button class="google-btn">Login in with Google</button>
+        <!-- Wrapper for header message + form -->
+        <div class="form-wrapper">
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <h1 class="title">Login</h1>
+                <form id="loginForm" class="login-form" action="/your-login-endpoint" method="POST" novalidate>
+                    <div class="form-label">Email</div>
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required
+                            autocomplete="off" inputmode="email" aria-label="Email">
+                    </div>
+                    <div class="form-label">Password</div>
+                    <div class="form-group password-field">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required
+                            aria-label="Password">
+                        <img src="key-icon.png" alt="Key Icon" class="key-icon">
+                    </div>
+
+                    <!-- Button container with forgot password link in between -->
+                    <div class="btn-container">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <div class="forgot-password">
+                            <a href="/forgot-password" class="forgot-password-link">Forgot Password?</a>
+                        </div>
+                        <button type="button" class="btn btn-google">
+                            <img src="google.png" alt="Google Icon" class="google-icon"> With Google
+                        </button>
+                    </div>
+
+                    <div class="register-link">
+                        Don't have an account? <a href="/signup">Register Now</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </body>
