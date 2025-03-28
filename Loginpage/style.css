@@ -15,7 +15,8 @@ body {
     background: url('background.gif') no-repeat center center/cover;
     backdrop-filter: blur(6px);
     overflow: hidden;
-    /* Removed scrolling */
+    font-size: 90%;
+    /* This reduces the size of everything in the page */
 }
 
 /* Logo positioned in the top-left corner */
@@ -26,7 +27,8 @@ body {
 }
 
 .logo {
-    width: 280px;
+    width: 200px;
+    /* Reduced logo size */
     height: auto;
 }
 
@@ -41,52 +43,73 @@ body {
 .form-wrapper {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+    /* Reduced gap between elements */
 }
 
 /* Form card styling */
 .form-card {
-    background: rgba(51, 51, 51, 0.5);
-    padding: 1rem;
+    background: rgba(51, 51, 51, 0.7);
+    padding: 1.5rem 2rem;
+    /* Reduced padding */
     border-radius: 20px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     color: white;
-    width: 40vw;
-    max-width: 500px;
-    min-width: 200px;
-    max-height: 550px;
+    width: 35vw;
+    max-width: 420px;
+    /* Reduced max-width */
+    min-width: 270px;
+    /* Reduced min-width */
+    max-height: 450px;
+    /* Reduced height */
     backdrop-filter: blur(10px);
     overflow: hidden;
-    /* Ensure no scroll within the card */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.8rem;
+    /* Reduced gap between elements */
 }
 
+/* Title Styling */
 .title {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    /* Reduced font size */
     margin-bottom: 0.5rem;
+    font-weight: bold;
 }
 
+/* Label Styling */
 .form-label {
     text-align: left;
-    margin-bottom: 0.5rem;
-    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+    /* Reduced font size */
+    width: 90%;
 }
 
+/* Form Group Styling */
 .form-group {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.4rem;
+    width: 100%;
 }
 
 /* Common styles for input fields */
 .form-group input {
-    width: 95%;
-    padding: 0.8rem;
+    width: 100%;
+    padding: 0.7rem;
+    /* Reduced padding */
     border: none;
     border-radius: 50px;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    /* Reduced font size */
     background-color: white;
-    padding-right: 40px;
+    padding-right: 35px;
+    /* Reduced padding-right */
     transition: border 0.3s;
+    text-align: center;
 }
 
 /* Password field */
@@ -94,21 +117,15 @@ body {
     position: relative;
 }
 
-/* Removing the red key lock icon */
-.password-field input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
-
 /* Custom key icon */
 .key-icon {
     position: absolute;
-    right: 15px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    /* Reduced icon size */
+    height: 18px;
     background-size: contain;
     background-repeat: no-repeat;
     pointer-events: none;
@@ -128,16 +145,17 @@ body {
 }
 
 .forgot-password-link {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
+    /* Reduced font size */
     color: #e9ecf0;
     text-decoration: none;
-    display: inline-block;
     padding: 0.5rem;
 }
 
 .forgot-password-link:hover {
     text-decoration: underline;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    /* Reduced hover font size */
 }
 
 /* Button container with OR text in between */
@@ -146,27 +164,25 @@ body {
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.or-text {
-    font-size: 1.2rem;
-    color: #e9ecf0;
-    text-align: center;
+    margin-top: 1rem;
+    width: 100%;
 }
 
 /* Button styling */
 .btn {
-    width: 80%;
-    padding: 0.8rem;
+    width: 60%;
+    padding: 0.7rem;
+    /* Reduced padding */
     border-radius: 50px;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    /* Reduced font size */
     display: block;
     margin: 0 auto;
     transition: background 0.3s;
 }
 
+/* Primary Button */
 .btn-primary {
     background: #fff;
     color: #333;
@@ -178,6 +194,7 @@ body {
     color: #fff;
 }
 
+/* Google Button */
 .btn-google {
     background: #fff;
     color: #333;
@@ -186,8 +203,10 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.8rem;
-    font-size: 1rem;
+    padding: 0.7rem;
+    /* Reduced padding */
+    font-size: 0.9rem;
+    /* Reduced font size */
     border-radius: 50px;
     text-align: center;
     cursor: pointer;
@@ -201,14 +220,16 @@ body {
 }
 
 .google-icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    /* Reduced icon size */
+    height: 16px;
 }
 
 /* Styling for the register link */
 .register-link {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    /* Reduced font size */
     color: white;
 }
 
@@ -226,7 +247,7 @@ body {
 @media (max-width: 768px) {
     .form-card {
         width: 90%;
-        padding: 1rem;
+        padding: 1.2rem;
     }
 
     .btn {
