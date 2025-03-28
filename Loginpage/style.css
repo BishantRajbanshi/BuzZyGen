@@ -14,6 +14,8 @@ body {
     background: #333;
     background: url('background.gif') no-repeat center center/cover;
     backdrop-filter: blur(6px);
+    overflow: hidden;
+    /* Removed scrolling */
 }
 
 /* Logo positioned in the top-left corner */
@@ -40,18 +42,23 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    /* Creates spacing between message and card */
 }
 
+/* Form card styling */
 .form-card {
     background: rgba(51, 51, 51, 0.5);
-    padding: 4rem;
-    border-radius: 40px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     color: white;
-    width: 600px;
+    width: 40vw;
+    max-width: 500px;
+    min-width: 200px;
+    max-height: 550px;
     backdrop-filter: blur(10px);
+    overflow: hidden;
+    /* Ensure no scroll within the card */
 }
 
 .title {
@@ -67,20 +74,18 @@ body {
 
 .form-group {
     position: relative;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.5rem;
 }
 
 /* Common styles for input fields */
 .form-group input {
-    width: 100%;
-    padding: 1rem;
+    width: 95%;
+    padding: 0.8rem;
     border: none;
     border-radius: 50px;
-    /* Rounded corners for input fields */
     font-size: 1.2rem;
     background-color: white;
     padding-right: 40px;
-    /* Space for icon inside the input */
     transition: border 0.3s;
 }
 
@@ -115,20 +120,11 @@ body {
     border: 1px solid #4D90FE;
 }
 
-/* Container for the buttons and forgot password link */
-.btn-container {
+/* Forgot password link container */
+.forgot-password-container {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    /* Reduced gap for better spacing */
-    margin-top: 1.5rem;
-}
-
-.forgot-password {
-    text-align: center;
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
 }
 
 .forgot-password-link {
@@ -144,16 +140,28 @@ body {
     font-size: 1.3rem;
 }
 
+/* Button container with OR text in between */
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.or-text {
+    font-size: 1.2rem;
+    color: #e9ecf0;
+    text-align: center;
+}
+
 /* Button styling */
 .btn {
-    width: 50%;
-    /* Adjusted width to make buttons smaller */
-    padding: 0.6rem;
-    /* Reduced padding for shorter height */
+    width: 80%;
+    padding: 0.8rem;
     border-radius: 50px;
     font-weight: bold;
     font-size: 1rem;
-    /* Reduced font size */
     display: block;
     margin: 0 auto;
     transition: background 0.3s;
@@ -178,10 +186,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.6rem;
-    /* Adjusted padding for shorter height */
+    padding: 0.8rem;
     font-size: 1rem;
-    /* Reduced font size */
     border-radius: 50px;
     text-align: center;
     cursor: pointer;
@@ -196,9 +202,7 @@ body {
 
 .google-icon {
     width: 18px;
-    /* Reduced icon size */
     height: 18px;
-    /* Reduced icon size */
 }
 
 /* Styling for the register link */
@@ -222,14 +226,14 @@ body {
 @media (max-width: 768px) {
     .form-card {
         width: 90%;
-        padding: 2rem;
+        padding: 1rem;
     }
 
     .btn {
-        width: 70%;
+        width: 100%;
     }
 
     .btn-google {
-        width: 70%;
+        width: 100%;
     }
 }

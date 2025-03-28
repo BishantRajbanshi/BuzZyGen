@@ -8,12 +8,14 @@
 
 body {
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: #333;
     background: url('background.gif') no-repeat center center/cover;
     backdrop-filter: blur(6px);
+    overflow: hidden;
+    /* Removed scrolling */
 }
 
 /* Logo positioned in the top-left corner */
@@ -34,83 +36,81 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 50px;
+    /* Aligning content in the center */
+    flex-direction: column;
+    gap: 20px;
+    /* Space between login and sign-up */
 }
 
 /* Wrapper for header message + form */
 .form-wrapper {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 20px;
-    /* Creates spacing between message and card */
 }
 
-/* Header Message positioned to the left of the form */
-.header-message {
-    max-width: 300px;
-    color: white;
-    text-align: left;
-    font-size: 2.5rem;
-    font-weight: bold;
-    line-height: 1.4;
-    margin-left: -350px;
-    /* Adjusts the message further left */
-}
-
-/* Form Card */
+/* Form card styling */
 .form-card {
     background: rgba(51, 51, 51, 0.5);
-    padding: 3rem 4rem;
-    /* Reduced bottom padding for better vertical alignment */
-    border-radius: 40px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    padding: 2rem;
+    /* Increased padding for better spacing */
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     color: white;
-    width: 600px;
+    width: 40vw;
+    max-width: 500px;
+    min-width: 280px;
+    max-height: 550px;
     backdrop-filter: blur(10px);
-    position: relative;
-    /* For more control over positioning */
+    overflow: hidden;
+    /* Center the card horizontally */
 }
 
-/* Styling for Welcome and Sign Up Titles */
+/* Form title styling */
 .title {
     font-size: 2.5rem;
-    /* Larger, bold Welcome text */
-    font-weight: bold;
     margin-bottom: 0.5rem;
-    margin-top: 0;
-    /* Bring it closer to the top */
 }
 
-.subtitle {
-    font-size: 1.8rem;
-    /* Aesthetic Sign Up text */
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: white;
-    /* Highlight color */
+/* Form label styling */
+.form-label {
+    text-align: left;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
 }
 
-/* Form Fields */
+/* Form group styling */
 .form-group {
     position: relative;
     margin-bottom: 1.5rem;
 }
 
+/* Common input field styling */
 .form-group input {
-    width: 100%;
-    padding: 1rem;
+    width: 95%;
+    padding: 0.8rem;
     border: none;
-    border-radius: 10px;
+    border-radius: 50px;
     font-size: 1.2rem;
+    background-color: white;
     padding-right: 40px;
+    transition: border 0.3s;
 }
 
-/* Icons for password fields inside the input */
+/* Focus state for input fields */
+.form-group input:focus {
+    outline: 2px solid #4D90FE;
+    border: 1px solid #4D90FE;
+}
+
+/* Password field */
 .password-field {
     position: relative;
 }
 
+/* Custom key icon */
 .key-icon {
     position: absolute;
     right: 15px;
@@ -123,94 +123,120 @@ body {
     pointer-events: none;
 }
 
-/* Buttons */
-.btn {
-    width: 80%;
-    padding: 1rem;
-    border: none;
-    border-radius: 50px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: block;
-    margin: 0 auto;
+/* Forgot password link container */
+.forgot-password-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
 }
 
-.btn-primary {
-    background: white;
-    color: #333;
+.forgot-password-link {
+    font-size: 1.2rem;
+    color: #e9ecf0;
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.5rem;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+    font-size: 1.3rem;
+}
+
+/* Button container with OR text */
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.or-text {
+    font-size: 1.2rem;
+    color: #e9ecf0;
+    text-align: center;
+}
+
+/* Button styling */
+.btn {
+    width: 80%;
+    padding: 0.8rem;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 1rem;
+    display: block;
+    margin: 0 auto;
     transition: background 0.3s;
 }
 
+.btn-primary {
+    background: #fff;
+    color: #333;
+    border: none;
+}
+
 .btn-primary:hover {
-    background: #333;
-    color: #f1f1f1;
+    background: #403f3f;
+    color: #fff;
 }
 
 .btn-google {
-    width: 80% !important;
-    background: white;
-    color: #403f3f;
+    background: #fff;
+    color: #333;
+    border: 1px solid #333;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1rem;
-    font-size: 1.2rem;
+    padding: 0.8rem;
+    font-size: 1rem;
     border-radius: 50px;
     text-align: center;
-    margin: 0 auto;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .btn-google:hover {
     background: #403f3f;
-    color: #f1f1f1;
+    color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .google-icon {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
 }
 
-/* Divider */
-.divider {
-    margin: 1rem 0;
-    font-size: 1.2rem;
+/* Register link styling */
+.register-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
     color: white;
 }
 
-/* Accessibility: Focus Styles */
-.form-group input:focus {
-    outline: 2px solid #4D90FE;
-    border: 1px solid #4D90FE;
+.register-link a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 
-/* Responsive Design */
-@media (max-width: 900px) {
-    .container {
-        width: 90%;
-    }
+.register-link a:hover {
+    text-decoration: underline;
+}
 
+/* Media query for responsiveness */
+@media (max-width: 768px) {
     .form-card {
         width: 90%;
-        padding: 2rem;
+        padding: 1rem;
     }
 
-    .logo {
-        width: 120px;
+    .btn {
+        width: 100%;
     }
 
-    .header-message {
-        text-align: center;
-        max-width: 100%;
-        font-size: 1rem;
-    }
-
-    /* Stack message and form vertically on small screens */
-    .form-wrapper {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    .btn-google {
+        width: 100%;
     }
 }
