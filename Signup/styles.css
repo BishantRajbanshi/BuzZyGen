@@ -66,7 +66,7 @@ body {
     width: 600px;
     backdrop-filter: blur(10px);
     position: relative;
-    transform: scale(0.65);
+    transform: scale(0.75);
     /* Zoom effect to 80% */
     transform-origin: center;
     /* Ensure scaling is centered */
@@ -125,57 +125,54 @@ body {
     pointer-events: none;
 }
 
-/* Buttons */
+/* Button styling */
 .btn {
-    width: 80%;
-    padding: 0.8rem;
-    /* Adjusted padding */
-    border: none;
+    width: 50%;
+    padding: 0.6rem;
     border-radius: 50px;
     font-weight: bold;
-    cursor: pointer;
-    font-size: 1rem;
-    /* Smaller font size */
+    font-size: 0.9rem;
     display: block;
     margin: 0 auto;
-}
-
-.btn-primary {
-    background: white;
-    color: #333;
     transition: background 0.3s;
 }
 
+.btn-primary {
+    background: #fff;
+    color: #333;
+    border: none;
+}
+
 .btn-primary:hover {
-    background: #333;
-    color: #f1f1f1;
+    background: #403f3f;
+    color: #fff;
 }
 
 .btn-google {
-    width: 80%;
-    background: white;
-    color: #403f3f;
+    background: #fff;
+    color: #333;
+    border: 1px solid #333;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1rem;
-    font-size: 1rem;
-    /* Smaller font size */
+    padding: 0.6rem;
+    font-size: 0.9rem;
     border-radius: 50px;
     text-align: center;
-    margin: 0 auto;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
 }
 
 .btn-google:hover {
     background: #403f3f;
-    color: #f1f1f1;
+    color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .google-icon {
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
 }
 
 /* Divider */
