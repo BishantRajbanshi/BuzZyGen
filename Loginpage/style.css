@@ -173,7 +173,7 @@ body {
     padding: 0.9rem;
     border-radius: 50px;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
     display: block;
     margin: 0 auto;
     transition: background 0.3s;
@@ -199,7 +199,7 @@ body {
     justify-content: center;
     gap: 0.5rem;
     padding: 0.9rem;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border-radius: 50px;
     text-align: center;
     cursor: pointer;
@@ -220,7 +220,7 @@ body {
 /* Styling for the register link */
 .register-link {
     margin-top: 1.5rem;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: white;
 }
 
