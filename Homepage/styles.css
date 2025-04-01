@@ -26,49 +26,89 @@ header {
 .menu-btn {
     font-size: 24px;
     cursor: pointer;
-    color: #333;
+    color: #0f0909;
     transition: color 0.3s;
-    margin-left: 20px;
+
+    position: absolute;
+    left: 20px; /* Adjust for better alignment */
+    top: 2; /* Align to the top */
+    transform: translateY(0); /* Remove the vertical translation */
+    z-index: 1000;
 }
+
+
 
 .menu-btn:hover {
     color: #ffb84d;
 }
 
-.logo img {
-    max-width: 120px;
-    height: auto;
-    filter: brightness(80%); 
+.logo {
+    position: relative;
+    width: 100%;
+    height: 100px; /* Adjust this height to make it more compact */
 }
 
+.logo img {
+    position: absolute;
+    top: 50%; /* Middle vertically */
+    left: 50%; /* Middle horizontally */
+    transform: translate(-50%, -50%); /* Offset to true center */
+    max-width: 120px;
+    height: auto;
+    filter: brightness(80%);
+}
+
+
+
+
+
+/* Fix user profile section */
 .search-user {
     display: flex;
     align-items: center;
+    gap: 15px; /* Space between search bar and icons */
 }
 
-.search-user input {
-    padding: 8px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-    width: 200px;
-}
-
-.search-user input:focus {
-    outline: none;
-    border-color: #ffb84d;
-}
-
+/* User profile and notification icons */
 .user-profile {
-    font-size: 24px;
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Adjust spacing between icon and text */
+    font-size: 18px;
+    font-weight: 500;
     cursor: pointer;
+    white-space: nowrap; /* Prevent text wrapping */
     transition: color 0.3s;
 }
 
 .user-profile:hover {
     color: #ffb84d;
 }
+
+
+/* Adjust overall layout */
+.account-section {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Maintain equal spacing */
+}
+
+.notifications-dropdown {
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 200px;
+    display: none;
+  }
+  
+  .notifications-dropdown.active {
+    display: block;
+  }
+  
 
 /* Navigation */
 #nav-sections ul {
@@ -173,6 +213,50 @@ header {
     margin: 10px 0;
 }
 
+/* Notification dropdown */
+.notifications-dropdown {
+    position: absolute;
+    right: 20px;
+    top: 50px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: none;
+    width: 200px;
+}
+
+.notifications-dropdown.active {
+    display: block;
+}
+
+/* Profile dropdown */
+.profile-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: none;
+}
+
+.profile-dropdown a {
+    display: block;
+    color: #333;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.profile-dropdown a:hover {
+    background-color: #f1f1f1;
+}
+
+.profile-dropdown.active {
+    display: block;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .top-bar {
@@ -200,4 +284,200 @@ header {
         width: 150px;
         height: 150px;
     }
+}
+
+
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and HTML settings */
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Specific layout for the business news section */
+.business-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each news item */
+.business-news .news-item {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Image styling */
+.business-news .news-item img {
+    width: 100%;
+    height: 300px; /* Set the image height */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling */
+.business-news .news-item h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Paragraph styling */
+.business-news .news-item p {
+    font-size: 14px;
+    color: #666;
+}
+   
+
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and HTML settings */
+body, html {
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Specific styling for business news section */
+.business-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each news item */
+.business-news .news-item {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Image styling for business news */
+.business-news .news-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling for business news */
+.business-news .news-item h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Paragraph styling for business news */
+.business-news .news-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+
+
+/* Specific styling for sports news section */
+.sports-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each sports news item */
+.sports-news .news-item {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Image styling for sports news */
+.sports-news .news-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling for sports news */
+.sports-news .news-item h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Paragraph styling for sports news */
+.sports-news .news-item p {
+    font-size: 14px;
+    color: #666;
+}
+
+
+/* Specific styling for multimedia news section */
+.multimedia-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each multimedia news item */
+.multimedia-news .news-item {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Image styling for multimedia news */
+.multimedia-news .news-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling for multimedia news */
+.multimedia-news .news-item h1 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Paragraph styling for multimedia news */
+.multimedia-news .news-item p {
+    font-size: 14px;
+    color: #666;
 }
