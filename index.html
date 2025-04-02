@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>News Portal</title>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="script.js"></script>
 </head>
+
 <body>
     <header>
         <div class="top-bar">
@@ -16,11 +18,23 @@
             </div>
             <div class="search-user">
                 <input type="text" placeholder="Search..." />
-                <div class="user-profile" onclick="toggleProfile()">👤</div>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#">View Profile</a>
-                    <a href="#">Settings</a>
-                    <a href="#">Logout</a>
+
+                <div class="notification-wrapper">
+                    <div class="notification-icon" onclick="toggleNotifications()">🔔</div>
+                    <div class="notifications-dropdown hidden" id="notificationsDropdown">
+                        <!-- Dynamic notifications will appear here -->
+                    </div>
+                </div>
+
+                <div class="profile-wrapper">
+                    <div class="user-profile" onclick="toggleProfile()">
+                        <span class="user-icon">👤</span>
+                        <span class="account-text">Your Account</span>
+                    </div>
+                    <div class="profile-dropdown hidden" id="profileDropdown">
+                        <a href="#" onclick="openSettings()">Settings</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,69 +54,83 @@
                 <h2>Latest News</h2>
                 <div class="news-grid">
                     <div class="news-item">
-                        <img src="latestnews1.png" alt="News"/>
+                        <img src="latestnews1.png" alt="News" />
                         <h1>Israel Strikes Lebanon After First Rocket Attack Since Ceasefire</h1>
-                        <p>Israel launched airstrikes on Lebanon on Saturday in response to a rocket attack that broke the ceasefire agreement between the two nations...</p>
+                        <p>Israel launched airstrikes on Lebanon on Saturday in response to a rocket attack that broke
+                            the ceasefire agreement between the two nations. This attack marks a significant
+                            escalation...</p>
                     </div>
                     <div class="news-item">
-                        <img src="latestnews2.png" alt="News"/>
-                        <h1>Airstrike kills Hamas official in Gaza</h1>
-                        <p>An airstrike in Gaza has resulted in the death of a high-ranking Hamas official. The attack, which took place overnight, has further intensified the ongoing conflict in the region...</p>
+                        <img src="latestnews2.png" alt="News" />
+                        <h1>Ukraine to Launch Counteroffensive in Eastern Regions</h1>
+                        <p>Ukraine is preparing for a large-scale counteroffensive to reclaim lost territory in the
+                            eastern regions. The military strategy focuses on reclaiming key infrastructure...</p>
                     </div>
                     <div class="news-item">
-                        <img src="latestnews3.png" alt="News"/>
-                        <h1>The Man with the Mind-Reading Chip Thanks to Elon Musk</h1>
-                        <p>In a groundbreaking development, a man has successfully undergone a procedure to implant a mind-reading chip, thanks to the work of Elon Musk's company, Neuralink...</p>
+                        <img src="latestnews3.png" alt="News" />
+                        <h1>Tech Giants Sign Pact on Ethical AI Development</h1>
+                        <p>A consortium of the world's leading tech companies has signed a historic agreement on ethical
+                            AI development, promising to follow strict guidelines to ensure privacy and fairness...</p>
                     </div>
                     <div class="news-item">
-                        <img src="latestnews4.png" alt="News"/>
+                        <img src="latestnews4.png" alt="News" />
+                        <h1>Global Oil Prices Surge Amid Supply Chain Disruptions</h1>
+                        <p>Oil prices have surged to their highest levels in months, driven by disruptions in the supply
+                            chain. Experts predict that this could lead to increased costs for consumers globally...</p>
+                    </div>
+                    <div class="news-item">
+                        <img src="latestnews5.png" alt="News" />
                         <h1>Pope Francis to be Discharged from Hospital</h1>
-                        <p>Pope Francis is expected to be discharged from the hospital after a successful medical treatment, according to the Vatican...</p>
+                        <p>Pope Francis is expected to be discharged from the hospital after a successful medical
+                            treatment, according to the Vatican...</p>
                     </div>
                     <div class="news-item">
-                        <img src="latestnews5.png" alt="News"/>
-                        <h1>New Tech Innovations in Artificial Intelligence</h1>
-                        <p>The latest developments in AI technology are revolutionizing industries, from healthcare to finance...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="latestnews6.png" alt="News"/>
+                        <img src="latestnews6.png" alt="News" />
                         <h1>Climate Change Warnings from Global Experts</h1>
-                        <p>International climate change experts have issued urgent warnings about the escalating effects of global warming...</p>
+                        <p>International climate change experts have issued urgent warnings about the escalating effects
+                            of global warming...</p>
                     </div>
                 </div>
             </section>
 
             <section class="trending-news">
-                <h2>Trending</h2>
+                <h2>Trending News</h2>
                 <div class="trending-container">
                     <div class="news-item">
-                        <img src="trendingnews1.png" alt="News"/>
+                        <img src="trendingnews1.png" alt="News" />
                         <h1>Oli Seeks Deals with Thailand, Modi Meet During Bimstec Trip</h1>
-                        <p>During his official visit to Thailand, Nepal's Prime Minister Khadga Prasad Sharma Oli is expected to seek new trade deals and strengthen economic ties...</p>
+                        <p>During his official visit to Thailand, Nepal's Prime Minister Khadga Prasad Sharma Oli is
+                            expected to seek new trade deals and strengthen diplomatic ties...</p>
                     </div>
                     <div class="news-item">
-                        <img src="trendingnews2.png" alt="News"/>
+                        <img src="trendingnews2.png" alt="News" />
+                        <h1>NASA's Artemis Mission Aims to Land on Moon by 2025</h1>
+                        <p>NASA's Artemis program has announced plans to land humans on the Moon by 2025. The mission
+                            will mark the first time astronauts land on the lunar surface in over 50 years...</p>
+                    </div>
+                    <div class="news-item">
+                        <img src="trendingnews3.png" alt="News" />
+                        <h1>Cryptocurrency Market Experiences Major Volatility</h1>
+                        <p>The cryptocurrency market has faced significant volatility in recent weeks, with Bitcoin and
+                            Ethereum both seeing major price fluctuations. Experts suggest that this is part of a larger
+                            trend...</p>
+                    </div>
+                    <div class="news-item">
+                        <img src="trendingnews4.png" alt="News" />
+                        <h1>Global Travel Restrictions Lifted as Vaccination Rates Increase</h1>
+                        <p>As vaccination rates around the world continue to rise, many countries are lifting travel
+                            restrictions, sparking a surge in international tourism...</p>
+                    </div>
+                    <div class="news-item">
+                        <img src="trendingnews5.png" alt="News" />
                         <h1>Trump Revokes Security Clearance for Harris and Clinton</h1>
-                        <p>In a surprising move, former President Donald Trump has revoked the security clearances of Vice President Kamala Harris and former Secretary of State Hillary Clinton...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="trendingnews3.png" alt="News"/>
-                        <h1>Trump Envoy Dismisses Starmer Plan in Ukraine</h1>
-                        <p>Donald Trump's envoy to Ukraine has dismissed the recent peace plan proposed by UK opposition leader Keir Starmer...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="trendingnews4.png" alt="News"/>
-                        <h1>Fear and Anger Mount as Battle for Romanian Democracy Looms</h1>
-                        <p>As political tensions escalate in Romania, fear and anger are mounting among citizens as the nation stands on the brink of a significant political crisis...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="trendingnews5.png" alt="News"/>
-                        <h1>Global Efforts to Combat Plastic Pollution Intensify</h1>
-                        <p>As the world grapples with the growing threat of plastic pollution, countries and organizations are ramping up efforts to tackle the issue. New international agreements and innovative technologies are being developed to reduce plastic waste and promote sustainability. Efforts include bans on single-use plastics, advancements in recycling technologies, and education campaigns aimed at raising awareness of the environmental dangers posed by plastic. The fight against plastic pollution has become a global priority, with experts warning that failure to address the problem will lead to catastrophic environmental consequences.</p>
+                        <p>In a surprising move, former President Donald Trump has revoked the security clearances of
+                            Vice President Kamala Harris and former Secretary of State Hillary Clinton...</p>
                     </div>
                 </div>
             </section>
         </div>
     </main>
 </body>
+
 </html>
