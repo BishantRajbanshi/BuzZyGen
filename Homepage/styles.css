@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color: white;
+    background-color:#444;
     color: #333;
     padding: 10px 0;
     text-align: center;
@@ -23,11 +23,20 @@ header {
     margin: 0 auto;
 }
 
+.top-bar>.logo{
+    left: -80px;
+}
+
+.top-bar>.search-user>input{
+    /* right: 50px; */
+}
+
 .menu-btn {
     font-size: 24px;
     cursor: pointer;
-    color: #0f0909;
+    color:white;
     transition: color 0.3s;
+    height:20px;
 
     position: absolute;
     left: 20px; /* Adjust for better alignment */
@@ -42,22 +51,24 @@ header {
     color: #ffb84d;
 }
 
+/* Logo Container */
 .logo {
     position: relative;
-    width: 100%;
-    height: 100px; /* Adjust this height to make it more compact */
+    height: 60px; /* Adjusted height */
+    width: auto;
+    /* Control space between the logo and home icon */
 }
 
+/* Logo Image */
 .logo img {
     position: absolute;
-    top: 50%; /* Middle vertically */
-    left: 50%; /* Middle horizontally */
+    top: 50%; /* Keep it centered vertically */
+    left: 1%; /* Move the logo more left by reducing the percentage */
     transform: translate(-50%, -50%); /* Offset to true center */
-    max-width: 120px;
+    max-width: 100px; /* Adjust size of the logo */
     height: auto;
     filter: brightness(80%);
 }
-
 
 
 
@@ -66,24 +77,57 @@ header {
 .search-user {
     display: flex;
     align-items: center;
-    gap: 15px; /* Space between search bar and icons */
+    gap: 20px; /* Space between search bar and icons */
+    height: 80px; /* Increase height to make it taller */
 }
 
-/* User profile and notification icons */
+
+/* Styling for the user profile icon */
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Adjust spacing between icon and text */
-    font-size: 18px;
-    font-weight: 500;
+    /* position: relative; */
     cursor: pointer;
-    white-space: nowrap; /* Prevent text wrapping */
-    transition: color 0.3s;
+    font-size: 20px; /* Adjust icon size */
+    background-color: white; /* Set background color to white */
+    padding: 10px; /* Add padding around the icon */
+    margin-right: -130px; /* Move it to the right */
+    border-radius: 5px; /* Optional: Slight rounding to the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
 }
 
-.user-profile:hover {
-    color: #ffb84d;
+.user-profile>a{
+    text-decoration: none;
 }
+
+
+/* Dropdown styles */
+.dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px;
+    width: 200px;
+}
+
+.dropdown.active {
+    display: block; /* Shows the dropdown when it's active */
+}
+
+.dropdown ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.dropdown ul li {
+    margin: 10px 0;
+}
+
+.dropdown ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
 
 
 /* Adjust overall layout */
@@ -102,38 +146,70 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 10px;
     width: 200px;
-    display: none;
-  }
-  
-  .notifications-dropdown.active {
-    display: block;
-  }
+    display: none; /* Initially hidden */
+    max-height: 300px; /* Optional: Limit height for scrolling */
+    overflow-y: auto; /* Enable scrolling if there are many notifications */
+}
+
+.notifications-dropdown.active {
+    display: block; /* Show when 'active' class is added */
+}
+
+.notifications-dropdown .notification-item {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.notifications-dropdown .notification-item p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
   
 
-/* Navigation */
+/* Navigation Container */
+#nav-sections {
+    background-color: #444; /* Keep your background color */
+    width: 100%; /* Makes the navigation bar span the entire width of the screen */
+    height: 65px; /* Increase the height of the navigation bar */
+    padding: 10px 0; /* Adds padding on the top and bottom */
+}
+
+/* Navigation List */
 #nav-sections ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
     display: flex;
     justify-content: center;
-    background-color: #444;
+    border-top: 2px solid white;  /* White line on top */
+    border-bottom: 2px solid white; /* White line at the bottom */
+    padding: 10px 0;
 }
 
+/* Navigation Items */
 #nav-sections ul li {
-    margin: 0 20px;
+    margin: 0 30px; /* Increases the space between menu items */
 }
 
+/* Links Styling */
 #nav-sections ul li a {
     text-decoration: none;
     color: white;
-    font-size: 18px;
+    font-size: 20px; /* Increase font size */
     transition: color 0.3s;
+    
 }
 
+/* Hover Effect */
 #nav-sections ul li a:hover {
     color: #ffb84d;
 }
+
 
 /* Main News Section */
 .news-sections {
@@ -201,8 +277,8 @@ header {
 }
 
 .trending-news .news-item img {
-    width: 180px;
-    height: 180px;
+    width: 184px;
+    height: 199px;
     margin-right: 10px;
     border-radius: 8px;
     object-fit: cover;
@@ -233,19 +309,19 @@ header {
 /* Profile dropdown */
 .profile-dropdown {
     position: absolute;
-    top: 50px;
+    top: 40px;
     right: 0;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    padding: 5px;
     display: none;
 }
 
 .profile-dropdown a {
     display: block;
     color: #333;
-    padding: 5px;
+    padding: 4px 8px;
     text-decoration: none;
 }
 
@@ -256,6 +332,8 @@ header {
 .profile-dropdown.active {
     display: block;
 }
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -356,15 +434,6 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
-/* Specific styling for business news section */
-.business-news {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    grid-template-rows: repeat(2, 1fr); /* 2 rows */
-    gap: 20px;
-    padding: 20px;
-}
-
 /* Style for each news item */
 .business-news .news-item {
     background-color: #f4f4f4;
@@ -376,10 +445,12 @@ body, html {
     align-items: center;
 }
 
+
 /* Image styling for business news */
 .business-news .news-item img {
     width: 100%;
-    height: auto;
+    height: 400px; /* Increased height for the image */
+    object-fit: cover; /* Ensures the image maintains its aspect ratio while covering the area */
     border-radius: 8px;
     margin-bottom: 15px;
 }
@@ -396,6 +467,10 @@ body, html {
     font-size: 14px;
     color: #666;
 }
+
+
+
+
 
 
 
@@ -419,10 +494,11 @@ body, html {
     align-items: center;
 }
 
-/* Image styling for sports news */
+/* Ensure images have a uniform size */
 .sports-news .news-item img {
     width: 100%;
-    height: auto;
+    height: 400px; /* Set a fixed height */
+    object-fit: cover; /* Crop images while maintaining aspect ratio */
     border-radius: 8px;
     margin-bottom: 15px;
 }
@@ -463,8 +539,9 @@ body, html {
 
 /* Image styling for multimedia news */
 .multimedia-news .news-item img {
-    width: 100%;
-    height: auto;
+  width: 100%;
+    height: 400px; /* Set a fixed height */
+    object-fit: cover; /* Crop images while maintaining aspect ratio */
     border-radius: 8px;
     margin-bottom: 15px;
 }
@@ -481,3 +558,140 @@ body, html {
     font-size: 14px;
     color: #666;
 }
+
+/* Footer Styling */
+footer {
+    background-color: #f5f5f5; /* Light Gray Background */
+    color: #000; /* Black Text */
+    padding: 40px 20px;
+    margin-top: 40px;
+    border-top: 2px solid #ddd;
+    font-family: Arial, sans-serif;
+}
+
+/* Flex Container for Footer */
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0 50px; /* Added padding to shift content right */
+}
+
+/* Left Side: News, Arts, Lifestyle, More */
+.footer-left {
+    display: flex;
+    gap: 50px; /* Reduce space to bring them closer */
+    flex-wrap: nowrap;
+    margin-left: 50px; /* Shift to the right */
+}
+.footer-logo img {
+    width: 120px; /* Adjust width of the logo */
+    height: auto;  /* Maintain aspect ratio */
+    margin-bottom: 15px; /* Space below the logo */
+    filter: brightness(0.6); 
+}
+
+
+
+/* Footer Column Styling */
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Black Line Under Headings */
+.footer-column h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    padding-bottom: 5px; /* Spacing for the line */
+    border-bottom: 2px solid #000; /* Black Line */
+    display: inline-block; /* Keeps width controlled */
+}
+
+/* List Styling */
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin: 4px 0;
+}
+
+.footer-column ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Right Side: Social Media Section */
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Keep content aligned to the right */
+    text-align: right;
+    margin-right: 30px; /* Reduce margin-right to move it left */
+    margin-left: 20px; /* Alternatively, add margin-left to fine-tune positioning */
+}
+
+
+.footer-social h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 12px; /* Precise spacing for alignment */
+}
+
+.social-icons a img {
+    width: 18px; /* Adjusted to match image */
+    height: 18px;
+}
+
+/* Bottom Footer Section */
+.footer-bottom {
+    text-align: center;
+    padding: 15px 0;
+    font-size: 13px;
+    color: #666;
+    border-top: 1px solid #aaa; /* Matching bottom divider */
+    margin-top: 10px;
+}
+
+.footer-bottom ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.footer-bottom ul li {
+    margin: 5px 12px;
+}
+
+.footer-bottom ul li a {
+    color: #444;
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.3s ease;
+}
+
+.footer-bottom ul li a:hover {
+    color: #000;
+}
+

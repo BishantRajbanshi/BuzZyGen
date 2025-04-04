@@ -1,61 +1,80 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Toggle Mobile Menu
-  document.querySelector(".menu-btn").addEventListener("click", function () {
-      document.getElementById("nav-sections").classList.toggle("active");
-  });
+    // Toggle Mobile Menu (nav-sections)
+    document.querySelector(".menu-btn").addEventListener("click", function (event) {
+        event.stopPropagation();
+        document.getElementById("homeDropdown").classList.toggle("active");
+    });
 
-  // Toggle Notifications Dropdown
-  document.querySelector(".notification-icon").addEventListener("click", function (event) {
-      event.stopPropagation();
-      toggleDropdown("notificationsDropdown");
-  });
+document.addEventListener("DOMContentLoaded", function () {
+    // Sample messages to display
+    const messages = [
+        "Breaking News: Global stock market sees a major surge today.",
+        "Latest News: A new technological breakthrough in artificial intelligence.",
+        "Top Story: Scientists discover a potential cure for a rare disease.",
+        "Trending: A major political shift in European Union's policies."
+    ];
 
-  // Toggle Profile Dropdown
-  document.querySelector(".user-profile").addEventListener("click", function (event) {
-      event.stopPropagation();
-      toggleDropdown("profileDropdown");
-  });
+    // Function to toggle the visibility of the notifications dropdown
+    function toggleNotifications() {
+        const dropdown = document.getElementById('notificationsDropdown');
+        dropdown.classList.toggle('active');  // Toggle the 'active' class to show/hide the dropdown
 
-  // Function to toggle dropdowns
-  function toggleDropdown(dropdownId) {
-      const dropdown = document.getElementById(dropdownId);
-      const allDropdowns = document.querySelectorAll(".dropdown");
+        // If the dropdown is being opened, populate it with messages
+        if (dropdown.classList.contains('active')) {
+            // Clear any previous messages
+            dropdown.innerHTML = '';
 
-      allDropdowns.forEach((d) => {
-          if (d.id !== dropdownId) d.classList.remove("active");
-      });
+            // Add the messages to the dropdown
+            messages.forEach(function (message) {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('notification-item');
 
-      dropdown.classList.toggle("active");
+                const messageText = document.createElement('p');
+                messageText.textContent = message;
+                messageElement.appendChild(messageText);
 
-      // Populate notifications dynamically
-      if (dropdownId === "notificationsDropdown" && dropdown.innerHTML.trim() === "") {
-          dropdown.innerHTML = `
-              <p><strong>Notifications</strong></p>
-              <ul>
-                  <li>📢 Market hits all-time high</li>
-                  <li>📰 AI's role in journalism</li>
-                  <li>⚽ Local team wins championship</li>
-              </ul>
-          `;
-      }
-  }
+                // Append the message element to the dropdown
+                dropdown.appendChild(messageElement);
+            });
+        }
+    }
 
-  // Close dropdowns when clicking outside
-  document.addEventListener("click", function () {
-      document.querySelectorAll(".dropdown").forEach((dropdown) => {
-          dropdown.classList.remove("active");
-      });
-  });
+    // Add event listener for the notification icon click
+    document.querySelector(".notification-icon").addEventListener("click", toggleNotifications);
+});
 
-  // Example functions for settings and logout
-  document.querySelectorAll(".profile-dropdown a").forEach((item) => {
-      item.addEventListener("click", function (event) {
-          event.preventDefault();
-          if (this.textContent.includes("Settings")) {
-              alert("Opening Settings...");
-          } else if (this.textContent.includes("Logout")) {
-              alert("You have been logged out.");
-          }
-      });
-  });
+
+
+    // Function to toggle user dropdown visibility
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdown');
+        const allDropdowns = document.querySelectorAll(".dropdown");
+
+        // Close all other dropdowns except user
+        allDropdowns.forEach((d) => {
+            if (d.id !== 'userDropdown') d.classList.remove("active");
+        });
+
+        dropdown.classList.toggle("active");
+
+        if (dropdown.classList.contains("active") && dropdown.innerHTML.trim() === "") {
+            dropdown.innerHTML = `
+                <ul>
+                    <li><a href="signup.html">Sign Up</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            `;
+        }
+    }
+
+    // Close all dropdowns when clicking outside
+    document.addEventListener("click", function (event) {
+        const dropdowns = document.querySelectorAll(".dropdown");
+        dropdowns.forEach(dropdown => {
+            if (!dropdown.contains(event.target) && !event.target.closest('.menu-btn') && !event.target.closest('.user-profile')) {
+                dropdown.classList.remove("active");
+                if (dropdown.id === 'userDropdown') dropdown.innerHTML = '';
+            }
+        });
+    });
 });
