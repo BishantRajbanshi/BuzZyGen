@@ -27,9 +27,7 @@ header {
     left: -80px;
 }
 
-.top-bar>.search-user>input{
-    /* right: 50px; */
-}
+
 
 .menu-btn {
     font-size: 24px;
@@ -45,7 +43,28 @@ header {
     z-index: 1000;
 }
 
+.menu {
+    display: none; /* Hide by default */
+    background-color: #444;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    width: 200px;
+  }
 
+  .menu a {
+    display: block;
+    padding: 12px 15px;
+    color: white;
+    text-decoration: none;
+    border-bottom: 1px solid #555;
+  }
+
+  .menu a:hover {
+    background-color: #555;
+  }
 
 .menu-btn:hover {
     color: #ffb84d;
@@ -73,104 +92,236 @@ header {
 
 
 
-/* Fix user profile section */
-.search-user {
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Optional for left content */
+.navbar-left {
     display: flex;
     align-items: center;
-    gap: 20px; /* Space between search bar and icons */
-    height: 80px; /* Increase height to make it taller */
+    gap: 10px;
+}
+
+/* Right side content all the way to the right */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Key to spreading left/right */
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Left side content */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Key to spreading left/right */
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Left side content */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 
-/* Styling for the user profile icon */
-.user-profile {
-    /* position: relative; */
-    cursor: pointer;
-    font-size: 20px; /* Adjust icon size */
-    background-color: white; /* Set background color to white */
-    padding: 10px; /* Add padding around the icon */
-    margin-right: -130px; /* Move it to the right */
-    border-radius: 5px; /* Optional: Slight rounding to the corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add shadow */
-}
-
-.user-profile>a{
-    text-decoration: none;
-}
-
-
-/* Dropdown styles */
-.dropdown {
-    display: none; /* Hidden by default */
-    position: absolute;
-    background-color: #fff;
+ /* Right-aligned container */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+    margin-right: -160px; /* optional: fine-tune based on layout */
+  }
+  
+  /* Search bar */
+  .search-user {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    border-radius: 15px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    width: 200px;
-}
-
-.dropdown.active {
-    display: block; /* Shows the dropdown when it's active */
-}
-
-.dropdown ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-.dropdown ul li {
-    margin: 10px 0;
-}
-
-.dropdown ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-
-
-/* Adjust overall layout */
-.account-section {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Maintain equal spacing */
-}
-
-.notifications-dropdown {
+  }
+  
+  .search-user input {
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .search-user button {
+    padding: 8px 12px;
+    background-color: hsl(0, 2%, 90%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .search-user button:hover {
+    background-color: #777;
+  }
+  .notification-container {
+    position: relative;
+    display: inline-block;
+    
+  }
+  
+  .notification-icon {
+    cursor: pointer;
+    font-size: 24px;
+    color:white;
+    margin-right: -90px;
+  }
+  
+  .notification-badge {
     position: absolute;
-    right: 20px;
-    top: 50px;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 10px;
+    margin-right: -60px;
+  }
+  
+  .notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background: white; /* White background for dropdown */
+    border: 1px solid #ccc;
+    width: 200px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto; /* Scrollable if there are too many notifications */
+  }
+  
+  #notificationContainer.active .notification-dropdown {
+    display: block;
+  }
+  
+  .notification-message {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    color:white;
+    font-size: 14px;
+    background-color:#444; /* White background for individual notifications */
+  }
+  
+  .notification-message:last-child {
+    border-bottom: none;
+  }
+  
+ /* User Profile Container */
+.user-profile {
+    position: relative;
+    padding: 10px; /* Add some padding for better spacing */
+    border-radius: 5px; /* Optionally, round the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visibility */
+    margin-left: 80px; /* Slightly shift it to the right */
+  }
+  
+  /* Make the icon white */
+  .user-profile i {
+    color: white; /* Set the icon color to white */
+    font-size: 24px; /* Optional: Adjust icon size */
+  }
+  
+  /* Login/Signup container (hidden by default) */
+.login-signup-container {
+    display: none;
+    position: absolute;
+    top: 35px;
+    left: -800px;  /* Adjust the left position to bring it closer */
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    width: 200px;
-    display: none; /* Initially hidden */
-    max-height: 300px; /* Optional: Limit height for scrolling */
-    overflow-y: auto; /* Enable scrolling if there are many notifications */
-}
-
-.notifications-dropdown.active {
-    display: block; /* Show when 'active' class is added */
-}
-
-.notifications-dropdown .notification-item {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    width: 150px;
     border-radius: 5px;
-}
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .login-signup-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #444; /* Green color */
+    color: white;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+  }
+  
+  
+.kebab-container {
+    position: relative;
+    display: inline-block;
+  }
 
-.notifications-dropdown .notification-item p {
-    margin: 0;
-    font-size: 14px;
+  .kebab-icon {
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    color: white; /* Kebab icon is now white */
+  }
+
+  .kebab-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 10;
+    min-width: 150px;
+  }
+
+  .kebab-menu a {
+    display: block;
+    padding: 10px;
     color: #333;
-}
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .kebab-menu a:hover {
+    background-color: #f0f0f0;
+  }
 
   
-
+  
+  
+  
 /* Navigation Container */
 #nav-sections {
     background-color: #444; /* Keep your background color */
@@ -211,6 +362,105 @@ header {
 }
 
 
+.right-column {
+    width: 20%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .right-column .section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .right-column .news-item {
+    display: flex;
+    flex-direction: column; /* Stack image, heading, and paragraph vertically */
+    gap: 8px;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .right-column .news-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .right-column .news-item h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .right-column .news-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #444;
+  }
+  
+
+/* Featured News Section */
+.featured-news {
+    flex: 0 0 54%;
+    padding: 20px;
+}
+.featured-news {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+/* Featured News Image */
+.featured-news img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* News Icons (views, likes, comments, shares) */
+.featured-news .news-icons {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+/* News Icons - Individual Icon Styling */
+.featured-news .news-icons span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Heading for the Featured News */
+.featured-news h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 15px 0;
+}
+
+/* Paragraph for the Featured News Description */
+.featured-news p {
+    font-size: 20px;
+    color: black;
+    line-height: 1.6;
+    text-align: justify;
+}
+
 /* Main News Section */
 .news-sections {
     display: flex;
@@ -224,19 +474,19 @@ header {
 }
 
 .latest-news {
-    flex: 0 0 60%;
+    flex: 0 0 20%;
     padding: 20px;
 }
 
 .trending-news {
-    flex: 0 0 40%;
+    flex: 0 0 20%;
     padding: 20px;
 }
 
 .news-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 20px;
+    grid-gap: 10px;
 }
 
 .news-item {
@@ -268,26 +518,135 @@ header {
     color: #555;
 }
 
-/* Trending News Styling */
+.trending-news h2 {
+    font-size: 24px; /* Large font for the title */
+    font-weight: bold;
+    margin-bottom: 20px; /* Space below the title */
+    color: #333; /* Dark color for the title */
+    text-align: left; /* Aligns the title to the left */
+    margin-left:-50px /* Adds some space from the left edge */
+}
+ 
+ /* Trending News Styling */
 .trending-news .news-item {
     background-color: #e9e9e9;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     display: flex;
+    flex-direction: column;
     align-items: center;
+    padding: 6px;
+    text-align: center;
+    border-radius: 6px;
+    max-width: 200px;
+    height: auto; /* Let content define the height, but keep it small */
 }
 
+/* Smaller image wrapper */
+.trending-news .news-item .image-wrapper {
+    width: 70px;
+    height: 75px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+/* Image fills its small container */
 .trending-news .news-item img {
-    width: 184px;
-    height: 199px;
-    margin-right: 10px;
-    border-radius: 8px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
+    border-radius: 4px;
 }
 
-.trending-news .news-item p {
-    font-size: 16px;
-    margin: 10px 0;
+/* Tiny heading */
+.trending-news .news-item h4 {
+    font-size: 12px;
+    font-weight: 600;
+    margin: 4px 0 2px;
 }
+
+/* Tiny paragraph */
+.trending-news .news-item p {
+    font-size: 10px;
+    margin: 0;
+    line-height: 1.3;
+    color: #444;
+}
+
+
+/* Latest News Title Styling */
+.latest-news h2 {
+    font-size: 24px; /* Large font for the title */
+    font-weight: bold;
+    margin-bottom: 20px; /* Space below the title */
+    color: #333; /* Dark color for the title */
+    text-align: left; /* Aligns the title to the left */
+    margin-left:-50px /* Adds some space from the left edge */
+}
+
+/* Latest News Styling */
+.latest-news .news-item {
+    background-color: #f4f4f4; /* Light background for latest news */
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px;
+    text-align: center;
+    border-radius: 6px;
+    max-width: 200px;
+    height: auto; /* Let content define the height, but keep it small */
+}
+
+/* Smaller image wrapper */
+.latest-news .news-item .image-wrapper {
+    width: 70px;
+    height: 75px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+/* Image fills its small container */
+.latest-news .news-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Tiny heading */
+.latest-news .news-item h4 {
+    font-size: 12px;
+    font-weight: 600;
+    margin: 4px 0 2px;
+}
+
+/* Tiny paragraph */
+.latest-news .news-item p {
+    font-size: 10px;
+    margin: 0;
+    line-height: 1.3;
+    color: #444;
+}
+
+
+
+/* Add gap between sections */
+.latest-news, .featured-news, .trending-news {
+    margin-bottom: 15px; /* Adds space between sections, increase this value for more space */
+}
+
+/* Optional: You can adjust the margin for each box to further control the space */
+.latest-news, .featured-news, .trending-news {
+    margin: 10px; /* Gives a margin all around the boxes to keep them separated */
+}
+
+/* If you have grid layout, increase the gap between items */
+.news-container {
+    gap: 10px; /* Increases gap between individual news items */
+}
+
 
 /* Notification dropdown */
 .notifications-dropdown {
@@ -333,6 +692,168 @@ header {
     display: block;
 }
 
+.latest-news {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .latest-news h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .news-item {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .news-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .news-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .news-item h1 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 15px 0;
+    color: #222;
+    line-height: 1.3;
+  }
+  
+  .news-item p {
+    font-size: 14px;
+    color: #555;
+    padding: 10px 15px 15px;
+    line-height: 1.5;
+  }
+
+  .trending-news {
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .trending-news h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .trending-item {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .trending-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .trending-item img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .trending-item h1 {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 15px 15px 0;
+    color: #222;
+    line-height: 1.3;
+  }
+  
+  .trending-item p {
+    font-size: 14px;
+    color: #555;
+    padding: 10px 15px 15px;
+    line-height: 1.5;
+  }
+  
+  
+  
+
+  /* Section styles */
+section {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+/* Form and input field styles */
+form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+form input[type="text"], form input[type="email"], form input[type="password"], form input[type="file"], form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+form button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+form button:hover {
+    background-color: #2980b9;
+}
+
+form button[type="button"] {
+    background-color: #e67e22;
+}
+
+form button[type="button"]:hover {
+    background-color: #d35400;
+}
 
 
 /* Responsive Design */
@@ -517,8 +1038,10 @@ body, html {
 }
 
 
-/* Specific styling for multimedia news section */
-.multimedia-news {
+
+
+/* Specific styling for general news section */
+.news {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
     grid-template-rows: repeat(2, 1fr); /* 2 rows */
@@ -526,8 +1049,8 @@ body, html {
     padding: 20px;
 }
 
-/* Style for each multimedia news item */
-.multimedia-news .news-item {
+/* Style for each news item */
+.news .news-item {
     background-color: #f4f4f4;
     border-radius: 8px;
     padding: 15px;
@@ -537,27 +1060,118 @@ body, html {
     align-items: center;
 }
 
-/* Image styling for multimedia news */
-.multimedia-news .news-item img {
-  width: 100%;
-    height: 400px; /* Set a fixed height */
-    object-fit: cover; /* Crop images while maintaining aspect ratio */
+/* Ensure images have a uniform size */
+.news .news-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
     border-radius: 8px;
     margin-bottom: 15px;
 }
 
-/* Headline styling for multimedia news */
-.multimedia-news .news-item h1 {
-    font-size: 20px;
+/* Headline styling for news */
+.news .news-item h2 {
+    font-size: 18px;
     color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Paragraph styling for news */
+.news .news-item p {
+    font-size: 14px;
+    color: #666;
+    text-align: justify;
+}
+
+/* Specific styling for travel news section */
+.travel-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each travel news item */
+.travel-news .news-item {
+    background-color: #f0f8ff; /* Light blue background for a travel vibe */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ensure images have a uniform size */
+.travel-news .news-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling for travel news */
+.travel-news .news-item h2 {
+    font-size: 18px;
+    color: #2c3e50;
     margin-bottom: 10px;
 }
 
-/* Paragraph styling for multimedia news */
-.multimedia-news .news-item p {
+/* Paragraph styling for travel news */
+.travel-news .news-item p {
     font-size: 14px;
-    color: #666;
+    color: #555;
 }
+
+
+/* Specific styling for innovation news section */
+.innovation-news {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(2, 1fr); /* 2 rows */
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Style for each innovation news item */
+.innovation-news .news-item {
+    background-color: #f4f9ff; /* Slightly bluish tone for innovation */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ensure images have a uniform size */
+.innovation-news .news-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* Headline styling for innovation news */
+.innovation-news .news-item h2 {
+    font-size: 18px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Paragraph styling for innovation news */
+.innovation-news .news-item p {
+    font-size: 14px;
+    color: #555;
+    text-align: justify;
+}
+
+
 
 /* Footer Styling */
 footer {

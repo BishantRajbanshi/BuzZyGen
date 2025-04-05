@@ -1,80 +1,134 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Toggle Mobile Menu (nav-sections)
-    document.querySelector(".menu-btn").addEventListener("click", function (event) {
-        event.stopPropagation();
-        document.getElementById("homeDropdown").classList.toggle("active");
-    });
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Sample messages to display
-    const messages = [
-        "Breaking News: Global stock market sees a major surge today.",
-        "Latest News: A new technological breakthrough in artificial intelligence.",
-        "Top Story: Scientists discover a potential cure for a rare disease.",
-        "Trending: A major political shift in European Union's policies."
+  // Toggle main dropdown menu
+  function toggleMenu() {
+    const menu = document.getElementById("dropdownMenu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+  }
+
+
+
+  // Search handler
+  function performSearch() {
+    const query = document.getElementById("searchInput").value.trim();
+    if (query === "") {
+      alert("Please enter a search term.");
+      return;
+    }
+
+    // Handle search (customize as needed)
+    alert("You searched for: " + query);
+    // window.location.href = "search.html?q=" + encodeURIComponent(query);
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("notificationContainer");
+    const dropdown = document.getElementById("notificationDropdown");
+    const badge = document.getElementById("notificationBadge");
+  
+    const notifications = [
+        "Breaking News: Major Earthquake Hits Kathmandu",
+        "New Article Published: 'The Future of Artificial Intelligence'",
+        "Live Event: Election Results Coming In!"
     ];
-
-    // Function to toggle the visibility of the notifications dropdown
-    function toggleNotifications() {
-        const dropdown = document.getElementById('notificationsDropdown');
-        dropdown.classList.toggle('active');  // Toggle the 'active' class to show/hide the dropdown
-
-        // If the dropdown is being opened, populate it with messages
-        if (dropdown.classList.contains('active')) {
-            // Clear any previous messages
-            dropdown.innerHTML = '';
-
-            // Add the messages to the dropdown
-            messages.forEach(function (message) {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('notification-item');
-
-                const messageText = document.createElement('p');
-                messageText.textContent = message;
-                messageElement.appendChild(messageText);
-
-                // Append the message element to the dropdown
-                dropdown.appendChild(messageElement);
-            });
-        }
+  
+    window.toggleNotifications = function () {
+      container.classList.toggle("active");
+  
+      if (container.classList.contains("active")) {
+        badge.style.display = "none";
+      }
+    };
+  
+    // Render messages
+    dropdown.innerHTML = "";
+    if (notifications.length === 0) {
+      dropdown.innerHTML = "<div class='notification-message'>No new notifications</div>";
+    } else {
+      notifications.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "notification-message";
+        div.textContent = msg;
+        dropdown.appendChild(div);
+      });
     }
+  
+    badge.textContent = notifications.length;
+  });
+  
+// Toggle function to show/hide the login/signup buttons
+function toggleLoginSignup() {
+    const container = document.getElementById('loginSignupContainer');
+    container.style.display = container.style.display === 'block' ? 'none' : 'block';
+  }
+  
 
-    // Add event listener for the notification icon click
-    document.querySelector(".notification-icon").addEventListener("click", toggleNotifications);
+  function toggleKebab() {
+    const menu = document.getElementById("kebabMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+
+  // Optional: Close menu if clicked outside
+  window.addEventListener("click", function (e) {
+    const kebab = document.querySelector(".kebab-container");
+    if (!kebab.contains(e.target)) {
+      document.getElementById("kebabMenu").style.display = "none";
+    }
+  });
+  
+
+  // JavaScript to handle cookie preferences
+document.getElementById('cookie-preferences').addEventListener('click', function() {
+  alert('This would open a modal or a page where you can manage your cookie preferences.');
 });
 
+// Example form submission handling
+const languageForm = document.querySelector('#language-settings form');
+const regionForm = document.querySelector('#region-settings form');
+const timezoneForm = document.querySelector('#timezone-settings form');
+const cookieForm = document.querySelector('#cookie-settings form');
 
+languageForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const selectedLanguage = document.getElementById('language').value;
+  alert(`Language changed to: ${selectedLanguage}`);
+});
 
-    // Function to toggle user dropdown visibility
-    function toggleUserDropdown() {
-        const dropdown = document.getElementById('userDropdown');
-        const allDropdowns = document.querySelectorAll(".dropdown");
+regionForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const selectedRegion = document.getElementById('region').value;
+  alert(`Region changed to: ${selectedRegion}`);
+});
 
-        // Close all other dropdowns except user
-        allDropdowns.forEach((d) => {
-            if (d.id !== 'userDropdown') d.classList.remove("active");
-        });
+timezoneForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const selectedTimezone = document.getElementById('timezone').value;
+  alert(`Time Zone changed to: ${selectedTimezone}`);
+});
 
-        dropdown.classList.toggle("active");
+cookieForm.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const acceptCookies = document.getElementById('cookie-accept').checked;
+  alert(`Cookies accepted: ${acceptCookies ? 'Yes' : 'No'}`);
+});
 
-        if (dropdown.classList.contains("active") && dropdown.innerHTML.trim() === "") {
-            dropdown.innerHTML = `
-                <ul>
-                    <li><a href="signup.html">Sign Up</a></li>
-                    <li><a href="login.html">Login</a></li>
-                </ul>
-            `;
-        }
-    }
+   
+  
 
-    // Close all dropdowns when clicking outside
-    document.addEventListener("click", function (event) {
-        const dropdowns = document.querySelectorAll(".dropdown");
-        dropdowns.forEach(dropdown => {
-            if (!dropdown.contains(event.target) && !event.target.closest('.menu-btn') && !event.target.closest('.user-profile')) {
-                dropdown.classList.remove("active");
-                if (dropdown.id === 'userDropdown') dropdown.innerHTML = '';
-            }
-        });
+  // Close all dropdowns when clicking outside
+  document.addEventListener("click", function (event) {
+    const dropdowns = document.querySelectorAll(".dropdown");
+    dropdowns.forEach(dropdown => {
+      if (
+        !dropdown.contains(event.target) &&
+        !event.target.closest(".menu-btn") &&
+        !event.target.closest(".user-profile") &&
+        !event.target.closest("#notificationContainer")
+      ) {
+        dropdown.classList.remove("active");
+        if (dropdown.id === "userDropdown") dropdown.innerHTML = "";
+        if (dropdown.id === "notificationContainer") dropdown.classList.remove("active");
+      }
     });
-});
+  });
