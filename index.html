@@ -11,39 +11,81 @@
     <header>
         <div class="top-bar">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
             <div class="menu-btn" onclick="toggleMenu()">
-                <i class="fas fa-home"></i>
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="menu" id="dropdownMenu">
+                <a href="business.html">Business</a>
+                <a href="sports.html">Sports</a>
+                <a href="multimedia.html">Multimedia</a>
+                
             </div>
             
+            
             <div class="logo">
-                <img src="Homepage/logoimage.png" alt="News Logo">
+                <img src="logoimage.png" alt="News Logo">
             </div>
-            <div class="search-user">
-                <input type="text" placeholder="Search..." />
-                
-                <div class="Homepage/notification-wrapper">
-                    <div class="notification-icon" onclick="toggleNotifications()">🔔</div>
-                    <div class="notifications-dropdown " id="notificationsDropdown">
-                        <!-- Dynamic notifications will appear here -->
-                    </div>
-                </div>
-                
-                <!-- User profile icon -->
-<div class="Homepage/user-profile"> <a href="login.html">👤</a> </div>
-<!-- <div class="user-profile"> <a href="signup.html">👤</a> </div> -->
+          <!-- Right section containing search, notifications, and user profile -->
+<div class="navbar-right">
+    
+    <!-- Search Bar -->
+    <div class="search-user">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+    </div>
 
-<!-- User Dropdown (this will be populated with Sign Up and Login when clicked) -->
-<div id="Homepage/userDropdown" class="dropdown"></div>
+  <!-- Include Font Awesome script -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<div id="notificationContainer" class="notification-container">
+  <div class="notification-icon" onclick="toggleNotifications()">
+    <!-- White Bell Icon using Font Awesome -->
+    <i class="fas fa-bell" style="color: white; font-size: 24px;"></i>
+    <span class="notification-badge" id="notificationBadge">3</span>
+  </div>
+  <div class="notification-dropdown" id="notificationDropdown"></div>
+</div>
+
+      
+      
+  
+  
+    
+
+    <!-- User Profile -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<div class="user-profile">
+    <a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
+    <div id="loginSignupContainer" class="login-signup-container">
+        <button onclick="window.location.href='login.html'">Login</button>
+        <button onclick="window.location.href='signup.html'">Sign Up</button>
+    </div>
+</div>
+<div class="kebab-container">
+    <div class="kebab-icon" onclick="toggleKebab()">⋮</div>
+    <div class="kebab-menu" id="kebabMenu">
+      <a href="settings.html">Settings</a>
+      <a href="logout.html">Logout</a>
+    </div>
+  </div>
+
+
+</div>
+
 
                 
             </div>
         </div>
         <nav id="nav-sections" class="hidden">
             <ul>
-                <li><a href="homepage/index.html">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="business.html">Business</a></li>
                 <li><a href="sports.html">Sports</a></li>
-                <li><a href="multimedia.html">Multimedia</a></li>
+                <li><a href="news.html">News</a></li> <!-- New News link -->
+                <li><a href="travel.html">Travel</a></li> <!-- New Travel link -->
+                <li><a href="innovation.html">Innovation</a></li>
             </ul>
         </nav>
     </header>
@@ -68,23 +110,23 @@
                         <h1>Tech Giants Sign Pact on Ethical AI Development</h1>
                         <p>A consortium of the world's leading tech companies has signed a historic agreement on ethical AI development, promising to follow strict guidelines to ensure privacy and fairness...</p>
                     </div>
-                    <div class="news-item">
-                        <img src="latestnews4.png" alt="News"/>
-                        <h1>Global Oil Prices Surge Amid Supply Chain Disruptions</h1>
-                        <p>Oil prices have surged to their highest levels in months, driven by disruptions in the supply chain. Experts predict that this could lead to increased costs for consumers globally...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="latestnews5.png" alt="News"/>
-                        <h1>Pope Francis to be Discharged from Hospital</h1>
-                        <p>Pope Francis is expected to be discharged from the hospital after a successful medical treatment, according to the Vatican...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="latestnews6.png" alt="News"/>
-                        <h1>Climate Change Warnings from Global Experts</h1>
-                        <p>International climate change experts have issued urgent warnings about the escalating effects of global warming...</p>
-                    </div>
+                   
                 </div>
             </section>
+
+            <div class="featured-news">
+                <img src="feature1.png" alt="Featured News">
+                <div class="news-icons">
+                  <span>👁 2.5m</span>
+                  <span>❤️ 12.5k</span>
+                  <span>💬 6.7k</span>
+                  <span>🔁 2.5k</span>
+                </div>
+                <h1>6th BIMSTEC Summit</h1>
+
+            <p>The 6th BIMSTEC (Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation) Summit is a significant event that brings together the member countries of BIMSTEC to discuss regional cooperation, economic integration, and strategic partnerships. The summit focuses on enhancing connectivity, trade, security, and climate change resilience among the countries in the Bay of Bengal region. This summit provides a platform for strengthening ties between Bangladesh, Bhutan, India, Myanmar, Nepal, Sri Lanka, and Thailand, addressing common regional challenges and fostering shared prosperity.Finally, the 6th BIMSTEC Summit is expected to lead to new agreements and initiatives that will promote peace, stability, and prosperity in the Bay of Bengal region. The summit will set the stage for strengthening relationships between the countries involved, paving the way for greater regional integration and cooperation.</p>
+
+              </div>
 
             <section class="trending-news">
                 <h2>Trending News</h2>
@@ -104,19 +146,12 @@
                         <h1>Cryptocurrency Market Experiences Major Volatility</h1>
                         <p>The cryptocurrency market has faced significant volatility in recent weeks, with Bitcoin and Ethereum both seeing major price fluctuations. Experts suggest that this is part of a larger trend...</p>
                     </div>
-                    <div class="news-item">
-                        <img src="trendingnews4.png" alt="News"/>
-                        <h1>Global Travel Restrictions Lifted as Vaccination Rates Increase</h1>
-                        <p>As vaccination rates around the world continue to rise, many countries are lifting travel restrictions, sparking a surge in international tourism...</p>
-                    </div>
-                    <div class="news-item">
-                        <img src="trendingnews5.png" alt="News"/>
-                        <h1>Trump Revokes Security Clearance for Harris and Clinton</h1>
-                        <p>In a surprising move, former President Donald Trump has revoked the security clearances of Vice President Kamala Harris and former Secretary of State Hillary Clinton...</p>
-                    </div>
+                   
                 </div>
             </section>
+            
         </div>
+        
         
     </main>
 </body>
