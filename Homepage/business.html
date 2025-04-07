@@ -5,40 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business News</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
-        <h1>Business News</h1>
-        <a href="index.html"></a>
+        <div class="top-bar">
+            <div class="menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="menu" id="dropdownMenu">
+                <a href="/Homepage/business.html">Business</a>
+                <a href="/Homepage/sports.html">Sports</a>
+                <a href="/Homepage/news.html">News</a>
+                <a href="/Homepage/travel.html">Travel</a>
+                <a href="Homepage/innovation.html">Innovation</a>
+            </div>
+            <a href="index.html" class="logo-link">
+                <div class="logo">
+                    <img src="/Homepage/logoimage.png" alt="News Logo">
+
+                </div>
+            </a>
+            <div class="navbar-right">
+                <div class="search-user">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+                </div>
+                <div id="notificationContainer" class="notification-container">
+                    <div class="notification-icon" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </div>
+                    <div class="notification-dropdown" id="notificationDropdown"></div>
+                </div>
+                <div class="user-profile">
+                    <a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
+                    <div id="loginSignupContainer" class="login-signup-container">
+                        <button onclick="window.location.href='Loginpage/index.html'">Login</button>
+                        <button onclick="window.location.href='Signup/index.html'">Sign Up</button>
+                    </div>
+                </div>
+                <div class="kebab-container">
+                    <div class="kebab-icon" onclick="toggleKebab()">⋮</div>
+                    <div class="kebab-menu" id="kebabMenu">
+                        <a href="Homepage/settings.html">Settings</a>
+                        <a href="Homepage/logout.html">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav id="nav-sections" class="hidden">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Homepage/business.html">Business</a></li>
+                <li><a href="Homepage/sports.html">Sports</a></li>
+                <li><a href="Homepage/news.html">News</a></li>
+                <li><a href="Homepage/travel.html">Travel</a></li>
+                <li><a href="Homepage/innovation.html">Innovation</a></li>
+            </ul>
+        </nav>
     </header>
+
     <main class="business-news">
-        <!-- News Article 1 -->
         <div class="news-item">
-            <img src="businessnews1.png" alt="News"/>
+            <img src="businessnews1.png" alt="News">
             <h2>US Orders French Companies to Comply with Trump's Diversity Ban</h2>
-            <p>The US has directed French companies to follow the diversity rules imposed during the Trump administration, limiting inclusivity initiatives in hiring. This has caused friction between the two nations, raising concerns over foreign policy enforcement on corporate practices.</p>
+            <p>The US has directed French companies to follow the diversity rules imposed during the Trump administration...</p>
         </div>
-
-        <!-- News Article 2 -->
         <div class="news-item">
-            <img src="businessnews2.png" alt="News"/>
+            <img src="businessnews2.png" alt="News">
             <h2>China State Media Blasts CK Hutchison's Panama Port Deal in Soon-Deleted Post</h2>
-            <p>China's state media criticized CK Hutchison's deal to manage a port in Panama, calling it a violation of national interests. The post was quickly deleted, but not before drawing attention to growing tensions over international business deals involving Chinese interests.</p>
+            <p>China's state media criticized CK Hutchison's deal to manage a port in Panama...</p>
         </div>
-
-        <!-- News Article 3 -->
         <div class="news-item">
-            <img src="businessnews3.png" alt="News"/>
+            <img src="businessnews3.png" alt="News">
             <h2>India and US Making Progress Towards Trade Deal</h2>
-            <p>India and the United States are advancing towards a trade deal, with both countries working to resolve key issues such as tariffs and market access. The ongoing negotiations aim to strengthen economic ties and enhance bilateral trade in the coming months.</p>
+            <p>India and the United States are advancing towards a trade deal...</p>
         </div>
-
-        <!-- News Article 4 -->
         <div class="news-item">
-            <img src="businessnews4.png" alt="News"/>
+            <img src="businessnews4.png" alt="News">
             <h2>Poste to Become Telecom Italia's No.1 Investor by Buying 15% from Vivendi</h2>
-            <p>Poste Italiane is set to become the largest investor in Telecom Italia by purchasing a 15% stake from Vivendi. This move will significantly increase Poste's influence in the telecom sector and reshape the company's investment portfolio.</p>
+            <p>Poste Italiane is set to become the largest investor in Telecom Italia...</p>
         </div>
     </main>
+
+    
 </body>
 </html>
+

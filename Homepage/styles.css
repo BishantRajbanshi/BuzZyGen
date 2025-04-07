@@ -84,7 +84,7 @@ header {
 .logo img {
     position: absolute;
     top: 50%; /* Keep it centered vertically */
-    left: 1%; /* Move the logo more left by reducing the percentage */
+    margin-left: -75px; /* Move the logo more left by reducing the percentage */
     transform: translate(-50%, -50%); /* Offset to true center */
     max-width: 100px; /* Adjust size of the logo */
     height: auto;
@@ -194,9 +194,9 @@ header {
   
   .notification-icon {
     cursor: pointer;
-    font-size: 24px;
+    font-size: 28px;
     color:white;
-    margin-right: -90px;
+    margin-right: -75px;
   }
   
   .notification-badge {
@@ -208,7 +208,7 @@ header {
     border-radius: 50%;
     padding: 5px 10px;
     font-size: 10px;
-    margin-right: -60px;
+    margin-right: -52px;
   }
   
   .notification-dropdown {
@@ -246,8 +246,7 @@ header {
     position: relative;
     padding: 10px; /* Add some padding for better spacing */
     border-radius: 5px; /* Optionally, round the corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better visibility */
-    margin-left: 80px; /* Slightly shift it to the right */
+    margin-left: 50px; /* Slightly shift it to the right */
   }
   
   /* Make the icon white */
@@ -291,7 +290,7 @@ header {
   }
 
   .kebab-icon {
-    font-size: 24px;
+    font-size: 30px;
    
     cursor: pointer;
     user-select: none;
@@ -1755,7 +1754,7 @@ footer {
 /* About Us Section */
 .about-us-section h2 {
     font-size: 28px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 15px;
 }
 
@@ -1768,7 +1767,7 @@ footer {
 /* Our Team Section */
 .our-team h2 {
     font-size: 28px;
-    color: #0073e6;
+    color:#555;
     margin-bottom: 20px;
 }
 
@@ -1782,7 +1781,7 @@ footer {
 
 .team-member h3 {
     font-size: 22px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 10px;
 }
 
@@ -1795,7 +1794,7 @@ footer {
 /* Our Core Values Section */
 .our-values h2 {
     font-size: 28px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 20px;
 }
 
@@ -1812,7 +1811,7 @@ footer {
 }
 
 .our-values li strong {
-    color: #0073e6;
+    color: #555;
 }
 
 
@@ -1827,9 +1826,9 @@ footer {
 
 .terms-of-service h2 {
     font-size: 24px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 15px;
-    border-bottom: 2px solid #0073e6;
+    border-bottom: 2px solid #555;
     padding-bottom: 10px;
 }
 
@@ -1841,7 +1840,7 @@ footer {
 }
 
 .terms-of-service a {
-    color: #0073e6;
+    color: #555;
     text-decoration: none;
 }
 
@@ -1861,9 +1860,9 @@ footer {
 
 .contact-info h2 {
     font-size: 24px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 15px;
-    border-bottom: 2px solid #0073e6;
+    border-bottom: 2px solid #555;
     padding-bottom: 10px;
 }
 
@@ -1899,7 +1898,7 @@ footer {
 }
 
 .contact-item a {
-    color: #0073e6;
+    color: #555;
     text-decoration: none;
 }
 
@@ -1917,9 +1916,9 @@ footer {
 
 .contact-form h2 {
     font-size: 24px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 15px;
-    border-bottom: 2px solid #0073e6;
+    border-bottom: 2px solid ;
     padding-bottom: 10px;
 }
 
@@ -1955,7 +1954,7 @@ footer {
 }
 
 .contact-form button {
-    background-color: #0073e6;
+    background-color: #555;
     color: white;
     font-size: 16px;
     padding: 12px;
@@ -1966,7 +1965,7 @@ footer {
 }
 
 .contact-form button:hover {
-    background-color: #005bb5;
+    background-color: #555;
 }
 /* Privacy Policy Section */
 .privacy-policy {
@@ -1979,9 +1978,9 @@ footer {
 
 .privacy-policy h2 {
     font-size: 24px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 15px;
-    border-bottom: 2px solid #0073e6;
+    border-bottom: 2px solid #555;
     padding-bottom: 10px;
 }
 
@@ -2004,7 +2003,7 @@ footer {
 }
 
 .privacy-policy a {
-    color: #0073e6;
+    color: #555;
     text-decoration: none;
 }
 
@@ -2023,7 +2022,7 @@ footer {
 }
 
 .privacy-policy .contact-info a {
-    color: #0073e6;
+    color: #555;
     text-decoration: none;
 }
 
@@ -2041,9 +2040,9 @@ footer {
 
 .help-section h2 {
     font-size: 28px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 20px;
-    border-bottom: 3px solid #0073e6;
+    border-bottom: 3px solid #555;
     padding-bottom: 10px;
 }
 
@@ -2056,7 +2055,7 @@ footer {
 
 .help-section h3 {
     font-size: 22px;
-    color: #0073e6;
+    color: #555;
     margin-top: 30px;
     margin-bottom: 15px;
 }
@@ -2093,7 +2092,7 @@ footer {
 }
 
 .help-section ul li a {
-    color: #0073e6;
+    color: #555;
     text-decoration: none;
 }
 
@@ -2111,9 +2110,9 @@ footer {
 
 .advertise-section h2 {
     font-size: 28px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 20px;
-    border-bottom: 3px solid #0073e6;
+    border-bottom: 3px solid #555;
     padding-bottom: 10px;
 }
 
@@ -2126,7 +2125,7 @@ footer {
 
 .advertise-section h3 {
     font-size: 22px;
-    color: #0073e6;
+    color: #555;
     margin-top: 30px;
     margin-bottom: 15px;
 }
@@ -2157,7 +2156,7 @@ footer {
 
 .advertise-section .advertising-package h4 {
     font-size: 20px;
-    color: #0073e6;
+    color: #555;
     margin-bottom: 10px;
 }
 
@@ -2197,7 +2196,7 @@ footer {
 }
 
 .advertise-section form button {
-    background-color: #0073e6;
+    background-color:#555;
     color: white;
     font-size: 16px;
     padding: 12px 20px;
@@ -2207,7 +2206,7 @@ footer {
 }
 
 .advertise-section form button:hover {
-    background-color: #005bb5;
+    background-color: #555;
 }
 /* Accessibility Section */
 .accessibility-section {
@@ -2220,9 +2219,9 @@ footer {
 
 .accessibility-section h2 {
     font-size: 28px;
-    color: #0066cc;
+    color:#555;
     margin-bottom: 20px;
-    border-bottom: 3px solid #0066cc;
+    border-bottom: 3px solid #555;
     padding-bottom: 10px;
 }
 
@@ -2235,7 +2234,7 @@ footer {
 
 .accessibility-section h3 {
     font-size: 22px;
-    color: #0066cc;
+    color: #555;
     margin-top: 30px;
     margin-bottom: 15px;
 }
@@ -2282,7 +2281,7 @@ footer {
 }
 
 .accessibility-section form button {
-    background-color: #0066cc;
+    background-color: #555;
     color: white;
     font-size: 16px;
     padding: 12px 20px;
@@ -2292,7 +2291,7 @@ footer {
 }
 
 .accessibility-section form button:hover {
-    background-color: #004b8a;
+    background-color: #555;
 }
 
 /* Cookies Policy Section */
@@ -2306,9 +2305,9 @@ footer {
 
 .cookies-policy-section h2 {
     font-size: 28px;
-    color: #0056b3;
+    color: #555;
     margin-bottom: 20px;
-    border-bottom: 3px solid #0056b3;
+    border-bottom: 3px solid#555;
     padding-bottom: 10px;
 }
 
@@ -2321,7 +2320,7 @@ footer {
 
 .cookies-policy-section h3 {
     font-size: 22px;
-    color: #0056b3;
+    color: #555;
     margin-top: 30px;
     margin-bottom: 15px;
 }
@@ -2344,7 +2343,7 @@ footer {
 }
 
 .cookies-policy-section a {
-    color: #007bff;
+    color: #555;
     text-decoration: none;
     font-weight: bold;
 }
@@ -2368,7 +2367,7 @@ footer {
 
 .cookies-policy-section .content h3 {
     font-size: 20px;
-    color: #0056b3;
+    color: #555;
     margin-top: 25px;
 }
 
@@ -2391,7 +2390,7 @@ footer {
 }
 
 .cookies-policy-section form input[type="submit"] {
-    background-color: #0056b3;
+    background-color: #555;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -2401,5 +2400,5 @@ footer {
 }
 
 .cookies-policy-section form input[type="submit"]:hover {
-    background-color: #004085;
+    background-color: #555;
 }
