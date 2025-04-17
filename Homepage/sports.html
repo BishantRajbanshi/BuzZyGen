@@ -343,26 +343,24 @@
     #nav-sections {
         background-color: #000; /* Keep your background color */
         width: 100%; /* Makes the navigation bar span the entire width of the screen */
-        height: 65px; /* Increase the height of the navigation bar */
+        height: 55px; /* Increase the height of the navigation bar */
         padding: 10px 0; /* Adds padding on the top and bottom */
     }
     
-    /* Navigation List */
     #nav-sections ul {
         list-style-type: none;
         padding: 0;
         margin: 0;
         display: flex;
         justify-content: center;
-        border-top: 2px solid white;  /* White line on top */
-        border-bottom: 2px solid white; /* White line at the bottom */
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding: 10px 0;
     }
-    
     /* Navigation Items */
     #nav-sections ul li {
         margin: 0 30px; /* Increases the space between menu items */
     }
+    
     
     /* Links Styling */
     #nav-sections ul li a {
@@ -372,10 +370,19 @@
         transition: color 0.3s;    
     }
     
+    
     /* Hover Effect */
     #nav-sections ul li a:hover {
-        color: #ffb84d;
+        text-decoration: underline;
+        text-decoration-color: white;
     }
+    #nav a:hover {
+      text-decoration: underline;
+      text-decoration-color: white;
+    }
+    
+    
+    
     
     .right-column {
         width: 20%;
