@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color:#444;
+    background-color:#000;
     color: #333;
     padding: 10px 0;
     text-align: center;
@@ -99,7 +99,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #444;
+    background-color: #000;
 }
 
 /* Optional for left content */
@@ -121,7 +121,7 @@ header {
     align-items: center;
     justify-content: space-between; /* Key to spreading left/right */
     padding: 10px 20px;
-    background-color: #444;
+    background-color: #000;
 }
 
 /* Left side content */
@@ -136,7 +136,7 @@ header {
     align-items: center;
     justify-content: space-between; /* Key to spreading left/right */
     padding: 10px 20px;
-    background-color: #444;
+    background-color: #000;
 }
 
 /* Left side content */
@@ -327,7 +327,7 @@ header {
   
 /* Navigation Container */
 #nav-sections {
-    background-color: #444; /* Keep your background color */
+    background-color: #000; /* Keep your background color */
     width: 100%; /* Makes the navigation bar span the entire width of the screen */
     height: 65px; /* Increase the height of the navigation bar */
     padding: 10px 0; /* Adds padding on the top and bottom */
@@ -666,6 +666,95 @@ header {
 
 .notifications-dropdown.active {
     display: block;
+}
+
+
+/* Section Styling */
+section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+form {
+    display: grid;
+    gap: 15px;
+}
+
+form label {
+    font-size: 16px;
+    color: #333;
+}
+
+form input,
+form select,
+form button {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+form input[type="checkbox"] {
+    width: auto;
+    margin-top: 6px;
+}
+
+form button {
+    background-color: #777;  /* Changed from #4CAF50 to grey */
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #666;  /* Darker grey */
+}
+
+/* Cookie Settings Button */
+#cookie-preferences {
+    background-color: #777;  /* Changed from blue to grey */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cookie-preferences:hover {
+    background-color: #666;  /* Darker grey */
+}
+
+/* Form Input Styling */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    main {
+        padding: 10px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    button {
+        width: 100%;
+    }
 }
 
 /* Profile dropdown */

@@ -1,86 +1,62 @@
+<!-- header.html -->
 <header>
     <div class="top-bar">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
         <div class="menu-btn" onclick="toggleMenu()">
             <i class="fas fa-bars"></i>
         </div>
         <div class="menu" id="dropdownMenu">
-
             <a href="Homepage/business.html">Business</a>
             <a href="Homepage/sports.html">Sports</a>
             <a href="Homepage/news.html">News</a>
             <a href="Homepage/travel.html">Travel</a>
             <a href="Homepage/innovation.html">Innovation</a>
-            
         </div>
-        
-        
+
         <a href="index.html">
             <div class="logo">
                 <img src="Homepage/logoimage.png" alt="News Logo">
             </div>
         </a>
-        
-      <!-- Right section containing search, notifications, and user profile -->
-<div class="navbar-right">
 
-<!-- Search Bar -->
-<div class="search-user">
-    <input type="text" id="searchInput" placeholder="Search..." />
-    <button onclick="performSearch()"><i class="fas fa-search"></i></button>
-</div>
+        <div class="navbar-right">
+            <div class="search-user">
+                <input type="text" id="searchInput" placeholder="Search..." />
+                <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+            </div>
 
-<!-- Include Font Awesome script -->
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            <div id="notificationContainer" class="notification-container">
+                <div class="notification-icon" onclick="toggleNotifications()">
+                    <i class="fas fa-bell" style="color: white; font-size: 24px;"></i>
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                </div>
+                <div class="notification-dropdown" id="notificationDropdown"></div>
+            </div>
 
-<div id="notificationContainer" class="notification-container">
-<div class="notification-icon" onclick="toggleNotifications()">
-<!-- White Bell Icon using Font Awesome -->
-<i class="fas fa-bell" style="color: white; font-size: 24px;"></i>
-<span class="notification-badge" id="notificationBadge">3</span>
-</div>
-<div class="notification-dropdown" id="notificationDropdown"></div>
-</div>
+            <div class="user-profile">
+                <a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
+                <div id="loginSignupContainer" class="login-signup-container">
+                    <button onclick="window.location.href='Loginpage/index.html'">Login</button>
+                    <button onclick="window.location.href='Signup/index.html'">Sign Up</button>
+                </div>
+            </div>
 
-  
-  
-
-
-
-
-<!-- User Profile -->
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-<div class="user-profile">
-<a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
-<div id="loginSignupContainer" class="login-signup-container">
-    <button onclick="window.location.href='Loginpage/index.html'">Login</button>
-    <button onclick="window.location.href='Signup/index.html'">Sign Up</button>
-</div>
-</div>
-<div class="kebab-container">
-<div class="kebab-icon" onclick="toggleKebab()">⋮</div>
-<div class="kebab-menu" id="kebabMenu">
-  <a href="Homepage/settings.html">Settings</a>
-  <a href="Homepage/logout.html">Logout</a>
-</div>
-</div>
-
-
-</div>
-
-
-            
+            <div class="kebab-container">
+                <div class="kebab-icon" onclick="toggleKebab()">⋮</div>
+                <div class="kebab-menu" id="kebabMenu">
+                    <a href="Homepage/settings.html">Settings</a>
+                    <a href="Homepage/logout.html">Logout</a>
+                </div>
+            </div>
         </div>
     </div>
+
     <nav id="nav-sections" class="hidden">
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="Homepage/business.html">Business</a></li>
             <li><a href="Homepage/sports.html">Sports</a></li>
-            <li><a href="Homepage/news.html">News</a></li> <!-- New News link -->
-            <li><a href="Homepage/travel.html">Travel</a></li> <!-- New Travel link -->
+            <li><a href="Homepage/news.html">News</a></li>
+            <li><a href="Homepage/travel.html">Travel</a></li>
             <li><a href="Homepage/innovation.html">Innovation</a></li>
         </ul>
     </nav>

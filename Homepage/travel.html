@@ -1,16 +1,1121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travel News</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <h1>Travel News</h1>
-        <a href="index.html"></a>
-    </header>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Business News</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+      /* General styling */
+      body {
+          font-family: 'Arial', sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+      }
+      
+      header {
+          background-color:#000;
+          color: #333;
+          padding: 10px 0;
+          text-align: center;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      
+      .top-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 20px;
+          max-width: 1200px;
+          margin: 0 auto;
+      }
+      
+      .top-bar>.logo{
+          left: -80px;
+      }
+      
+      .menu-btn {
+          font-size: 24px;
+          cursor: pointer;
+          color:white;
+          transition: color 0.3s;
+          height:20px;
+      
+          position: absolute;
+          left: 20px; /* Adjust for better alignment */
+          top: 2; /* Align to the top */
+          transform: translateY(0); /* Remove the vertical translation */
+          z-index: 1000;
+      }
+      
+      .menu {
+          display: none; /* Hide by default */
+          background-color: white;
+          position: absolute;
+          top: 60px;
+          left: 15px;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.2);
+          width: 200px;
+          z-index: 1000; /* Ensure it's on top */
+        }
+        
+        .menu a {
+          display: block;
+          padding: 12px 15px;
+          color:black;
+          text-decoration: none;   
+        }
+      
+        .menu a:hover {
+          background-color:white;
+        }
+      
+      .menu-btn:hover {
+          color: #ffb84d;
+      }
+      
+      /* Logo Container */
+      .logo {
+          position: relative;
+          height: 60px; /* Adjusted height */
+          width: auto;
+          /* Control space between the logo and home icon */
+      }
+      
+      /* Logo Image */
+      .logo img {
+          position: absolute;
+          top: 50%; /* Keep it centered vertically */
+          margin-left: -75px; /* Move the logo more left by reducing the percentage */
+          transform: translate(-50%, -50%); /* Offset to true center */
+          max-width: 100px; /* Adjust size of the logo */
+          height: auto;
+          filter: brightness(80%);
+      }
+      #nav-sections a {
+        color: white;
+        text-decoration: none;
+        font-size: 20px; /* <-- Added this line */
+      }
+      
+      #nav-sections a:visited {
+        color: white;
+      }
+      
+      #nav-sections a:hover {
+        color: white;
+        text-decoration: none;
+      }
+      
+      #nav-sections a:active {
+        color: white;
+      }
+      
+      .navbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 10px 20px;
+          background-color: #000;
+      }
+      
+      /* Optional for left content */
+      .navbar-left {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+      
+      /* Right side content all the way to the right */
+      .navbar-right {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+      }
+      
+      .navbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between; /* Key to spreading left/right */
+          padding: 10px 20px;
+          background-color: #000;
+      }
+      
+      /* Left side content */
+      .navbar-left {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+      }
+      
+      .navbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between; /* Key to spreading left/right */
+          padding: 10px 20px;
+          background-color: #000;
+      }
+      
+      /* Left side content */
+      .navbar-left {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+      }
+      
+       /* Right-aligned container */
+      .navbar-right {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-left: auto;
+          margin-right: -160px; /* optional: fine-tune based on layout */
+        }
+        
+        /* Search bar */
+        .search-user {
+          display: flex;
+          align-items: center;
+          background-color: white;
+          border-radius: 5px;
+          overflow: hidden;
+          border-radius: 15px; 
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .search-user input {
+          padding: 8px;
+          border: none;
+          outline: none;
+          font-size: 14px;
+        }
+        
+        .search-user button {
+          padding: 8px 12px;
+          background-color: white;
+          color:grey;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+        
+        .search-user button:hover {
+          background-color: white;
+        }
+        .notification-container {
+          position: relative;
+          display: inline-block;
+          
+        }
+        
+        .notification-icon {
+          cursor: pointer;
+          font-size: 28px;
+          color:white;
+          margin-right: -75px;
+        }
+        
+        .notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: red;
+          color: white;
+          border-radius: 50%;
+          padding: 5px 10px;
+          font-size: 10px;
+          margin-right: -52px;
+        }
+        
+        .notification-dropdown {
+          display: none;
+          position: absolute;
+          top: 40px;
+          right: 0;
+          background: white; /* White background for dropdown */
+          border: 1px solid #ccc;
+          width: 200px;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          z-index: 100;
+          max-height: 150px;
+          margin-right: -100px;
+          overflow-y: auto; /* Scrollable if there are too many notifications */
+        }
+        
+        #notificationContainer.active .notification-dropdown {
+          display: block;
+        }
+        
+        .notification-message {
+          padding: 10px;
+          color:black;
+          font-size: 14px;
+          background-color:white; /* White background for individual notifications */
+        }
+        
+        .notification-message:last-child {
+          border-bottom: none;
+        }
+        
+       /* User Profile Container */
+      .user-profile {
+          position: relative;
+          padding: 10px; /* Add some padding for better spacing */
+          border-radius: 5px; /* Optionally, round the corners */
+          margin-left: 50px; /* Slightly shift it to the right */
+        }
+        
+        /* Make the icon white */
+        .user-profile i {
+          color: white; /* Set the icon color to white */
+          font-size: 24px; /* Optional: Adjust icon size */
+        }
+        
+        /* Login/Signup container (hidden by default) */
+      .login-signup-container {
+          display: none;
+          position: absolute;
+          top: 45px;
+          left:-75px;  /* Adjust the left position to bring it closer */
+          background-color: white;
+          border: 1px solid #ccc;
+          width: 150px;
+          border-radius: 5px;
+          padding: 10px;
+          text-align: center;
+        }
+        
+        .login-signup-container button {
+          width: 100%;
+          padding: 10px;
+          margin: 5px 0;
+          font-size: 10px;
+          border: none;
+          cursor: pointer;
+          background-color:whitesmoke; /* Green color */
+          color: black;
+          border-radius: 3px;
+      
+        }
+          
+      .kebab-container {
+          position: relative;
+          display: inline-block;
+        }
+      
+        .kebab-icon {
+          font-size: 30px;
+         
+          cursor: pointer;
+          user-select: none;
+          color: white; /* Kebab icon is now white */
+        }
+      
+        .kebab-menu {
+          display: none;
+          position: absolute;
+          top: 45px;
+          right: -12px;
+          background-color: white;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 6px;
+          z-index: 10;
+          min-width: 150px;
+        }
+      
+        .kebab-menu a {
+          display: block;
+          padding: 10px;
+          color: #333;
+          text-decoration: none;
+          font-size: 14px;
+        }
+      
+        .kebab-menu a:hover {
+          background-color: #f0f0f0;
+        }
+        
+      /* Navigation Container */
+      #nav-sections {
+          background-color: #000; /* Keep your background color */
+          width: 100%; /* Makes the navigation bar span the entire width of the screen */
+          height: 65px; /* Increase the height of the navigation bar */
+          padding: 10px 0; /* Adds padding on the top and bottom */
+      }
+      
+      /* Navigation List */
+      #nav-sections ul {
+          list-style-type: none;
+          padding: 0;
+          margin: 0;
+          display: flex;
+          justify-content: center;
+          border-top: 2px solid white;  /* White line on top */
+          border-bottom: 2px solid white; /* White line at the bottom */
+          padding: 10px 0;
+      }
+      
+      /* Navigation Items */
+      #nav-sections ul li {
+          margin: 0 30px; /* Increases the space between menu items */
+      }
+      
+      /* Links Styling */
+      #nav-sections ul li a {
+          text-decoration: none;
+          color: white;
+          font-size: 20px; /* Increase font size */
+          transition: color 0.3s;    
+      }
+      
+      /* Hover Effect */
+      #nav-sections ul li a:hover {
+          color: #ffb84d;
+      }
+      
+      .right-column {
+          width: 20%;
+          background-color: white;
+          border-radius: 10px;
+          padding: 15px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .right-column .section-title {
+          font-size: 1.2rem;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+        
+        .right-column .news-item {
+          display: flex;
+          flex-direction: column; /* Stack image, heading, and paragraph vertically */
+          gap: 8px;
+          margin-bottom: 20px;
+          background-color: #f0f0f0;
+          padding: 10px;
+          border-radius: 10px;
+        }
+        
+        .right-column .news-item img {
+          width: 100%;
+          height: auto;
+          object-fit: cover;
+          border-radius: 8px;
+        }
+        
+        .right-column .news-item h4 {
+          margin: 0;
+          font-size: 1rem;
+          font-weight: bold;
+        }
+        
+        .right-column .news-item p {
+          margin: 0;
+          font-size: 0.9rem;
+          color: #444;
+        }
+      /* Featured News Section */
+      .featured-news {
+          flex: 0 0 54%;
+          padding: 20px;
+      }
+      .featured-news {
+          width: 100%;
+          max-width: 900px;
+          margin: 20px auto;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          overflow: hidden;
+      }
+      
+      /* Featured News Image */
+      .featured-news img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* News Icons (views, likes, comments, shares) */
+      .featured-news .news-icons {
+          display: flex;
+          justify-content: space-between;
+          font-size: 14px;
+          color: #888;
+          margin-bottom: 15px;
+      }
+      
+      /* News Icons - Individual Icon Styling */
+      .featured-news .news-icons span {
+          display: flex;
+          align-items: center;
+          gap: 5px;
+      }
+      
+      /* Heading for the Featured News */
+      .featured-news h1 {
+          font-size: 24px;
+          color: #333;
+          margin: 15px 0;
+      }
+      
+      /* Paragraph for the Featured News Description */
+      .featured-news p {
+          font-size: 20px;
+          color: black;
+          line-height: 1.6;
+          text-align: justify;
+      }
+      
+      /* Main News Section */
+      .news-sections {
+          display: flex;
+          justify-content: space-between;
+          padding: 20px;
+      }
+      
+      .news-container {
+          display: flex;
+          width: 100%;
+      }
+      
+      
+      .news-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-gap: 10px;
+      }
+      
+      .news-item {
+          background-color: #fff;
+          padding: 15px;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          transition: transform 0.3s, box-shadow 0.3s;
+      }
+      
+      .news-item:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .news-item img {
+          width: 100%;
+          height: auto;
+          border-radius: 8px;
+      }
+      
+      .news-item h1 {
+          font-size: 18px;
+          margin: 10px 0;
+      }
+      
+      .news-item p {
+          font-size: 14px;
+          color: #555;
+      }
+      
+      /* If grid layout, increase the gap between items */
+      .news-container {
+          gap: 10px; /* Increases gap between individual news items */
+      }
+      
+      /* Notification dropdown */
+      .notifications-dropdown {
+          position: absolute;
+          right: 20px;
+          top: 50px;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 10px;
+          display: none;
+          width: 200px;
+      }
+      
+      .notifications-dropdown.active {
+          display: block;
+      }
+      
+      
+      /* Section Styling */
+      section {
+          margin-bottom: 40px;
+      }
+      
+      h2 {
+          font-size: 24px;
+          color: #333;
+          margin-bottom: 15px;
+      }
+      
+      form {
+          display: grid;
+          gap: 15px;
+      }
+      
+      form label {
+          font-size: 16px;
+          color: #333;
+      }
+      
+      form input,
+      form select,
+      form button {
+          padding: 12px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background-color: #f9f9f9;
+      }
+      
+      form input[type="checkbox"] {
+          width: auto;
+          margin-top: 6px;
+      }
+      
+      form button {
+          background-color: #777;  /* Changed from #4CAF50 to grey */
+          color: white;
+          border: none;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+      
+      form button:hover {
+          background-color: #666;  /* Darker grey */
+      }
+      
+      /* Cookie Settings Button */
+      #cookie-preferences {
+          background-color: #777;  /* Changed from blue to grey */
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+      
+      #cookie-preferences:hover {
+          background-color: #666;  /* Darker grey */
+      }
+      
+      /* Form Input Styling */
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="file"],
+      select {
+          width: 100%;
+          box-sizing: border-box;
+      }
+      
+      /* Responsive Design */
+      @media screen and (max-width: 768px) {
+          main {
+              padding: 10px;
+          }
+      
+          form {
+              grid-template-columns: 1fr;
+          }
+      
+          button {
+              width: 100%;
+          }
+      }
+      
+      /* Profile dropdown */
+      .profile-dropdown {
+          position: absolute;
+          top: 40px;
+          right: 0;
+          background-color: white;
+          border: 1px solid #ccc;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          display: none;
+      }
+      
+      .profile-dropdown a {
+          display: block;
+          color: #333;
+          padding: 4px 8px;
+          text-decoration: none;
+      }
+      
+      .profile-dropdown a:hover {
+          background-color: #f1f1f1;
+      }
+      
+      .profile-dropdown.active {
+          display: block;
+      }
+      
+        
+        .news-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 20px;
+        }
+        
+        .news-item {
+          background-color: #ffffff;
+          border-radius: 16px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+          overflow: hidden;
+          transition: transform 0.3s ease;
+        }
+        
+        .news-item:hover {
+          transform: translateY(-5px);
+        }
+        
+        .news-item img {
+          width: 100%;
+          height: 180px;
+          object-fit: cover;
+          border-top-left-radius: 16px;
+          border-top-right-radius: 16px;
+        }
+        
+        .news-item h1 {
+          font-size: 18px;
+          font-weight: bold;
+          padding: 15px 15px 0;
+          color: #222;
+          line-height: 1.3;
+        }
+        
+        .news-item p {
+          font-size: 14px;
+          color: #555;
+          padding: 10px 15px 15px;
+          line-height: 1.5;
+        }
+      
+        /* Section styles */
+      section {
+          background-color: white;
+          padding: 20px;
+          margin-bottom: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      section h2 {
+          margin-top: 0;
+          color: #2c3e50;
+      }
+      
+      /* Form and input field styles */
+      form label {
+          display: block;
+          margin: 10px 0 5px;
+      }
+      
+      form input[type="text"], form input[type="email"], form input[type="password"], form input[type="file"], form select {
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          margin-bottom: 15px;
+      }
+      
+      form input[type="checkbox"] {
+          margin-right: 10px;
+      }
+      
+      form button {
+          background-color: #3498db;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 5px;
+          cursor: pointer;
+          margin-top: 10px;
+      }
+      
+      form button:hover {
+          background-color: #2980b9;
+      }
+      
+      form button[type="button"] {
+          background-color: #e67e22;
+      }
+      
+      form button[type="button"]:hover {
+          background-color: #d35400;
+      }
+      
+      
+      /* Responsive Design */
+      @media (max-width: 768px) {
+          .top-bar {
+              flex-direction: column;
+              align-items: flex-start;
+          }
+      
+          .search-user {
+              margin-top: 10px;
+          }
+      
+          .news-sections {
+              flex-direction: column;
+          }
+      
+      
+          .news-grid {
+              grid-template-columns: 1fr;
+          }
+      
+      }
+      
+      
+      /* General reset */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      /* Body and HTML settings */
+      body, html {
+          height: 100%;
+          font-family: Arial, sans-serif;
+      }
+      
+      /* Specific layout for the business news section */
+      .business-news {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          gap: 20px;
+          padding: 20px;
+      }
+      
+      /* Style for each news item */
+      .business-news .news-item {
+          background-color: #f4f4f4;
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      /* Image styling */
+      .business-news .news-item img {
+          width: 100%;
+          height: 300px; /* Set the image height */
+          object-fit: cover; /* Ensures the image covers the area without distortion */
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling */
+      .business-news .news-item h2 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 10px;
+      }
+      
+      /* Paragraph styling */
+      .business-news .news-item p {
+          font-size: 14px;
+          color: #666;
+      }
+         
+      
+      /* General reset */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+      
+      /* Body and HTML settings */
+      body, html {
+          height: 100%;
+          font-family: Arial, sans-serif;
+      }
+      
+      /* Style for each news item */
+      .business-news .news-item {
+          background-color: #f4f4f4;
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      
+      /* Image styling for business news */
+      .business-news .news-item img {
+          width: 100%;
+          height: 400px; /* Increased height for the image */
+          object-fit: cover; /* Ensures the image maintains its aspect ratio while covering the area */
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling for business news */
+      .business-news .news-item h2 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 10px;
+      }
+      
+      /* Paragraph styling for business news */
+      .business-news .news-item p {
+          font-size: 14px;
+          color: #666;
+      }
+      
+      /* Specific styling for sports news section */
+      .sports-news {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          gap: 20px;
+          padding: 20px;
+      }
+      
+      /* Style for each sports news item */
+      .sports-news .news-item {
+          background-color: #f4f4f4;
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      /* Ensure images have a uniform size */
+      .sports-news .news-item img {
+          width: 100%;
+          height: 400px; /* Set a fixed height */
+          object-fit: cover; /* Crop images while maintaining aspect ratio */
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling for sports news */
+      .sports-news .news-item h2 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 10px;
+      }
+      
+      /* Paragraph styling for sports news */
+      .sports-news .news-item p {
+          font-size: 14px;
+          color: #666;
+      }
+      
+      /* Specific styling for general news section */
+      .news {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          gap: 20px;
+          padding: 20px;
+      }
+      
+      /* Style for each news item */
+      .news .news-item {
+          background-color: #f4f4f4;
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      /* Ensure images have a uniform size */
+      .news .news-item img {
+          width: 100%;
+          height: 400px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling for news */
+      .news .news-item h2 {
+          font-size: 18px;
+          color: #333;
+          margin-bottom: 10px;
+          text-align: center;
+      }
+      
+      /* Paragraph styling for news */
+      .news .news-item p {
+          font-size: 14px;
+          color: #666;
+          text-align: justify;
+      }
+      
+      /* Specific styling for travel news section */
+      .travel-news {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          gap: 20px;
+          padding: 20px;
+      }
+      
+      /* Style for each travel news item */
+      .travel-news .news-item {
+          background-color: #f0f8ff; /* Light blue background for a travel vibe */
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      /* Ensure images have a uniform size */
+      .travel-news .news-item img {
+          width: 100%;
+          height: 400px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling for travel news */
+      .travel-news .news-item h2 {
+          font-size: 18px;
+          color: #2c3e50;
+          margin-bottom: 10px;
+      }
+      
+      /* Paragraph styling for travel news */
+      .travel-news .news-item p {
+          font-size: 14px;
+          color: #555;
+      }
+      
+      
+      /* Specific styling for innovation news section */
+      .innovation-news {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr); /* 2 columns */
+          grid-template-rows: repeat(2, 1fr); /* 2 rows */
+          gap: 20px;
+          padding: 20px;
+      }
+      
+      /* Style for each innovation news item */
+      .innovation-news .news-item {
+          background-color: #f4f9ff; /* Slightly bluish tone for innovation */
+          border-radius: 8px;
+          padding: 15px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+      }
+      
+      /* Ensure images have a uniform size */
+      .innovation-news .news-item img {
+          width: 100%;
+          height: 400px;
+          object-fit: cover;
+          border-radius: 8px;
+          margin-bottom: 15px;
+      }
+      
+      /* Headline styling for innovation news */
+      .innovation-news .news-item h2 {
+          font-size: 18px;
+          color: #2c3e50;
+          margin-bottom: 10px;
+          text-align: center;
+      }
+      
+      /* Paragraph styling for innovation news */
+      .innovation-news .news-item p {
+          font-size: 14px;
+          color: #555;
+          text-align: justify;
+      }
+          </style>
+  </head>
+  <body>
+      <header>
+          <div class="top-bar">
+              <div class="menu-btn" onclick="toggleMenu()">
+                  <i class="fas fa-bars"></i>
+              </div>
+              <div class="menu" id="dropdownMenu">
+                  <a href="business.html">Business</a>
+                  <a href="sports.html">Sports</a>
+                  <a href="news.html">News</a>
+                  <a href="travel.html">Travel</a>
+                  <a href="innovation.html">Innovation</a>
+              </div>
+              <a href="/index.html">
+                <div class="logo">
+                    <img src="/Homepage/logoimage.png" alt="News Logo">
+                </div>
+            </a>
+              <div class="navbar-right">
+                  <div class="search-user">
+                      <input type="text" id="searchInput" placeholder="Search..." />
+                      <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+                  </div>
+                  <div id="notificationContainer" class="notification-container">
+                      <div class="notification-icon" onclick="toggleNotifications()">
+                          <i class="fas fa-bell"></i>
+                          <span class="notification-badge" id="notificationBadge">3</span>
+                      </div>
+                      <div class="notification-dropdown" id="notificationDropdown">
+                          <p>No new notifications</p>
+                      </div>
+                  </div>
+                  <div class="user-profile">
+                      <a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
+                      <div id="loginSignupContainer" class="login-signup-container">
+                        <button onclick="window.location.href='/Loginpage/index.html'">Login</button>
+                        <button onclick="window.location.href='/Signup/index.html'">Sign Up</button>
+                      </div>
+                  </div>
+                  <div class="kebab-container">
+                      <div class="kebab-icon" onclick="toggleKebab()">⋮</div>
+                      <div class="kebab-menu" id="kebabMenu">
+                          <a href="settings.html">Settings</a>
+                          <a href="logout.html">Logout</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <nav id="nav-sections">
+              <ul>
+                <a href="/index.html">Home</a>
+                  <li><a href="business.html">Business</a></li>
+                  <li><a href="sports.html">Sports</a></li>
+                  <li><a href="news.html">News</a></li>
+                  <li><a href="travel.html">Travel</a></li>
+                  <li><a href="innovation.html">Innovation</a></li>
+              </ul>
+          </nav>
+      </header>
+         
+     
     <main class="travel-news">
         <!-- Travel Article 1 -->
         <div class="news-item">
@@ -40,5 +1145,144 @@
             <p>Airbnb’s latest report shows an increase in bookings for nature retreats and cultural hubs like Lisbon, Kyoto, and Oaxaca as travelers seek meaningful and immersive experiences.</p>
         </div>
     </main>
+    <script>
+        // Toggle main dropdown menu
+  function toggleMenu() {
+    closeAllDropdowns();
+    const menu = document.getElementById("dropdownMenu");
+    if (menu) {
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+  }
+  
+  // Search handler
+  function performSearch() {
+    const query = document.getElementById("searchInput").value.trim();
+    if (query === "") {
+      alert("Please enter a search term.");
+      return;
+    }
+    alert("You searched for: " + query);
+    // window.location.href = "search.html?q=" + encodeURIComponent(query);
+  }
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    const container = document.getElementById("notificationContainer");
+    const dropdown = document.getElementById("notificationDropdown");
+    const badge = document.getElementById("notificationBadge");
+  
+    const notifications = [
+      "Breaking News: Major Earthquake Hits Kathmandu",
+      "New Article Published: 'The Future of Artificial Intelligence'",
+      "Live Event: Election Results Coming In!"
+    ];
+  
+    window.toggleNotifications = function () {
+      closeAllDropdowns();
+      container.classList.toggle("active");
+  
+      if (container.classList.contains("active")) {
+        badge.style.display = "none";
+      }
+    };
+  
+    // Render messages
+    dropdown.innerHTML = "";
+    if (notifications.length === 0) {
+      dropdown.innerHTML = "<div class='notification-message'>No new notifications</div>";
+    } else {
+      notifications.forEach(msg => {
+        const div = document.createElement("div");
+        div.className = "notification-message";
+        div.textContent = msg;
+        dropdown.appendChild(div);
+      });
+    }
+  
+    badge.textContent = notifications.length;
+  });
+  
+  // Toggle Login/Signup
+  function toggleLoginSignup() {
+    closeAllDropdowns();
+    const container = document.getElementById('loginSignupContainer');
+    container.style.display = container.style.display === 'block' ? 'none' : 'block';
+  }
+  
+  // Toggle Kebab
+  function toggleKebab() {
+    closeAllDropdowns();
+    const menu = document.getElementById("kebabMenu");
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+  
+  // Close all dropdowns
+  function closeAllDropdowns() {
+    const menu = document.getElementById("dropdownMenu");
+    if (menu) menu.style.display = "none";
+  
+    const notif = document.getElementById("notificationContainer");
+    if (notif) notif.classList.remove("active");
+  
+    const login = document.getElementById("loginSignupContainer");
+    if (login) login.style.display = "none";
+  
+    const kebab = document.getElementById("kebabMenu");
+    if (kebab) kebab.style.display = "none";
+  }
+  
+  // Optional: Close Kebab if clicked outside
+  window.addEventListener("click", function (e) {
+    const kebab = document.querySelector(".kebab-container");
+    const user = document.querySelector(".user-profile");
+    const notif = document.getElementById("notificationContainer");
+    const menuBtn = document.querySelector(".menu-btn");
+  
+    if (
+      !kebab.contains(e.target) &&
+      !user.contains(e.target) &&
+      !notif.contains(e.target) &&
+      !menuBtn.contains(e.target)
+    ) {
+      closeAllDropdowns();
+    }
+  });
+  
+  // Cookie preferences
+  document.getElementById('cookie-preferences')?.addEventListener('click', function () {
+    alert('This would open a modal or a page where you can manage your cookie preferences.');
+  });
+  
+  // Form handling
+  const languageForm = document.querySelector('#language-settings form');
+  const regionForm = document.querySelector('#region-settings form');
+  const timezoneForm = document.querySelector('#timezone-settings form');
+  const cookieForm = document.querySelector('#cookie-settings form');
+  
+  languageForm?.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const selectedLanguage = document.getElementById('language').value;
+    alert(`Language changed to: ${selectedLanguage}`);
+  });
+  
+  regionForm?.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const selectedRegion = document.getElementById('region').value;
+    alert(`Region changed to: ${selectedRegion}`);
+  });
+  
+  timezoneForm?.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const selectedTimezone = document.getElementById('timezone').value;
+    alert(`Time Zone changed to: ${selectedTimezone}`);
+  });
+  
+  cookieForm?.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const acceptCookies = document.getElementById('cookie-accept').checked;
+    alert(`Cookies accepted: ${acceptCookies ? 'Yes' : 'No'}`);
+  });
+  
+  </script>
 </body>
 </html>
