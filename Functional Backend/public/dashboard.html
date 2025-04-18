@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Buzzy Gen</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="top-nav">
+        <div class="left-section">
+          <div class="hamburger-menu">
+            <i class="fas fa-bars"></i>
+          </div>
+          <div class="logo">
+            <img src="images/buzzy-gen-logo.png" alt="Buzzy Gen Logo" />
+            <h1>BUZZY GEN</h1>
+          </div>
+        </div>
+        <div class="search-container">
+          <input type="text" placeholder="Search..." />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="user-actions">
+          <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <span class="badge">1</span>
+          </div>
+          <div class="user-profile">
+            <i class="fas fa-user"></i>
+          </div>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <div class="nav-links">
+          <a href="/" class="active">Home</a>
+          <a href="#">Business</a>
+          <a href="#">Sports</a>
+          <a href="#">News</a>
+          <a href="#">Travel</a>
+          <a href="#">Innovation</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="dashboard-main">
+      <section class="welcome-section">
+        <h2>Welcome, <span id="userName">User</span>!</h2>
+        <p>Stay updated with the latest news</p>
+      </section>
+
+      <section class="news-feed">
+        <h2>Your News Feed</h2>
+        <div class="news-grid" id="newsGrid">
+          <!-- News items will be loaded here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>My Profile</h2>
+        <div class="profile-info">
+          <p><strong>Name:</strong> <span id="profileName"></span></p>
+          <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+          <p><strong>Member Since:</strong> <span id="memberSince"></span></p>
+        </div>
+        <button id="editProfileBtn">Edit Profile</button>
+      </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

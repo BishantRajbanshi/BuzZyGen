@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buzzy Gen - News Means Clarity</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Menu</h2>
+        <div class="close-sidebar">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="#"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-briefcase"></i> Business</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-running"></i> Sports</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-newspaper"></i> News</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-plane"></i> Travel</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-lightbulb"></i> Innovation</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <header>
+      <div class="top-nav">
+        <div class="left-section">
+          <div class="hamburger-menu">
+            <i class="fas fa-bars"></i>
+          </div>
+          <div class="logo">
+            <img src="images/buzzy-gen-logo.png" alt="Buzzy Gen Logo" />
+            <h1>BUZZY GEN</h1>
+          </div>
+        </div>
+        <div class="user-actions">
+          <div class="search-container">
+            <input type="text" placeholder="Search..." />
+            <button><i class="fas fa-search"></i></button>
+          </div>
+          <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <span class="badge">1</span>
+          </div>
+          <div class="user-profile">
+            <i class="fas fa-user"></i>
+            <div class="profile-dropdown">
+              <button id="loginBtn">Login</button>
+              <button id="signupBtn">Sign Up</button>
+            </div>
+          </div>
+          <div class="kebab-menu">
+            <i class="fas fa-ellipsis-v"></i>
+          </div>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <div class="nav-links">
+          <a href="#" class="active">Home</a>
+          <a href="#">Business</a>
+          <a href="#">Sports</a>
+          <a href="#">News</a>
+          <a href="#">Travel</a>
+          <a href="#">Innovation</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="featured-news">
+        <!-- News content will be loaded here -->
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>About Us</h3>
+          <p>
+            Your trusted source for the latest news and updates from around the
+            world.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect With Us</h3>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 News Portal. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Login</h2>
+        <form id="loginForm">
+          <input type="email" placeholder="Email" required />
+          <input type="password" placeholder="Password" required />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+          <input type="text" placeholder="Name" required />
+          <input type="email" placeholder="Email" required />
+          <input type="password" placeholder="Password" required />
+          <input type="password" placeholder="Confirm Password" required />
+          <button type="submit">Sign Up</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

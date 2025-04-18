@@ -174,36 +174,42 @@
             margin-right: -160px; /* optional: fine-tune based on layout */
           }
           
-          /* Search bar */
           .search-user {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            border-radius: 5px;
-            overflow: hidden;
-            border-radius: 15px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-          }
-          
-          .search-user input {
-            padding: 8px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-          }
-          
-          .search-user button {
-            padding: 8px 12px;
-            background-color: white;
-            color:grey;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-          }
-          
-          .search-user button:hover {
-            background-color: white;
-          }
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 40px; /* Only shows the icon initially */
+    transition: width 0.3s ease;
+    overflow: hidden;
+    margin-right: -15px;
+  }
+  
+  .search-user:hover {
+    width: 200px; /* Expand on hover */
+  }
+  
+  .search-user input {
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+    display: none;
+  }
+  
+  .search-user:hover input {
+    display: block;
+  }
+  
+  .search-user button {
+    padding: 8px 12px;
+    background-color: white;
+    color: grey;
+    border: none;
+    cursor: pointer;
+  }
           .notification-container {
             position: relative;
             display: inline-block;
@@ -367,21 +373,32 @@
             font-size: 20px; /* Increase font size */
             transition: color 0.3s;    
         }
-        
-        
-        /* Hover Effect */
-        #nav-sections ul li a:hover {
-            text-decoration: underline;
-            text-decoration-color: white;
-        }
-        #nav a:hover {
-          text-decoration: underline;
-          text-decoration-color: white;
-        }
-        
-        
-        
-        
+        #nav-sections ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    position: relative; /* required for pseudo-element */
+    transition: color 0.3s ease;
+}
+
+#nav-sections ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+#nav-sections ul li a:hover::after,
+#nav-sections ul li a.active::after {
+    transform: scaleX(1);
+}
+
         .right-column {
             width: 20%;
             background-color: white;
@@ -1081,10 +1098,11 @@
               </div>
           </a>
             <div class="navbar-right">
-                <div class="search-user">
-                    <input type="text" id="searchInput" placeholder="Search..." />
-                    <button onclick="performSearch()"><i class="fas fa-search"></i></button>
-                </div>
+               <!-- Search Bar -->
+   <div class="search-user" id="searchContainer">
+    <input type="text" id="searchInput" placeholder="Search..." />
+    <button onclick="toggleSearch()"><i class="fas fa-search"></i></button>
+</div>
                 <div id="notificationContainer" class="notification-container">
                     <div class="notification-icon" onclick="toggleNotifications()">
                         <i class="fas fa-bell"></i>
