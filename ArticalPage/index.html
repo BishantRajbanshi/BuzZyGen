@@ -4,92 +4,197 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>News Portal</title>
+    <title>Buzzy Gen - News Means Clarity</title>
     <link rel="stylesheet" href="styles.css" />
-    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
 
 <body>
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <div class="close-sidebar">
+                <i class="fas fa-times"></i>
+            </div>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#"><i class="fas fa-briefcase"></i> Business</a></li>
+            <li><a href="#"><i class="fas fa-running"></i> Sports</a></li>
+            <li><a href="#"><i class="fas fa-newspaper"></i> News</a></li>
+            <li><a href="#"><i class="fas fa-plane"></i> Travel</a></li>
+            <li><a href="#"><i class="fas fa-lightbulb"></i> Innovation</a></li>
+            <li><a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Header -->
     <header>
-        <div class="top-bar">
-            <link rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-            <div class="menu-btn" onclick="toggleMenu()">
-                <i class="fas fa-bars"></i>
+        <div class="top-nav">
+            <div class="left-section">
+                <div class="hamburger-menu"><i class="fas fa-bars"></i></div>
+                <div class="logo"><img src="logo.png" alt="Buzzy Gen Logo" /></div>
             </div>
-            <div class="menu" id="dropdownMenu">
-                <a href="Homepage/business.html">Business</a>
-                <a href="Homepage/sports.html">Sports</a>
-                <a href="Homepage/news.html">News</a>
-                <a href="Homepage/travel.html">Travel</a>
-                <a href="Homepage/innovation.html">Innovation</a>
-
-            </div>
-
-
-            <div class="logo">
-                <img src="logoimage.png" alt="News Logo">
-            </div>
-            <!-- Right section containing search, notifications, and user profile -->
-            <div class="navbar-right">
-
-                <!-- Search Bar -->
-                <div class="search-user">
-                    <input type="text" id="searchInput" placeholder="Search..." />
-                    <button onclick="performSearch()"><i class="fas fa-search"></i></button>
+            <div class="user-actions">
+                <div class="search-container">
+                    <input type="texts" placeholder="Search..." />
+                    <button><i class="fas fa-search"></i></button>
                 </div>
-
-                <!-- Include Font Awesome script -->
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-                <div id="notificationContainer" class="notification-container">
-                    <div class="notification-icon" onclick="toggleNotifications()">
-                        <!-- White Bell Icon using Font Awesome -->
-                        <i class="fas fa-bell" style="color: white; font-size: 24px;"></i>
-                        <span class="notification-badge" id="notificationBadge">3</span>
-                    </div>
-                    <div class="notification-dropdown" id="notificationDropdown"></div>
+                <div class="notifications">
+                    <i class="fas fa-bell"></i><span class="badge">1</span>
                 </div>
-
-
-                <!-- User Profile -->
-                <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
                 <div class="user-profile">
-                    <a href="javascript:void(0);" onclick="toggleLoginSignup()"><i class="fas fa-user"></i></a>
-                    <!-- In your HTML -->
-                    <div id="loginSignupContainer" class="login-signup-container">
-                        <button onclick="window.location.href='../Loginpage/index.html'">Login</button>
-                        <button onclick="window.location.href='../Signup/index.html'">Sign Up</button>
-
-
-                    </div>
-
-                </div>
-                <div class="kebab-container">
-                    <div class="kebab-icon" onclick="toggleKebab()">⋮</div>
-                    <div class="kebab-menu" id="kebabMenu">
-                        <a href="Homepage/settings.html">Settings</a>
-                        <a href="Homepage/logout.html">Logout</a>
+                    <i class="fas fa-user"></i>
+                    <div class="profile-dropdown">
+                        <button id="loginBtn">Login</button>
+                        <button id="signupBtn">Sign Up</button>
                     </div>
                 </div>
-
-
+                <div class="kebab-menu">
+                    <i class="fas fa-ellipsis-v"></i>
+                    <div class="kebab-dropdown">
+                        <button>Settings</button>
+                        <button>Help</button>
+                        <button>Log Out</button>
+                    </div>
+                </div>
             </div>
-
-
-
         </div>
-        </div>
-        <nav id="nav-sections" class="hidden">
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="Homepage/business.html">Articles</a></li>
-                <li><a href="Homepage/sports.html">Categories</a></li>
-                <li><a href="Homepage/news.html">Media</a></li> <!-- New News link -->
+        <nav class="main-nav">
+            <div class="nav-links">
+                <a href="#" class="active">Home</a>
+                <a href="#">Business</a>
+                <a href="#">Sports</a>
+                <a href="#">News</a>
+                <a href="#">Travel</a>
+                <a href="#">Innovation</a>
+            </div>
         </nav>
     </header>
 
+    <!-- Main Content -->
+    <main>
+        <div class="header">
+            <h1>Add New Article</h1>
+            <div class="post-btn-container">
+                <button type="submit" class="post-btn">Post</button>
+            </div>
+        </div>
 
-</footer>
+        </div>
+        <section class="featured-news">
+            <form action="submitArticle.php" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subtitle">Subtitle</label>
+                    <input type="text" id="subtitle" name="subtitle" class="form-control">
+                </div>
+
+                <div class="form-row two-column-layout">
+                    <div class="form-column">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-control select-blue" required>
+                            <option value="">Select a category</option>
+                            <option value="technology">Technology</option>
+                            <option value="design">Design</option>
+                            <option value="business">Business</option>
+                            <option value="lifestyle">Lifestyle</option>
+                        </select>
+
+                        <label for="tag">Tags</label>
+                        <input type="text" id="tag" name="tag" class="form-control select-blue"
+                            placeholder="Enter tags separated by commas">
+                    </div>
+
+                    <div class="form-column">
+                        <label for="featured-image">Featured Image</label>
+                        <div class="image-upload">
+                            <input type="file" id="featured-image" name="featured-image" accept="image/*">
+                            <p><i class="image-upload-icon"></i></p>
+                            <p>Drag and drop your image here, or click to browse</p>
+                            <p><small>Supports JPG, PNG, GIF up to 10MB</small></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea id="content" name="content" class="form-control content-area" rows="10"
+                        required></textarea>
+                </div>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Your trusted source for the latest news and updates from around the world.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 News Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Password" required />
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sign Up</h2>
+            <form id="signupForm">
+                <input type="text" placeholder="Name" required />
+                <input type="email" placeholder="Email" required />
+                <input type="password" placeholder="Password" required />
+                <input type="password" placeholder="Confirm Password" required />
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
