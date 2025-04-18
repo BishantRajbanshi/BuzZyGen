@@ -1,0 +1,453 @@
+/* General styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #444;
+    color: #333;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.top-bar>.logo {
+    margin-right: 20px;
+    /* Space between logo and navbar */
+    display: flex;
+    align-items: center;
+    /* Aligns the logo vertically with the top bar */
+}
+
+
+.menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    transition: color 0.3s;
+    height: 20px;
+
+    position: absolute;
+    left: 20px;
+    /* Adjust for better alignment */
+    top: 2;
+    /* Align to the top */
+    transform: translateY(0);
+    /* Remove the vertical translation */
+    z-index: 1000;
+}
+
+.menu {
+    display: none;
+    /* Hide by default */
+    background-color: white;
+    position: absolute;
+    top: 60px;
+    left: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    z-index: 1000;
+    /* Ensure it's on top */
+}
+
+
+.menu a {
+    display: block;
+    padding: 12px 15px;
+    color: black;
+    text-decoration: none;
+
+}
+
+.menu a:hover {
+    background-color: white;
+}
+
+.menu-btn:hover {
+    color: #ffb84d;
+}
+
+/* Logo Image */
+.logo img {
+    max-width: 100px;
+    /* Adjust size of the logo */
+    height: auto;
+}
+
+/* Logo Container */
+.logo {
+    position: relative;
+    height: 60px;
+    width: auto;
+    margin-left: -115px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Optional for left content */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Right side content all the way to the right */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Key to spreading left/right */
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Left side content */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Key to spreading left/right */
+    padding: 10px 20px;
+    background-color: #444;
+}
+
+/* Left side content */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+/* Right-aligned container */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+    margin-right: -160px;
+    /* optional: fine-tune based on layout */
+}
+
+/* Search bar */
+.search-user {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-user input {
+    padding: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-user button {
+    padding: 8px 12px;
+    background-color: white;
+    color: grey;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-user button:hover {
+    background-color: white;
+}
+
+.notification-container {
+    position: relative;
+    display: inline-block;
+
+}
+
+/* Notification Icon */
+.notification-icon {
+    font-size: 24px;
+    color: white;
+    margin-right: -90px;
+}
+
+/* Notification Icon Hover Effect */
+.notification-icon:hover {
+    color: #ffb84d;
+    /* Change color on hover */
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 10px;
+    margin-right: -60px;
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    /* White background for dropdown */
+    border: 1px solid #ccc;
+    width: 200px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 150px;
+    margin-right: -100px;
+    overflow-y: auto;
+    /* Scrollable if there are too many notifications */
+}
+
+#notificationContainer.active .notification-dropdown {
+    display: block;
+}
+
+.notification-message {
+    padding: 10px;
+    color: black;
+    font-size: 14px;
+    background-color: white;
+    /* White background for individual notifications */
+}
+
+.notification-message:last-child {
+    border-bottom: none;
+}
+
+/* User Profile Container */
+.user-profile {
+    position: relative;
+    padding: 10px;
+    /* Add some padding for better spacing */
+    border-radius: 5px;
+    /* Optionally, round the corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Optional: Add a subtle shadow for better visibility */
+    margin-left: 80px;
+    /* Slightly shift it to the right */
+}
+
+.user-profile:hover {
+    color: #ffb84d;
+    /* Change color on hover */
+}
+
+/* Make the icon white */
+.user-profile i {
+    color: white;
+    /* Set the icon color to white */
+    font-size: 24px;
+    /* Optional: Adjust icon size */
+}
+
+/* Login/Signup container (hidden by default) */
+.login-signup-container {
+    display: none;
+    position: absolute;
+    top: 45px;
+    left: -75px;
+    /* Adjust the left position to bring it closer */
+    background-color: white;
+    border: 1px solid #ccc;
+    width: 150px;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+
+.login-signup-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    font-size: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: whitesmoke;
+    /* Green color */
+    color: black;
+    border-radius: 3px;
+
+}
+
+
+.kebab-container {
+    position: relative;
+    display: inline-block;
+}
+
+.kebab-icon {
+    font-size: 24px;
+
+    cursor: pointer;
+    user-select: none;
+    color: white;
+    /* Kebab icon is now white */
+}
+
+/* Kebab Icon Hover Effect */
+.kebab-icon:hover {
+    color: #ffb84d;
+    /* Change color on hover */
+}
+
+.kebab-menu {
+    display: none;
+    position: absolute;
+    top: 45px;
+    right: -12px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    z-index: 10;
+    min-width: 150px;
+}
+
+.kebab-menu a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.kebab-menu a:hover {
+    background-color: #ffb84d;
+}
+
+
+
+
+
+/* Navigation Container */
+#nav-sections {
+    background-color: #444;
+    /* Keep your background color */
+    width: 100%;
+    /* Makes the navigation bar span the entire width of the screen */
+    height: 65px;
+    /* Increase the height of the navigation bar */
+    padding: 10px 0;
+    /* Adds padding on the top and bottom */
+}
+
+/* Navigation List */
+#nav-sections ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid white;
+    /* White line on top */
+    border-bottom: 2px solid white;
+    /* White line at the bottom */
+    padding: 10px 0;
+}
+
+/* Navigation Items */
+#nav-sections ul li {
+    margin: 0 30px;
+    /* Increases the space between menu items */
+}
+
+/* Links Styling */
+#nav-sections ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    /* Increase font size */
+    transition: color 0.3s;
+
+}
+
+/* Hover Effect */
+#nav-sections ul li a:hover {
+    color: #ffb84d;
+}
+
+
+.right-column {
+    width: 20%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.right-column .section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.right-column .news-item {
+    display: flex;
+    flex-direction: column;
+    /* Stack image, heading, and paragraph vertically */
+    gap: 8px;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.right-column .news-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.right-column .news-item h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.right-column .news-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #444;
+}
