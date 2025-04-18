@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <nav>
+      <div class="hamburger-menu">
+        <span>&#9776;</span>
+      </div>
+      <div class="logo">
+        <img src="logo.png" alt="Logo" />
+      </div>
+      <div class="menu">
+        <a href="#">Home</a>
+        <a href="#">Articles</a>
+        <a href="#">Categories</a>
+        <a href="#">Media</a>
+      </div>
+      <div class="search">
+        <input type="text" placeholder="Search..." />
+      </div>
+      <div class="user-actions">
+        <i class="fas fa-bell"></i>
+        <i class="fas fa-user-circle"></i>
+        <i class="fas fa-ellipsis-v"></i>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="user-info">
+      <span>Hello Admin,</span>
+      <button>+ New Article</button>
+    </div>
+
+    <section class="recent-articles">
+      <h2>Recent Articles</h2>
+      <article class="article">
+        <div class="article-info">
+          <h3><a href="#">Nepal's air safety: Still up in the air!</a></h3>
+          <p>The recent government's decision to create an independent regulatory body...</p>
+        </div>
+        <div class="article-image">
+          <img src="Image1.jpg" alt="Article Image" />
+        </div>
+      </article>
+
+      <article class="article">
+        <div class="article-info">
+          <h3><a href="#">How NASA's waylaid astronauts finally got home</a></h3>
+          <p>The SpaceX capsule carrying astronauts Suni Williams...</p>
+        </div>
+        <div class="article-image">
+          <img src="Image2.jpg" alt="Article Image" />
+        </div>
+      </article>
+
+      <article class="article">
+        <div class="article-info">
+          <h3><a href="#">The paradise islands that don't want to be Hawaii</a></h3>
+          <p>The Cook Islands is proving that sustainable tourism...</p>
+        </div>
+        <div class="article-image">
+          <img src="Image3.jpg" alt="Article Image" />
+        </div>
+      </article>
+
+      <a href="#">View all &#8594;</a>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
