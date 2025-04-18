@@ -151,16 +151,20 @@ header {
     margin-left: auto;
     margin-right: -160px; /* optional: fine-tune based on layout */
   }
-  
-  /* Search bar */
   .search-user {
     display: flex;
     align-items: center;
     background-color: white;
-    border-radius: 5px;
-    overflow: hidden;
-    border-radius: 15px; 
+    border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 40px; /* Only shows the icon initially */
+    transition: width 0.3s ease;
+    overflow: hidden;
+    margin-right: -15px;
+  }
+  
+  .search-user:hover {
+    width: 200px; /* Expand on hover */
   }
   
   .search-user input {
@@ -168,20 +172,23 @@ header {
     border: none;
     outline: none;
     font-size: 14px;
+    width: 100%;
+    display: none;
+  }
+  
+  .search-user:hover input {
+    display: block;
   }
   
   .search-user button {
     padding: 8px 12px;
     background-color: white;
-    color:grey;
+    color: grey;
     border: none;
     cursor: pointer;
-    transition: background-color 0.2s ease;
   }
   
-  .search-user button:hover {
-    background-color: white;
-  }
+  
   .notification-container {
     position: relative;
     display: inline-block;
@@ -354,11 +361,32 @@ header {
     
 }
 
-/* Hover Effect */
-#nav-sections ul li a:hover {
-    text-decoration: underline;
-    text-decoration-color: white;
+#nav-sections ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    position: relative; /* required for pseudo-element */
+    transition: color 0.3s ease;
 }
+
+#nav-sections ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+#nav-sections ul li a:hover::after,
+#nav-sections ul li a.active::after {
+    transform: scaleX(1);
+}
+
 
 
 .right-column {
@@ -1263,8 +1291,8 @@ body, html {
 
 /* Footer Styling */
 footer {
-    background-color: #f5f5f5; /* Light Gray Background */
-    color: #000; /* Black Text */
+    background-color: #333; /* Light Gray Background */
+    color: white; /* Black Text */
     padding: 40px 20px;
     margin-top: 40px;
     border-top: 2px solid #ddd;
@@ -1306,10 +1334,9 @@ footer {
 .footer-column h3 {
     font-size: 16px;
     font-weight: bold;
-    color: #000;
+    color: white;
     margin-bottom: 10px;
     padding-bottom: 5px; /* Spacing for the line */
-    border-bottom: 2px solid #000; /* Black Line */
     display: inline-block; /* Keeps width controlled */
 }
 
@@ -1325,7 +1352,7 @@ footer {
 }
 
 .footer-column ul li a {
-    color: #333;
+    color: white;
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s ease;
@@ -1349,7 +1376,7 @@ footer {
 .footer-social h3 {
     font-size: 16px;
     font-weight: bold;
-    color: #000;
+    color: white;
     margin-bottom: 10px;
 }
 
@@ -1424,9 +1451,9 @@ footer {
     text-align: center;
     padding: 15px 0;
     font-size: 13px;
-    color: #666;
     border-top: 1px solid #aaa; /* Matching bottom divider */
     margin-top: 10px;
+    background-color: #333;
 }
 
 .footer-bottom ul {
@@ -1443,7 +1470,7 @@ footer {
 }
 
 .footer-bottom ul li a {
-    color: #444;
+    color: white;
     text-decoration: none;
     font-size: 13px;
     transition: color 0.3s ease;
