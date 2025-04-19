@@ -27,3 +27,8 @@ document.querySelector('.close-sidebar').onclick = () => {
         document.querySelector('.profile-dropdown').classList.remove('active');
         document.querySelector('.kebab-dropdown').classList.remove('active');
     });
+
+    document.querySelector('.kebab-dropdown').addEventListener('click', function (e) {
+    e.stopPropagation(); // Don't let click inside close the dropdown
+});
+
