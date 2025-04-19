@@ -40,12 +40,12 @@
       </div>
       <nav class="main-nav">
         <div class="nav-links">
-          <a href="/" class="active">Home</a>
-          <a href="#">Business</a>
-          <a href="#">Sports</a>
-          <a href="#">News</a>
-          <a href="#">Travel</a>
-          <a href="#">Innovation</a>
+          <a href="#" class="active" data-category="all">Home</a>
+          <a href="#" data-category="business">Business</a>
+          <a href="#" data-category="sports">Sports</a>
+          <a href="#" data-category="news">News</a>
+          <a href="#" data-category="travel">Travel</a>
+          <a href="#" data-category="innovation">Innovation</a>
         </div>
       </nav>
     </header>
@@ -56,6 +56,53 @@
         <p>Stay updated with the latest news</p>
       </section>
 
+      <!-- Breaking News Banner -->
+      <section class="breaking-news-banner">
+        <div class="breaking-label">BREAKING</div>
+        <div class="breaking-content" id="breakingNewsContent">
+          <!-- Breaking news content will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Top Stories Section -->
+      <section class="top-stories">
+        <h2 class="section-title">Top Stories</h2>
+        <div class="top-stories-grid" id="topStoriesGrid">
+          <!-- Top stories will be loaded here -->
+        </div>
+      </section>
+
+      <!-- News By Category -->
+      <section class="news-by-category">
+        <div class="category-tabs">
+          <button class="category-tab active" data-category="all">All</button>
+          <button class="category-tab" data-category="business">
+            Business
+          </button>
+          <button class="category-tab" data-category="technology">
+            Technology
+          </button>
+          <button class="category-tab" data-category="sports">Sports</button>
+          <button class="category-tab" data-category="health">Health</button>
+          <button class="category-tab" data-category="science">Science</button>
+          <button class="category-tab" data-category="entertainment">
+            Entertainment
+          </button>
+        </div>
+        <div class="category-content" id="categoryContent">
+          <!-- Category news will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Most Read Section -->
+      <section class="most-read">
+        <h2 class="section-title">Recommended For You</h2>
+        <div class="most-read-list" id="mostReadList">
+          <!-- Personalized articles will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Your News Feed (Original) -->
       <section class="news-feed">
         <h2>Your News Feed</h2>
         <div class="news-grid" id="newsGrid">
