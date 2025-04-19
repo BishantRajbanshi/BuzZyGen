@@ -683,11 +683,6 @@ footer {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.kebab-menu:hover {
-    opacity: 0.8;
-    transform: scale(1.1);
-}
-
 .kebab-dropdown {
     position: absolute;
     top: calc(100% + 10px);
@@ -701,6 +696,7 @@ footer {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s ease;
+    z-index: 9999;
 }
 
 .kebab-dropdown.active {
