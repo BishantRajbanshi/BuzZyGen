@@ -769,3 +769,7 @@ footer {
     justify-content: space-between;
     font-size: 16px;
 }
+
+ssection{
+    content: "";
+}
