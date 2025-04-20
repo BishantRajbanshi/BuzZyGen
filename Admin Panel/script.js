@@ -31,3 +31,8 @@ document.querySelector('.hamburger-menu').onclick = () => {
       document.querySelector('.kebab-dropdown').addEventListener('click', function (e) {
       e.stopPropagation(); // Don't let click inside close the dropdown
   });
+
+      document.querySelector('.new-article-button').addEventListener('click', function() {
+        window.location.href = '/new-article';  // Replace with the correct URL for your New Article page
+  });
+  
