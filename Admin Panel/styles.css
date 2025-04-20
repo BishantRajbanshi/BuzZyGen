@@ -471,7 +471,7 @@ button.post-btn:hover {
   width: 20px;
 }
 
-/* User Profile Dropdown */
+/* User Profile Dropdown section */
 .profile-dropdown {
   position: absolute;
   top: calc(100% + 10px);
