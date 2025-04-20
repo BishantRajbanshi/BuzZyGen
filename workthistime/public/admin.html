@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Buzzy Gen</title>
+    <link rel="stylesheet" href="css/admin-standalone.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body class="admin-body">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Admin Menu</h2>
+        <div class="close-sidebar">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="#"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-newspaper"></i> Articles</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-list"></i> Categories</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-photo-video"></i> Media</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-users"></i> Users</a>
+        </li>
+        <li>
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    <header>
+      <div class="top-nav">
+        <div class="left-section">
+          <div class="hamburger-menu">
+            <i class="fas fa-bars"></i>
+          </div>
+          <div class="logo">  
+            <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
+            <h1>BUZZY GEN ADMIN</h1>
+          </div>
+        </div>
+        <div class="user-actions">
+          <div class="search-container">
+            <input type="text" placeholder="Search..." />
+            <button><i class="fas fa-search"></i></button>
+          </div>
+          <div class="notifications">
+            <i class="fas fa-bell"></i>
+            <span class="badge">1</span>
+          </div>
+          <div class="user-profile">
+            <i class="fas fa-user"></i>
+          </div>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <div class="nav-links">
+          <a href="#" class="active" data-category="all">Home</a>
+          <a href="#" data-category="articles">Articles</a>
+          <a href="#" data-category="categories">Categories</a>
+          <a href="#" data-category="media">Media</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-welcome">
+        <div class="welcome-text">
+          <h1>Hello Admin,</h1>
+          <a href="#" class="post-link">Ready to post new article today !</a>
+        </div>
+        <div class="action-buttons">
+          <button class="new-article-btn">+ New Article</button>
+        </div>
+      </section>
+
+      <section class="recent-articles">
+        <div class="section-header">
+          <h2>Recent Articles</h2>
+          <a href="#" class="view-all">View all →</a>
+        </div>
+
+        <div class="articles-grid">
+          <!-- Article 1 -->
+          <div class="article-card">
+            <div class="article-content">
+              <h3>Nepal's air safety: Still up in the air!</h3>
+              <p>
+                The recent government's decision to create an independent
+                regulatory body...
+              </p>
+            </div>
+            <div class="article-image">
+              <img
+                src="images/nepal.jpg"
+                alt="Nepal landscape"
+                onerror="this.src='https://via.placeholder.com/300x200?text=Nepal'"
+              />
+            </div>
+          </div>
+
+          <!-- Article 2 -->
+          <div class="article-card">
+            <div class="article-content">
+              <h3>How NASA's waylaid astronauts finally got home</h3>
+              <p>The SpaceX capsule carrying astronauts Suni Williams...</p>
+            </div>
+            <div class="article-image">
+              <img
+                src="images/nasa.jpg"
+                alt="NASA astronauts"
+                onerror="this.src='https://via.placeholder.com/300x200?text=NASA'"
+              />
+            </div>
+          </div>
+
+          <!-- Article 3 -->
+          <div class="article-card">
+            <div class="article-content">
+              <h3>Climate change: The rising threat to coastal cities</h3>
+              <p>
+                Scientists warn that sea levels could rise by up to 2 meters by
+                2100...
+              </p>
+            </div>
+            <div class="article-image">
+              <img
+                src="images/climate.jpg"
+                alt="Coastal city"
+                onerror="this.src='https://via.placeholder.com/300x200?text=Climate+Change'"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Create News Modal -->
+    <div id="createNewsModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create News Article</h2>
+        <form id="createNewsForm">
+          <input type="text" placeholder="Title" required />
+          <textarea placeholder="Description" required></textarea>
+          <textarea placeholder="Content" required></textarea>
+          <input type="text" placeholder="Image URL" required />
+          <select required>
+            <option value="">Select Category</option>
+            <option value="world">World</option>
+            <option value="politics">Politics</option>
+            <option value="business">Business</option>
+            <option value="technology">Technology</option>
+            <option value="sports">Sports</option>
+            <option value="science">Science</option>
+          </select>
+          <button type="submit">Create News</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+  </body>
+</html>
