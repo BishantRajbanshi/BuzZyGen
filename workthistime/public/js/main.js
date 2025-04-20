@@ -1,4 +1,4 @@
-// DOM Elements
+// DOM Elements - safely get elements that might not exist on all pages
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 const loginModal = document.getElementById("loginModal");
@@ -19,28 +19,33 @@ const overlay = document.querySelector(".overlay");
 const searchContainer = document.querySelector(".search-container");
 let searchTimeout;
 
-function openSidebar() {
-  sidebar.classList.add("active");
-  overlay.classList.add("active");
-  document.body.style.overflow = "hidden"; // Prevent scrolling when sidebar is open
-}
-
-function closeSidebarMenu() {
-  sidebar.classList.remove("active");
-  overlay.classList.remove("active");
-  document.body.style.overflow = ""; // Restore scrolling
-}
-
-hamburgerMenu.addEventListener("click", openSidebar);
-closeSidebar.addEventListener("click", closeSidebarMenu);
-overlay.addEventListener("click", closeSidebarMenu);
-
-// Close sidebar with escape key
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && sidebar.classList.contains("active")) {
-    closeSidebarMenu();
+// Only set up sidebar functionality if all required elements exist
+if (hamburgerMenu && sidebar && closeSidebar && overlay) {
+  function openSidebar() {
+    sidebar.classList.add("active");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden"; // Prevent scrolling when sidebar is open
   }
-});
+
+  function closeSidebarMenu() {
+    sidebar.classList.remove("active");
+    overlay.classList.remove("active");
+    document.body.style.overflow = ""; // Restore scrolling
+  }
+
+  hamburgerMenu.addEventListener("click", openSidebar);
+  closeSidebar.addEventListener("click", closeSidebarMenu);
+  overlay.addEventListener("click", closeSidebarMenu);
+
+  // Close sidebar with escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sidebar.classList.contains("active")) {
+      closeSidebarMenu();
+    }
+  });
+}
+
+// This event listener has been moved inside the sidebar functionality check
 
 // Check authentication status
 function checkAuth() {
@@ -64,27 +69,33 @@ function checkAuth() {
   }
 }
 
-// Modal functionality
-loginBtn.addEventListener("click", () => {
-  loginModal.style.display = "block";
-});
-
-signupBtn.addEventListener("click", () => {
-  signupModal.style.display = "block";
-});
-
-closeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    loginModal.style.display = "none";
-    signupModal.style.display = "none";
+// Modal functionality - only set up if elements exist
+if (loginBtn && loginModal) {
+  loginBtn.addEventListener("click", () => {
+    loginModal.style.display = "block";
   });
-});
+}
+
+if (signupBtn && signupModal) {
+  signupBtn.addEventListener("click", () => {
+    signupModal.style.display = "block";
+  });
+}
+
+if (closeButtons.length > 0) {
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (loginModal) loginModal.style.display = "none";
+      if (signupModal) signupModal.style.display = "none";
+    });
+  });
+}
 
 window.addEventListener("click", (e) => {
-  if (e.target === loginModal) {
+  if (loginModal && e.target === loginModal) {
     loginModal.style.display = "none";
   }
-  if (e.target === signupModal) {
+  if (signupModal && e.target === signupModal) {
     signupModal.style.display = "none";
   }
 });
@@ -159,144 +170,151 @@ if (forgotPasswordLink) {
   });
 }
 
-// Form submissions
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const email = document.getElementById("loginEmail").value;
-  const password = document.getElementById("loginPassword").value;
+// Form submissions - only set up if forms exist
+const loginForm = document.getElementById("loginForm");
+if (loginForm) {
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
 
-  try {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
-    if (response.ok) {
-      localStorage.setItem("token", data.token);
-      const decodedToken = JSON.parse(atob(data.token.split(".")[1]));
-      if (decodedToken.role === "admin") {
-        window.location.href = "/admin";
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        const decodedToken = JSON.parse(atob(data.token.split(".")[1]));
+        if (decodedToken.role === "admin") {
+          window.location.href = "/admin.html";
+        } else {
+          window.location.href = "/dashboard.html";
+        }
       } else {
-        window.location.href = "/dashboard";
+        alert(data.message || "Login failed");
       }
-    } else {
-      alert(data.message || "Login failed");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred during login");
     }
-  } catch (error) {
-    console.error("Login error:", error);
-    alert("An error occurred during login");
-  }
-});
+  });
+}
 
-document.getElementById("signupForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const name = document.getElementById("signupName").value;
-  const email = document.getElementById("signupEmail").value;
-  const password = document.getElementById("signupPassword").value;
-  const confirmPassword = document.getElementById(
-    "signupConfirmPassword"
-  ).value;
+const signupForm = document.getElementById("signupForm");
+if (signupForm) {
+  signupForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = document.getElementById("signupName").value;
+    const email = document.getElementById("signupEmail").value;
+    const password = document.getElementById("signupPassword").value;
+    const confirmPassword = document.getElementById(
+      "signupConfirmPassword"
+    ).value;
 
-  if (password !== confirmPassword) {
-    alert("Passwords do not match");
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      alert("Signup successful! Please login.");
-      signupModal.style.display = "none";
-      loginModal.style.display = "block";
-    } else {
-      alert(data.message || "Signup failed");
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
     }
-  } catch (error) {
-    console.error("Signup error:", error);
-    alert("An error occurred during signup");
-  }
-});
+
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert("Signup successful! Please login.");
+        if (signupModal) signupModal.style.display = "none";
+        if (loginModal) loginModal.style.display = "block";
+      } else {
+        alert(data.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      alert("An error occurred during signup");
+    }
+  });
+}
 
 // Fetch and display news
-async function fetchNews(category = null) {
-  try {
-    // Handle special categories
-    let url;
-    if (!category || category === "all" || category === "home") {
-      url = "/api/news";
-    } else {
-      url = `/api/news/category/${category}`;
-    }
-
-    // Add a cache-busting parameter to avoid browser caching
-    const cacheBuster = `cacheBust=${Date.now()}`;
-    const finalUrl = `${url}?${cacheBuster}`;
-
-    // Set a timeout for the fetch request
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-    // Show loading state
-    showLoadingState();
-
-    const response = await fetch(finalUrl, {
-      headers: {
-        Accept: "application/json",
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        Pragma: "no-cache",
-        Expires: "0",
-      },
-      cache: "no-store",
-      signal: controller.signal,
-    });
-
-    // Clear the timeout
-    clearTimeout(timeoutId);
-
-    const news = await response.json();
-
-    // Check if the response contains an error message
-    if (news.message && news.error) {
-      console.error("API Error:", news.message, news.error);
-      throw new Error(news.message);
-    }
-
-    // Check if we got valid news data
-    if (!news || news.length === 0) {
-      console.warn("No news articles returned from API");
-      throw new Error("No news articles available");
-    }
-
-    // Hide loading state
-    hideLoadingState();
-
-    // Display news in BBC style layout
-    displayBreakingNews(news[0]);
-    displayTopStories(news.slice(0, 3));
-    displayCategoryNews(news);
-    displayMostRead(news.slice(0, 5));
-    displayNews(news); // Keep original display for compatibility
-
-    console.log("Successfully loaded news from API");
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    // Only use fallback news when there's an actual error
-    displayFallbackNews();
-    // Hide loading state
-    hideLoadingState();
+function fetchNews(category = null) {
+  // Handle special categories
+  let url;
+  if (!category || category === "all" || category === "home") {
+    url = "/api/news";
+  } else {
+    url = `/api/news/category/${category}`;
   }
+
+  // Add a cache-busting parameter to avoid browser caching
+  const cacheBuster = `cacheBust=${Date.now()}`;
+  const finalUrl = `${url}?${cacheBuster}`;
+
+  // Show loading state
+  showLoadingState();
+
+  // Set a timeout for the fetch request
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+    console.warn("Fetch request timed out");
+    displayFallbackNews();
+    hideLoadingState();
+  }, 10000); // 10 second timeout
+
+  fetch(finalUrl, {
+    headers: {
+      Accept: "application/json",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    },
+    cache: "no-store",
+    signal: controller.signal,
+  })
+    .then((response) => {
+      // Clear the timeout
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((news) => {
+      // Check if we got valid news data
+      if (!news || news.length === 0) {
+        console.warn("No news articles returned from API");
+        displayFallbackNews();
+      } else {
+        // Display news in BBC style layout
+        displayBreakingNews(news[0]);
+        displayTopStories(news.slice(0, 3));
+        displayCategoryNews(news);
+        displayMostRead(news.slice(0, 5));
+        displayNews(news); // Keep original display for compatibility
+        console.log("Successfully loaded news from API");
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching news:", error);
+      // Use fallback news when there's an error
+      displayFallbackNews();
+    })
+    .finally(() => {
+      // Always hide loading state
+      hideLoadingState();
+    });
 }
 
 // Show loading state
@@ -713,23 +731,25 @@ if (navContainer) {
   });
 }
 
-// Profile Dropdown functionality
-userProfile.addEventListener("click", (e) => {
-  e.stopPropagation();
-  profileDropdown.classList.toggle("active");
-});
+// Profile Dropdown functionality - only add listeners if elements exist
+if (userProfile && profileDropdown) {
+  userProfile.addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileDropdown.classList.toggle("active");
+  });
 
-// Close dropdown when clicking outside
-document.addEventListener("click", (e) => {
-  if (!userProfile.contains(e.target)) {
-    profileDropdown.classList.remove("active");
-  }
-});
+  // Prevent dropdown from closing when clicking inside it
+  profileDropdown.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
 
-// Prevent dropdown from closing when clicking inside it
-profileDropdown.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
+  // Close dropdown when clicking outside
+  document.addEventListener("click", (e) => {
+    if (userProfile && !userProfile.contains(e.target)) {
+      profileDropdown.classList.remove("active");
+    }
+  });
+}
 
 // Navigation dropdown functionality
 const moreMenu = document.querySelector(".more-menu");
@@ -749,32 +769,59 @@ if (moreMenu && moreDropdown) {
   });
 }
 
-// Initialize - using a single DOMContentLoaded listener for better performance
+// Initialize - using both DOMContentLoaded and window.onload for reliability
 let initialized = false;
-document.addEventListener("DOMContentLoaded", () => {
+
+function initializePage() {
   if (!initialized) {
     checkAuth();
     fetchNews();
     initialized = true;
+    console.log("Page initialized successfully");
   }
-});
+}
 
-searchContainer.addEventListener("click", (e) => {
-  e.stopPropagation();
-  searchContainer.classList.add("expanded");
-  clearTimeout(searchTimeout);
-});
+// Try to initialize on DOMContentLoaded
+document.addEventListener("DOMContentLoaded", initializePage);
+
+// Fallback to window.onload if DOMContentLoaded doesn't fire or completes too early
+window.onload = function () {
+  if (!initialized) {
+    console.log("Using window.onload fallback for initialization");
+    initializePage();
+  }
+
+  // Force a refresh of the news content after a short delay
+  setTimeout(() => {
+    if (
+      document.querySelector(".loading-spinner") ||
+      !document.querySelector(".news-card")
+    ) {
+      console.log("Forcing news refresh");
+      fetchNews();
+    }
+  }, 1000);
+};
+
+// Add event listeners for search container if it exists
+if (searchContainer) {
+  searchContainer.addEventListener("click", (e) => {
+    e.stopPropagation();
+    searchContainer.classList.add("expanded");
+    clearTimeout(searchTimeout);
+  });
+
+  // Prevent collapse when interacting with the search bar
+  searchContainer.addEventListener("input", () => {
+    clearTimeout(searchTimeout);
+  });
+}
 
 // Collapse search bar after 5 seconds of inactivity
 document.addEventListener("click", () => {
-  if (searchContainer.classList.contains("expanded")) {
+  if (searchContainer && searchContainer.classList.contains("expanded")) {
     searchTimeout = setTimeout(() => {
       searchContainer.classList.remove("expanded");
     }, 5000);
   }
-});
-
-// Prevent collapse when interacting with the search bar
-searchContainer.addEventListener("input", () => {
-  clearTimeout(searchTimeout);
 });
