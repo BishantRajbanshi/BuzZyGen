@@ -15,9 +15,119 @@ const sidebar = document.querySelector(".sidebar");
 const closeSidebar = document.querySelector(".close-sidebar");
 const overlay = document.querySelector(".overlay");
 
-// Search bar functionality
+// Search bar functionality with enhanced animations
 const searchContainer = document.querySelector(".search-container");
+const searchInput = searchContainer
+  ? searchContainer.querySelector("input")
+  : null;
+const searchButton = searchContainer
+  ? searchContainer.querySelector("button")
+  : null;
 let searchTimeout;
+let searchInteractionTimeout;
+
+// Add animation to search container
+if (searchContainer && searchInput && searchButton) {
+  // Hover event for search container
+  searchContainer.addEventListener("mouseenter", () => {
+    // Clear any existing timeout
+    if (searchInteractionTimeout) {
+      clearTimeout(searchInteractionTimeout);
+    }
+
+    // Expand the search container
+    searchContainer.classList.add("expanded");
+
+    // Set a timeout to collapse after 3 seconds if no interaction
+    searchInteractionTimeout = setTimeout(() => {
+      // Only collapse if not active and no text in input
+      if (
+        !searchContainer.classList.contains("active") &&
+        searchInput.value.trim() === ""
+      ) {
+        searchContainer.classList.remove("expanded");
+      }
+    }, 3000);
+  });
+
+  // Focus event for search input
+  searchInput.addEventListener("focus", () => {
+    // Clear any existing timeout
+    if (searchInteractionTimeout) {
+      clearTimeout(searchInteractionTimeout);
+    }
+
+    // Add active class to keep it expanded
+    searchContainer.classList.add("active");
+    searchContainer.classList.add("expanded");
+  });
+
+  // Input event to maintain active state when typing
+  searchInput.addEventListener("input", () => {
+    // Clear any existing timeout
+    if (searchInteractionTimeout) {
+      clearTimeout(searchInteractionTimeout);
+    }
+
+    // Keep active while typing
+    if (searchInput.value.trim() !== "") {
+      searchContainer.classList.add("active");
+    }
+  });
+
+  // Blur event for search input
+  searchInput.addEventListener("blur", () => {
+    // If input is empty, remove active class after a short delay
+    if (searchInput.value.trim() === "") {
+      // Set a timeout to allow for button clicks
+      setTimeout(() => {
+        searchContainer.classList.remove("active");
+
+        // Start the collapse timeout
+        searchInteractionTimeout = setTimeout(() => {
+          searchContainer.classList.remove("expanded");
+        }, 500);
+      }, 200);
+    }
+  });
+
+  // Click event for search button
+  searchButton.addEventListener("click", (e) => {
+    // Clear any existing timeout
+    if (searchInteractionTimeout) {
+      clearTimeout(searchInteractionTimeout);
+    }
+
+    if (!searchContainer.classList.contains("expanded")) {
+      e.preventDefault();
+      searchContainer.classList.add("expanded");
+      searchContainer.classList.add("active");
+      searchInput.focus();
+    } else if (searchInput.value.trim() !== "") {
+      // Perform search
+      console.log("Searching for:", searchInput.value);
+      // Add ripple effect to button
+      const ripple = document.createElement("span");
+      ripple.classList.add("ripple-effect");
+      searchButton.appendChild(ripple);
+      setTimeout(() => ripple.remove(), 600);
+    } else {
+      // If button is clicked but input is empty, focus on input
+      searchInput.focus();
+    }
+  });
+
+  // Click outside to collapse if empty
+  document.addEventListener("click", (e) => {
+    if (
+      !searchContainer.contains(e.target) &&
+      searchInput.value.trim() === ""
+    ) {
+      searchContainer.classList.remove("active");
+      searchContainer.classList.remove("expanded");
+    }
+  });
+}
 
 // Only set up sidebar functionality if all required elements exist
 if (hamburgerMenu && sidebar && closeSidebar && overlay) {
@@ -243,6 +353,38 @@ if (signupForm) {
       console.error("Signup error:", error);
       alert("An error occurred during signup");
     }
+  });
+}
+
+// Add animation to navigation links
+if (navLinks && navLinks.length > 0) {
+  navLinks.forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      // Add subtle animation on hover
+      link.style.transition =
+        "transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+      link.style.transform = "translateY(-2px)";
+    });
+
+    link.addEventListener("mouseleave", () => {
+      link.style.transform = "translateY(0)";
+    });
+
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+
+      // Remove active class from all links
+      navLinks.forEach((l) => l.classList.remove("active"));
+
+      // Add active class to clicked link with animation
+      link.classList.add("active");
+
+      // Get category from data attribute
+      const category = link.getAttribute("data-category");
+
+      // Fetch news for the selected category
+      fetchNews(category);
+    });
   });
 }
 
@@ -493,30 +635,40 @@ function displayNews(news) {
   if (!featuredNews) return;
 
   featuredNews.innerHTML = news
-    .map(
-      (article) => `
-    <div class="news-card">
-      <img src="${
-        article.urlToImage ||
-        article.imageUrl ||
-        "https://via.placeholder.com/300x200"
-      }" alt="${article.title}">
-      <div class="news-content">
-        <h3>${article.title}</h3>
-        <p>${article.description}</p>
-        <div class="news-meta">
-          <span class="category">${article.category || "General"}</span>
-          <span class="date">${new Date(
-            article.publishedAt || article.created_at
-          ).toLocaleDateString()}</span>
-        </div>
-        <a href="${
-          article.url || `/article/${article.id}`
-        }" class="read-more">Read More</a>
-      </div>
-    </div>
-  `
-    )
+    .map((article) => {
+      // Check for valid image URL
+      let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+
+      // Check all possible image sources
+      if (article.featured_image && article.featured_image.trim() !== "") {
+        imageUrl = article.featured_image;
+      } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+        imageUrl = article.urlToImage;
+      } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+        imageUrl = article.imageUrl;
+      }
+
+      return `
+          <div class="news-card">
+            <div class="news-image">
+              <img src="${imageUrl}" alt="${article.title || "News article"}">
+            </div>
+            <div class="news-content">
+              <h3>${article.title}</h3>
+              <p>${article.description || article.subtitle || ""}</p>
+              <div class="news-meta">
+                <span class="category">${article.category || "General"}</span>
+                <span class="date">${new Date(
+                  article.publishedAt || article.created_at || new Date()
+                ).toLocaleDateString()}</span>
+              </div>
+              <a href="${
+                article.url || `/article/${article.id}` || "#"
+              }" class="read-more">Read More</a>
+            </div>
+          </div>
+        `;
+    })
     .join("");
 }
 
@@ -528,10 +680,16 @@ function displayBreakingNews(article) {
   if (!breakingNewsContent) return;
 
   breakingNewsContent.innerHTML = `
-    <a href="${article.url || `/article/${article.id}`}">
+    <a href="${article.url || `/article/${article.id}` || "#"}">
       ${article.title}
     </a>
   `;
+
+  // Reset the animation when content changes to ensure it starts from the right position
+  breakingNewsContent.style.animation = "none";
+  setTimeout(() => {
+    breakingNewsContent.style.animation = "scrollText 20s linear infinite";
+  }, 10);
 }
 
 // Display top stories in the grid layout
@@ -545,26 +703,36 @@ function displayTopStories(articles) {
   const mainStory = articles[0];
   const secondaryStories = articles.slice(1, 3);
 
+  // Function to get valid image URL
+  function getValidImageUrl(article, defaultSize = "800x500") {
+    if (article.featured_image && article.featured_image.trim() !== "") {
+      return article.featured_image;
+    } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+      return article.urlToImage;
+    } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+      return article.imageUrl;
+    }
+    return `https://via.placeholder.com/${defaultSize}?text=No+Image`;
+  }
+
   // Create HTML for the main story
   let html = `
     <div class="story-card main-story">
-      <img src="${
-        mainStory.urlToImage ||
-        mainStory.imageUrl ||
-        "https://via.placeholder.com/800x500"
-      }" alt="${mainStory.title}">
+      <img src="${getValidImageUrl(mainStory)}" alt="${
+    mainStory.title || "Featured Story"
+  }">
       <div class="story-content">
         <h3>${mainStory.title}</h3>
-        <p>${mainStory.description}</p>
+        <p>${mainStory.description || mainStory.subtitle || ""}</p>
         <div class="story-meta">
           <span class="category">${mainStory.category || "General"}</span>
           <span class="date">${new Date(
-            mainStory.publishedAt || mainStory.created_at
+            mainStory.publishedAt || mainStory.created_at || new Date()
           ).toLocaleDateString()}</span>
         </div>
       </div>
       <a href="${
-        mainStory.url || `/article/${mainStory.id}`
+        mainStory.url || `/article/${mainStory.id}` || "#"
       }" class="story-link"></a>
     </div>
   `;
@@ -573,21 +741,21 @@ function displayTopStories(articles) {
   secondaryStories.forEach((story) => {
     html += `
       <div class="story-card secondary-story">
-        <img src="${
-          story.urlToImage ||
-          story.imageUrl ||
-          "https://via.placeholder.com/400x250"
-        }" alt="${story.title}">
+        <img src="${getValidImageUrl(story, "400x250")}" alt="${
+      story.title || "News Story"
+    }">
         <div class="story-content">
           <h3>${story.title}</h3>
           <div class="story-meta">
             <span class="category">${story.category || "General"}</span>
             <span class="date">${new Date(
-              story.publishedAt || story.created_at
+              story.publishedAt || story.created_at || new Date()
             ).toLocaleDateString()}</span>
           </div>
         </div>
-        <a href="${story.url || `/article/${story.id}`}" class="story-link"></a>
+        <a href="${
+          story.url || `/article/${story.id}` || "#"
+        }" class="story-link"></a>
       </div>
     `;
   });
@@ -653,27 +821,39 @@ function displayCategoryNews(articles) {
   renderCategoryNews(filteredArticles);
 
   function renderCategoryNews(articles) {
+    // Function to get valid image URL
+    function getValidImageUrl(article) {
+      if (article.featured_image && article.featured_image.trim() !== "") {
+        return article.featured_image;
+      } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+        return article.urlToImage;
+      } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+        return article.imageUrl;
+      }
+      return `https://via.placeholder.com/300x200?text=No+Image`;
+    }
+
     categoryContent.innerHTML = articles
       .slice(0, 6) // Limit to 6 articles
       .map(
         (article) => `
         <div class="news-card">
-          <img src="${
-            article.urlToImage ||
-            article.imageUrl ||
-            "https://via.placeholder.com/300x200"
-          }" alt="${article.title}">
+          <div class="news-image">
+            <img src="${getValidImageUrl(article)}" alt="${
+          article.title || "News article"
+        }">
+          </div>
           <div class="news-content">
             <h3>${article.title}</h3>
-            <p>${article.description}</p>
+            <p>${article.description || article.subtitle || ""}</p>
             <div class="news-meta">
               <span class="category">${article.category || "General"}</span>
               <span class="date">${new Date(
-                article.publishedAt || article.created_at
+                article.publishedAt || article.created_at || new Date()
               ).toLocaleDateString()}</span>
             </div>
             <a href="${
-              article.url || `/article/${article.id}`
+              article.url || `/article/${article.id}` || "#"
             }" class="read-more">Read More</a>
           </div>
         </div>

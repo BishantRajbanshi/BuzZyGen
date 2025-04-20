@@ -38,6 +38,17 @@ function initAdminDashboard(token) {
   // Modal functionality
   if (newArticleBtn) {
     newArticleBtn.addEventListener("click", () => {
+      // Reset edit mode when creating a new article
+      isEditMode = false;
+      editingNewsId = null;
+
+      // Reset form
+      if (createNewsForm) {
+        createNewsForm.reset();
+      }
+      resetImagePreview();
+
+      // Show modal
       if (createNewsModal) {
         createNewsModal.style.display = "block";
       }
@@ -51,6 +62,10 @@ function initAdminDashboard(token) {
         createNewsForm.reset();
       }
       resetImagePreview();
+
+      // Reset edit mode when closing modal
+      isEditMode = false;
+      editingNewsId = null;
     });
   }
 
@@ -62,6 +77,10 @@ function initAdminDashboard(token) {
           createNewsForm.reset();
         }
         resetImagePreview();
+
+        // Reset edit mode when closing modal
+        isEditMode = false;
+        editingNewsId = null;
       }
     });
   }
@@ -192,8 +211,8 @@ function initAdminDashboard(token) {
       return;
     }
 
-    // Take only the first 3 articles
-    const recentArticles = news.slice(0, 3);
+    // Take only the latest 5 articles
+    const recentArticles = news.slice(0, 5);
 
     articlesGrid.innerHTML = recentArticles
       .map((article) => {
@@ -206,14 +225,24 @@ function initAdminDashboard(token) {
           : "";
         const tags = article.tags || "";
 
-        // For image, check all possible image field names
+        // For image, check all possible image field names and validate
         let imageUrl = "";
-        if (article.featured_image) {
+        let hasValidImage = false;
+
+        if (article.featured_image && article.featured_image.trim() !== "") {
           imageUrl = article.featured_image;
-        } else if (article.imageUrl) {
+          hasValidImage = true;
+        } else if (article.imageUrl && article.imageUrl.trim() !== "") {
           imageUrl = article.imageUrl;
-        } else if (article.urlToImage) {
+          hasValidImage = true;
+        } else if (article.urlToImage && article.urlToImage.trim() !== "") {
           imageUrl = article.urlToImage;
+          hasValidImage = true;
+        }
+
+        // Use placeholder if no valid image
+        if (!hasValidImage) {
+          imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
         }
 
         return `
@@ -230,14 +259,14 @@ function initAdminDashboard(token) {
                 article.id
                   ? `
               <div class="article-actions">
-                <button onclick="editNews(${article.id})">Edit</button>
-                <button onclick="deleteNews(${article.id})">Delete</button>
+                <button onclick="editNews(${article.id})" class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
+                <button onclick="deleteNews(${article.id})" class="delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
               </div>`
                   : ""
               }
             </div>
             <div class="article-image">
-              <img src="${imageUrl}" alt="${title}" onerror="this.src='https://via.placeholder.com/300x200?text=News'" />
+              <img src="${imageUrl}" alt="${title || "News article"}" />
             </div>
           </div>
         `;
@@ -334,6 +363,10 @@ function initAdminDashboard(token) {
     }
   }
 
+  // Track if we're in edit mode
+  let isEditMode = false;
+  let editingNewsId = null;
+
   // Setup form submission for creating news
   function setupNewsForm() {
     const createNewsForm = document.getElementById("createNewsForm");
@@ -341,7 +374,8 @@ function initAdminDashboard(token) {
 
     if (!createNewsForm) return;
 
-    createNewsForm.addEventListener("submit", async (e) => {
+    // Define the submit handler function
+    const handleFormSubmit = async (e) => {
       e.preventDefault();
 
       // Show loading indicator
@@ -357,8 +391,19 @@ function initAdminDashboard(token) {
       };
 
       try {
-        const response = await fetch("/api/news", {
-          method: "POST",
+        let url = "/api/news";
+        let method = "POST";
+        let successMessage = "News article created successfully!";
+
+        // If in edit mode, use PUT method and include the ID in the URL
+        if (isEditMode && editingNewsId) {
+          url = `/api/news/${editingNewsId}`;
+          method = "PUT";
+          successMessage = "News article updated successfully!";
+        }
+
+        const response = await fetch(url, {
+          method: method,
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -373,57 +418,151 @@ function initAdminDashboard(token) {
           createNewsForm.reset();
           resetImagePreview();
           fetchNews();
-          alert("News article created successfully!");
+          alert(successMessage);
+
+          // Reset edit mode
+          isEditMode = false;
+          editingNewsId = null;
         } else {
-          alert("Error creating news article");
+          alert(
+            isEditMode
+              ? "Error updating news article"
+              : "Error creating news article"
+          );
         }
       } catch (error) {
-        console.error("Error creating news:", error);
-        alert("Error creating news article");
+        console.error(
+          isEditMode ? "Error updating news:" : "Error creating news:",
+          error
+        );
+        alert(
+          isEditMode
+            ? "Error updating news article"
+            : "Error creating news article"
+        );
       } finally {
         hideGlobalLoading();
       }
-    });
+    };
+
+    // Attach the submit handler
+    createNewsForm.addEventListener("submit", handleFormSubmit);
   }
 
-  // Delete news article
+  // Delete news article with enhanced animation
   window.deleteNews = function (id) {
-    if (!confirm("Are you sure you want to delete this news article?")) {
-      return;
+    // Find the delete button that was clicked
+    const deleteBtn = event.currentTarget;
+
+    // Add a confirmation class to show we're in confirmation mode
+    deleteBtn.classList.add("confirm-delete");
+
+    // Change the button text and icon
+    const originalContent = deleteBtn.innerHTML;
+    deleteBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Confirm';
+
+    // Set a timeout to revert the button if not clicked again
+    const confirmTimeout = setTimeout(() => {
+      deleteBtn.classList.remove("confirm-delete");
+      deleteBtn.innerHTML = originalContent;
+    }, 3000); // Revert after 3 seconds
+
+    // Set up the confirmation click
+    const confirmHandler = function (e) {
+      e.stopPropagation();
+
+      // Clear the timeout
+      clearTimeout(confirmTimeout);
+
+      // Remove the event listener
+      deleteBtn.removeEventListener("click", confirmHandler);
+
+      // Show loading indicator
+      showGlobalLoading();
+
+      // Add a deleting class for animation
+      deleteBtn.classList.remove("confirm-delete");
+      deleteBtn.classList.add("deleting");
+      deleteBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+      // Make the API call
+      fetch(`/api/news/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            // Add success class briefly before refreshing
+            deleteBtn.classList.remove("deleting");
+            deleteBtn.classList.add("success");
+            deleteBtn.innerHTML = '<i class="fas fa-check"></i> Deleted!';
+
+            // Refresh after a short delay to show the success state
+            setTimeout(() => {
+              fetchNews();
+            }, 800);
+          } else {
+            deleteBtn.classList.remove("deleting");
+            deleteBtn.classList.add("error");
+            deleteBtn.innerHTML = '<i class="fas fa-times"></i> Error';
+            setTimeout(() => {
+              deleteBtn.classList.remove("error");
+              deleteBtn.innerHTML = originalContent;
+              alert("Error deleting news article");
+            }, 1500);
+          }
+        })
+        .catch((error) => {
+          console.error("Error deleting news:", error);
+          deleteBtn.classList.remove("deleting");
+          deleteBtn.classList.add("error");
+          deleteBtn.innerHTML = '<i class="fas fa-times"></i> Error';
+          setTimeout(() => {
+            deleteBtn.classList.remove("error");
+            deleteBtn.innerHTML = originalContent;
+            alert("Error deleting news article");
+          }, 1500);
+        })
+        .finally(() => {
+          hideGlobalLoading();
+        });
+    };
+
+    // If this is the first click, set up the confirmation click
+    if (!deleteBtn.classList.contains("confirm-delete-setup")) {
+      deleteBtn.classList.add("confirm-delete-setup");
+      deleteBtn.addEventListener("click", confirmHandler);
+      return; // Exit after the first click
     }
 
-    // Show loading indicator
-    showGlobalLoading();
-
-    fetch(`/api/news/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          fetchNews();
-        } else {
-          alert("Error deleting news article");
-        }
-      })
-      .catch((error) => {
-        console.error("Error deleting news:", error);
-        alert("Error deleting news article");
-      })
-      .finally(() => {
-        hideGlobalLoading();
-      });
+    // If we get here, it's the confirmation click
+    confirmHandler(event);
   };
 
-  // Edit news article
+  // Edit news article with enhanced animation
   window.editNews = function (id) {
+    // Find the edit button that was clicked
+    const editBtn = event.currentTarget;
+
+    // Add a loading class for animation
+    editBtn.classList.add("loading");
+    editBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+    // Store original content
+    const originalContent = '<i class="fas fa-edit"></i> Edit';
+
     // Show loading indicator
     showGlobalLoading();
 
     const createNewsForm = document.getElementById("createNewsForm");
     const createNewsModal = document.getElementById("createNewsModal");
+
+    // Set edit mode
+    isEditMode = true;
+    editingNewsId = id;
 
     fetch(`/api/news/${id}`, {
       headers: {
@@ -470,63 +609,40 @@ function initAdminDashboard(token) {
           resetImagePreview();
         }
 
+        // Show success animation briefly
+        editBtn.classList.remove("loading");
+        editBtn.classList.add("success");
+        editBtn.innerHTML = '<i class="fas fa-check"></i> Loaded';
+
+        // Reset button after a short delay
+        setTimeout(() => {
+          editBtn.classList.remove("success");
+          editBtn.innerHTML = originalContent;
+        }, 1000);
+
         // Show modal
         if (createNewsModal) {
           createNewsModal.style.display = "block";
         }
-
-        // Update form submission to handle edit
-        if (createNewsForm) {
-          const originalSubmit = createNewsForm.onsubmit;
-          createNewsForm.onsubmit = async (e) => {
-            e.preventDefault();
-
-            // Show loading indicator
-            showGlobalLoading();
-
-            const formData = {
-              title: document.getElementById("title").value,
-              subtitle: document.getElementById("subtitle").value,
-              content: document.getElementById("content").value,
-              featured_image: document.getElementById("featured-image").value,
-              category: document.getElementById("category").value,
-              tags: document.getElementById("tags").value,
-            };
-
-            try {
-              const response = await fetch(`/api/news/${id}`, {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(formData),
-              });
-
-              if (response.ok) {
-                if (createNewsModal) {
-                  createNewsModal.style.display = "none";
-                }
-                createNewsForm.reset();
-                resetImagePreview();
-                createNewsForm.onsubmit = originalSubmit;
-                fetchNews();
-                alert("News article updated successfully!");
-              } else {
-                alert("Error updating news article");
-              }
-            } catch (error) {
-              console.error("Error updating news:", error);
-              alert("Error updating news article");
-            } finally {
-              hideGlobalLoading();
-            }
-          };
-        }
       })
       .catch((error) => {
         console.error("Error fetching news article:", error);
-        alert("Error fetching news article");
+
+        // Show error animation
+        editBtn.classList.remove("loading");
+        editBtn.classList.add("error");
+        editBtn.innerHTML = '<i class="fas fa-times"></i> Error';
+
+        // Reset button after a short delay
+        setTimeout(() => {
+          editBtn.classList.remove("error");
+          editBtn.innerHTML = originalContent;
+          alert("Error fetching news article");
+        }, 1500);
+
+        // Reset edit mode on error
+        isEditMode = false;
+        editingNewsId = null;
       })
       .finally(() => {
         hideGlobalLoading();
@@ -605,6 +721,120 @@ function initAdminDashboard(token) {
     });
   }
 
+  // Setup search bar functionality
+  function setupSearchBar() {
+    const searchContainer = document.querySelector(".search-container");
+    const searchInput = searchContainer
+      ? searchContainer.querySelector("input")
+      : null;
+    const searchButton = searchContainer
+      ? searchContainer.querySelector("button")
+      : null;
+    let searchInteractionTimeout;
+
+    if (searchContainer && searchInput && searchButton) {
+      // Hover event for search container
+      searchContainer.addEventListener("mouseenter", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        // Expand the search container
+        searchContainer.classList.add("expanded");
+
+        // Set a timeout to collapse after 3 seconds if no interaction
+        searchInteractionTimeout = setTimeout(() => {
+          // Only collapse if not active and no text in input
+          if (
+            !searchContainer.classList.contains("active") &&
+            searchInput.value.trim() === ""
+          ) {
+            searchContainer.classList.remove("expanded");
+          }
+        }, 3000);
+      });
+
+      // Focus event for search input
+      searchInput.addEventListener("focus", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        // Add active class to keep it expanded
+        searchContainer.classList.add("active");
+        searchContainer.classList.add("expanded");
+      });
+
+      // Input event to maintain active state when typing
+      searchInput.addEventListener("input", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        // Keep active while typing
+        if (searchInput.value.trim() !== "") {
+          searchContainer.classList.add("active");
+        }
+      });
+
+      // Blur event for search input
+      searchInput.addEventListener("blur", () => {
+        // If input is empty, remove active class after a short delay
+        if (searchInput.value.trim() === "") {
+          // Set a timeout to allow for button clicks
+          setTimeout(() => {
+            searchContainer.classList.remove("active");
+
+            // Start the collapse timeout
+            searchInteractionTimeout = setTimeout(() => {
+              searchContainer.classList.remove("expanded");
+            }, 500);
+          }, 200);
+        }
+      });
+
+      // Click event for search button
+      searchButton.addEventListener("click", (e) => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        if (!searchContainer.classList.contains("expanded")) {
+          e.preventDefault();
+          searchContainer.classList.add("expanded");
+          searchContainer.classList.add("active");
+          searchInput.focus();
+        } else if (searchInput.value.trim() !== "") {
+          // Perform search
+          console.log("Searching for:", searchInput.value);
+          // Add ripple effect to button
+          const ripple = document.createElement("span");
+          ripple.classList.add("ripple-effect");
+          searchButton.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        } else {
+          // If button is clicked but input is empty, focus on input
+          searchInput.focus();
+        }
+      });
+
+      // Click outside to collapse if empty
+      document.addEventListener("click", (e) => {
+        if (
+          !searchContainer.contains(e.target) &&
+          searchInput.value.trim() === ""
+        ) {
+          searchContainer.classList.remove("active");
+          searchContainer.classList.remove("expanded");
+        }
+      });
+    }
+  }
+
   // Initialize all components
   fetchNews();
   setupSidebar();
@@ -612,6 +842,7 @@ function initAdminDashboard(token) {
   setupImageUpload();
   setupNewsForm();
   setupNavigation();
+  setupSearchBar();
 
   // Force browser to complete loading
   setTimeout(() => {

@@ -206,11 +206,13 @@ router.get("/category/:category", async (req, res) => {
 // Get news from database
 router.get("/db", auth, async (req, res) => {
   try {
+    // Get the latest news articles ordered by creation date (newest first)
     const [rows] = await pool.query(
       "SELECT id, title, subtitle, content, featured_image, category, tags, created_at, updated_at FROM news ORDER BY created_at DESC LIMIT 20"
     );
     // Always return the actual database results, even if empty
     res.json(rows);
+    console.log(`Fetched ${rows.length} news articles from database`);
   } catch (error) {
     console.error("Error fetching news from database:", error);
     // Return empty array on error, not fallback data
@@ -269,6 +271,26 @@ router.put("/:id", adminAuth, async (req, res) => {
   } catch (error) {
     console.error("Error updating news:", error);
     res.status(500).json({ message: "Error updating news article" });
+  }
+});
+
+// Get a single news article by ID
+router.get("/:id", adminAuth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await pool.query(
+      "SELECT id, title, subtitle, content, featured_image, category, tags, created_at, updated_at FROM news WHERE id = ?",
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({ message: "News article not found" });
+    }
+
+    res.json(rows[0]);
+  } catch (error) {
+    console.error("Error fetching news article:", error);
+    res.status(500).json({ message: "Error fetching news article" });
   }
 });
 

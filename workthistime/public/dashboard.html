@@ -6,6 +6,8 @@
     <title>Dashboard - Buzzy Gen</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="stylesheet" href="css/typography.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -31,13 +33,13 @@
           <a href="#"><i class="fas fa-running"></i> Sports</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-newspaper"></i> News</a>
+          <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-plane"></i> Travel</a>
+          <a href="#"><i class="fas fa-film"></i> Entertainment</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-lightbulb"></i> Innovation</a>
+          <a href="#"><i class="fas fa-flask"></i> Science</a>
         </li>
         <li>
           <a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a>
@@ -63,8 +65,8 @@
         </div>
         <div class="user-actions">
           <div class="search-container">
-            <input type="text" placeholder="Search..." />
             <button><i class="fas fa-search"></i></button>
+            <input type="text" placeholder="Search..." />
           </div>
           <div class="notifications">
             <i class="fas fa-bell"></i>
@@ -81,9 +83,9 @@
           <a href="#" class="active" data-category="all">Home</a>
           <a href="#" data-category="business">Business</a>
           <a href="#" data-category="sports">Sports</a>
-          <a href="#" data-category="news">News</a>
-          <a href="#" data-category="travel">Travel</a>
-          <a href="#" data-category="innovation">Innovation</a>
+          <a href="#" data-category="technology">Technology</a>
+          <a href="#" data-category="entertainment">Entertainment</a>
+          <a href="#" data-category="science">Science</a>
         </div>
       </nav>
     </header>
@@ -117,15 +119,15 @@
           <button class="category-tab" data-category="business">
             Business
           </button>
+          <button class="category-tab" data-category="sports">Sports</button>
           <button class="category-tab" data-category="technology">
             Technology
           </button>
-          <button class="category-tab" data-category="sports">Sports</button>
-          <button class="category-tab" data-category="health">Health</button>
-          <button class="category-tab" data-category="science">Science</button>
           <button class="category-tab" data-category="entertainment">
             Entertainment
           </button>
+          <button class="category-tab" data-category="science">Science</button>
+          <button class="category-tab" data-category="health">Health</button>
         </div>
         <div class="category-content" id="categoryContent">
           <!-- Category news will be loaded here -->

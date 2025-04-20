@@ -13,7 +13,7 @@ body {
 }
 
 body {
-  font-family: "Arial", sans-serif;
+  /* Font family is now defined in typography.css */
   background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
@@ -82,30 +82,26 @@ header {
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: center;
   background: #fff;
-  border-radius: 50px;
-  padding: 5px;
+  border-radius: 50%;
   width: 40px;
-  transition: width 0.3s ease;
+  height: 40px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .search-container input {
+  position: absolute;
+  left: 40px; /* Space for the icon */
   border: none;
   outline: none;
   width: 0;
-  padding: 5px;
-  transition: width 0.3s ease;
-}
-
-.search-container:hover,
-.search-container.expanded {
-  width: 200px;
-}
-
-.search-container:hover input,
-.search-container.expanded input {
-  width: 100%;
+  padding: 5px 10px 5px 0;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  opacity: 0;
 }
 
 .search-container button {
@@ -113,6 +109,49 @@ header {
   border: none;
   cursor: pointer;
   color: #666;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* Hover state */
+.search-container:hover,
+.search-container.expanded {
+  width: 200px;
+  border-radius: 20px;
+}
+
+.search-container:hover input,
+.search-container.expanded input {
+  width: calc(100% - 50px);
+  opacity: 1;
+}
+
+/* Active state */
+.search-container.active {
+  width: 200px;
+  border-radius: 20px;
+}
+
+.search-container.active input {
+  width: calc(100% - 50px);
+  opacity: 1;
+}
+
+/* Animation for the search icon */
+.search-container:hover button,
+.search-container.expanded button,
+.search-container.active button {
+  transform: rotate(90deg);
+  color: #bb1919;
 }
 
 .user-actions {
@@ -368,6 +407,207 @@ header {
   flex-direction: column;
 }
 
+/* Article Actions and Buttons */
+.article-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.article-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  min-width: 100px;
+}
+
+.article-actions button i {
+  margin-right: 6px;
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+/* Edit Button */
+.article-actions button.edit-btn {
+  background-color: #4285f4;
+  color: white;
+}
+
+.article-actions button.edit-btn:hover {
+  background-color: #2b6ed9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+}
+
+.article-actions button.edit-btn:hover i {
+  transform: rotate(15deg);
+}
+
+.article-actions button.edit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(66, 133, 244, 0.3);
+}
+
+/* Edit Button States */
+.article-actions button.edit-btn.loading {
+  background-color: #607d8b;
+  pointer-events: none;
+  animation: pulse-blue 1.5s infinite;
+}
+
+.article-actions button.edit-btn.success {
+  background-color: #4caf50;
+  pointer-events: none;
+  animation: scale-in 0.3s ease-out;
+}
+
+.article-actions button.edit-btn.error {
+  background-color: #f44336;
+  animation: shake 0.5s;
+}
+
+@keyframes pulse-blue {
+  0% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(66, 133, 244, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Delete Button */
+.article-actions button.delete-btn {
+  background-color: #ea4335;
+  color: white;
+}
+
+.article-actions button.delete-btn:hover {
+  background-color: #d33426;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(234, 67, 53, 0.3);
+}
+
+.article-actions button.delete-btn:hover i {
+  transform: rotate(-15deg);
+}
+
+.article-actions button.delete-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(234, 67, 53, 0.3);
+}
+
+/* Delete Button States */
+.article-actions button.delete-btn.confirm-delete {
+  background-color: #ff9800;
+  animation: pulse 1.5s infinite;
+}
+
+.article-actions button.delete-btn.deleting {
+  background-color: #607d8b;
+  pointer-events: none;
+}
+
+.article-actions button.delete-btn.success {
+  background-color: #4caf50;
+  pointer-events: none;
+}
+
+.article-actions button.delete-btn.error {
+  background-color: #f44336;
+  animation: shake 0.5s;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Button Ripple Effect */
+.article-actions button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%, -50%);
+  transform-origin: 50% 50%;
+}
+
+.article-actions button:focus:not(:active)::after {
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  20% {
+    transform: scale(25, 25);
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(40, 40);
+  }
+}
+
 /* No Articles Message */
 .no-articles-message {
   background-color: #f9f9f9;
@@ -424,12 +664,18 @@ header {
   height: 80px;
   overflow: hidden;
   border-radius: 4px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .article-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.3s ease;
 }
 
 /* Modal Styles */
