@@ -99,17 +99,8 @@ categories.forEach((category) => {
 // Fetch news from external API
 router.get("/", async (req, res) => {
   try {
-    // Check if we have valid cached data
-    const now = Date.now();
-    if (
-      newsCache.general.data &&
-      now - newsCache.general.timestamp < CACHE_DURATION
-    ) {
-      // Serving from cache
-      return res.json(newsCache.general.data);
-    }
-
-    // Fetching fresh data
+    // Always try to fetch fresh data first
+    console.log("Fetching fresh news data from API...");
     const response = await axios.get(
       `https://newsapi.org/v2/top-headlines?country=us&apiKey=${process.env.NEWS_API_KEY}`,
       {
@@ -126,21 +117,31 @@ router.get("/", async (req, res) => {
       response.data.articles &&
       response.data.articles.length > 0
     ) {
-      // Update cache
+      // Update cache with fresh data
+      const now = Date.now();
       newsCache.general.data = response.data.articles;
       newsCache.general.timestamp = now;
+      console.log(
+        `Successfully fetched ${response.data.articles.length} articles from News API`
+      );
 
-      res.json(response.data.articles);
+      return res.json(response.data.articles);
     } else {
-      // Return empty array if no articles found
-      res.json([]);
+      console.warn("News API returned empty articles array");
+      throw new Error("No articles found in API response");
     }
   } catch (error) {
-    console.error("Error fetching news:", error);
+    console.error("Error fetching news from API:", error.message);
 
-    // If we have cached data, return it even if it's expired
+    // If we have cached data, return it as a fallback
+    const now = Date.now();
     if (newsCache.general.data) {
-      // Serving stale cache due to API error
+      const cacheAge = now - newsCache.general.timestamp;
+      console.log(
+        `Serving cached data (${Math.round(
+          cacheAge / 1000 / 60
+        )} minutes old) due to API error`
+      );
       return res.json(newsCache.general.data);
     }
 
@@ -175,18 +176,8 @@ router.get("/category/:category", async (req, res) => {
   try {
     const { category } = req.params;
 
-    // Check if we have valid cached data for this category
-    const now = Date.now();
-    if (
-      newsCache.categories[category] &&
-      newsCache.categories[category].data &&
-      now - newsCache.categories[category].timestamp < CACHE_DURATION
-    ) {
-      // Serving from category cache
-      return res.json(newsCache.categories[category].data);
-    }
-
-    // Fetching fresh category data
+    // Always try to fetch fresh data first
+    console.log(`Fetching fresh news data for category: ${category}...`);
     const response = await axios.get(
       `https://newsapi.org/v2/top-headlines?country=us&category=${category}&apiKey=${process.env.NEWS_API_KEY}`,
       {
@@ -203,25 +194,42 @@ router.get("/category/:category", async (req, res) => {
       response.data.articles &&
       response.data.articles.length > 0
     ) {
-      // Update cache
+      // Update cache with fresh data
+      const now = Date.now();
       if (!newsCache.categories[category]) {
         newsCache.categories[category] = {};
       }
       newsCache.categories[category].data = response.data.articles;
       newsCache.categories[category].timestamp = now;
+      console.log(
+        `Successfully fetched ${response.data.articles.length} articles for category: ${category}`
+      );
 
-      res.json(response.data.articles);
+      return res.json(response.data.articles);
     } else {
-      // Return empty array if no articles found
-      res.json([]);
+      console.warn(
+        `News API returned empty articles array for category: ${category}`
+      );
+      throw new Error(
+        `No articles found in API response for category: ${category}`
+      );
     }
   } catch (error) {
-    console.error("Error fetching category news:", error);
+    console.error(
+      `Error fetching news for category ${req.params.category}:`,
+      error.message
+    );
 
-    // If we have cached data for this category, return it even if it's expired
+    // If we have cached data for this category, return it as a fallback
     const { category } = req.params;
+    const now = Date.now();
     if (newsCache.categories[category] && newsCache.categories[category].data) {
-      // Serving stale category cache due to API error
+      const cacheAge = now - newsCache.categories[category].timestamp;
+      console.log(
+        `Serving cached data for category ${category} (${Math.round(
+          cacheAge / 1000 / 60
+        )} minutes old) due to API error`
+      );
       return res.json(newsCache.categories[category].data);
     }
 
