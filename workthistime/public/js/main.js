@@ -248,6 +248,9 @@ async function fetchNews(category = null) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
+    // Show loading state
+    showLoadingState();
+
     const response = await fetch(finalUrl, {
       headers: {
         Accept: "application/json",
@@ -264,20 +267,64 @@ async function fetchNews(category = null) {
 
     const news = await response.json();
 
-    if (!news || news.length === 0 || news.message) {
-      displayFallbackNews();
-    } else {
-      // Display news in BBC style layout
-      displayBreakingNews(news[0]);
-      displayTopStories(news.slice(0, 3));
-      displayCategoryNews(news);
-      displayMostRead(news.slice(0, 5));
-      displayNews(news); // Keep original display for compatibility
+    // Check if the response contains an error message
+    if (news.message && news.error) {
+      console.error("API Error:", news.message, news.error);
+      throw new Error(news.message);
     }
+
+    // Check if we got valid news data
+    if (!news || news.length === 0) {
+      console.warn("No news articles returned from API");
+      throw new Error("No news articles available");
+    }
+
+    // Hide loading state
+    hideLoadingState();
+
+    // Display news in BBC style layout
+    displayBreakingNews(news[0]);
+    displayTopStories(news.slice(0, 3));
+    displayCategoryNews(news);
+    displayMostRead(news.slice(0, 5));
+    displayNews(news); // Keep original display for compatibility
+
+    console.log("Successfully loaded news from API");
   } catch (error) {
     console.error("Error fetching news:", error);
+    // Only use fallback news when there's an actual error
     displayFallbackNews();
+    // Hide loading state
+    hideLoadingState();
   }
+}
+
+// Show loading state
+function showLoadingState() {
+  const sections = [
+    document.getElementById("breakingNewsContent"),
+    document.getElementById("topStoriesGrid"),
+    document.getElementById("categoryContent"),
+    document.getElementById("mostReadList"),
+    document.querySelector(".featured-news"),
+  ];
+
+  sections.forEach((section) => {
+    if (section) {
+      section.innerHTML =
+        '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading news...</div>';
+    }
+  });
+}
+
+// Hide loading state
+function hideLoadingState() {
+  const loadingSpinners = document.querySelectorAll(".loading-spinner");
+  loadingSpinners.forEach((spinner) => {
+    if (spinner) {
+      spinner.remove();
+    }
+  });
 }
 
 // Display fallback news when API fails
