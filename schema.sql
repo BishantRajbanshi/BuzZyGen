@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS news (
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255),
     content TEXT,
-    featured_image VARCHAR(255),
+    featured_image LONGTEXT,
     category VARCHAR(50),
     tags VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
