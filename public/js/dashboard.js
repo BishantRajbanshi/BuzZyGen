@@ -285,22 +285,60 @@ function loadUserProfile() {
 
 // Fetch and display news
 async function fetchNews(category = null) {
-  try {
-    // Handle special categories
-    let url;
-    if (!category || category === "all" || category === "home") {
-      url = "/api/news";
-    } else {
-      url = `/api/news/category/${category}`;
+  const topStoriesSection = document.querySelector(".top-stories");
+  const mostReadSection = document.querySelector(".most-read");
+  const newsFeedSection = document.querySelector(".news-feed");
+  const categoryTabsSection = document.querySelector(".news-by-category");
+  const userArticlesSection = document.querySelector(".user-articles-section");
+  const breakingNewsBanner = document.querySelector(".breaking-news-banner");
+
+  // Always show breaking news banner
+  if (breakingNewsBanner) breakingNewsBanner.style.display = "block";
+
+  if (category === "article") {
+    // Show only admin-posted articles
+    if (userArticlesSection) userArticlesSection.style.display = "block";
+    if (topStoriesSection) topStoriesSection.style.display = "none";
+    if (mostReadSection) mostReadSection.style.display = "none";
+    if (newsFeedSection) newsFeedSection.style.display = "none";
+    if (categoryTabsSection) categoryTabsSection.style.display = "none";
+
+    // Clear all other sections (optional)
+    if (document.getElementById("topStoriesGrid"))
+      document.getElementById("topStoriesGrid").innerHTML = "";
+    if (document.getElementById("categoryContent"))
+      document.getElementById("categoryContent").innerHTML = "";
+    if (document.getElementById("mostReadList"))
+      document.getElementById("mostReadList").innerHTML = "";
+    if (document.getElementById("newsGrid"))
+      document.getElementById("newsGrid").innerHTML = "";
+
+    if (userArticlesSection) {
+      userArticlesSection.innerHTML = `
+        <div class="container" id="userArticleContainer"></div>
+      `;
+      loadAdminArticlesForUser();
     }
 
-    // Add a cache-busting parameter to avoid browser caching
-    const cacheBuster = `cacheBust=${Date.now()}`;
-    const finalUrl = `${url}?${cacheBuster}`;
+    return;
+  }
 
-    // Set a timeout for the fetch request
+  // Reset: show all sections
+  if (userArticlesSection) userArticlesSection.style.display = "none";
+  if (topStoriesSection) topStoriesSection.style.display = "block";
+  if (mostReadSection) mostReadSection.style.display = "block";
+  if (newsFeedSection) newsFeedSection.style.display = "block";
+  if (categoryTabsSection) categoryTabsSection.style.display = "block";
+
+  try {
+    let url =
+      !category || category === "all" || category === "home"
+        ? "/api/news"
+        : `/api/news/category/${category}`;
+
+    const finalUrl = `${url}?cacheBust=${Date.now()}`;
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     const response = await fetch(finalUrl, {
       headers: {
@@ -314,19 +352,17 @@ async function fetchNews(category = null) {
       signal: controller.signal,
     });
 
-    // Clear the timeout
     clearTimeout(timeoutId);
     const news = await response.json();
 
     if (!news || news.length === 0 || news.message) {
       displayFallbackNews();
     } else {
-      // Display news in BBC style layout
       displayBreakingNews(news[0]);
       displayTopStories(news.slice(0, 3));
       displayCategoryNews(news);
       displayMostRead(news.slice(0, 5));
-      displayNews(news); // Keep original display for compatibility
+      displayNews(news);
     }
   } catch (error) {
     console.error("Error fetching news:", error);
@@ -714,11 +750,74 @@ if (navContainer) {
   });
 }
 
+async function loadAdminArticlesForUser() {
+  const container = document.getElementById("userArticleContainer");
+
+  try {
+    const token = localStorage.getItem("token");
+    const response = await fetch("/api/news/db", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    const articles = await response.json();
+
+    if (!Array.isArray(articles) || articles.length === 0) {
+      container.innerHTML = `<p>No articles available at the moment.</p>`;
+      return;
+    }
+
+    const html = articles
+    .map((article) => {
+      const title = article.title || "Untitled";
+      const subtitle = article.subtitle || article.description || "";
+      const contentSnippet = article.content
+        ? article.content.slice(0, 100) + "..."
+        : "";
+      const category = article.category || "General";
+      const date = article.created_at
+        ? new Date(article.created_at).toLocaleDateString()
+        : "Unknown";
+      const image =
+        article.featured_image ||
+        article.urlToImage ||
+        article.imageUrl ||
+        "https://via.placeholder.com/300x200?text=No+Image";
+  
+      return `
+        <a href="articleReading.html?id=${article.id}" class="news-block">
+          <img src="${image}" alt="${title}" class="news-img" />
+          <div class="news-content">
+            ${subtitle ? `<span class="series-title">${subtitle}</span>` : ""}
+            <h2 class="news-title">${title}</h2>
+            <p class="description">${contentSnippet}</p>
+            <p class="meta">${date} | ${category}</p>
+          </div>
+        </a>
+      `;
+    })
+    .join("");
+  
+
+    container.innerHTML = `
+      ${html}
+    `;
+  } catch (error) {
+    console.error("Failed to load admin articles:", error);
+    container.innerHTML = `<p>Error loading articles. Please try again later.</p>`;
+  }
+}
+
+
+
 // Initialize - using a single DOMContentLoaded listener for better performance
 let initialized = false;
 document.addEventListener("DOMContentLoaded", () => {
   if (!initialized) {
     fetchNews();
+    loadAdminArticlesForUser();
     initialized = true;
   }
 });
