@@ -447,17 +447,20 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 0 50px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
     /* Added padding to shift content right */
   }
   
   /* Left Side: News, Arts, Lifestyle, More */
   .footer-left {
     display: flex;
-    gap: 50px;
+    gap: 40px;
     /* Reduce space to bring them closer */
     flex-wrap: nowrap;
-    margin-left: 50px;
+    margin-left: 0;
     /* Shift to the right */
   }
   
@@ -793,3 +796,125 @@
     justify-content: space-between;
     font-size: 16px;
   }
+
+  .main-content {
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #333;
+    padding: 2rem;
+  }
+  
+  .featured-story {
+    position: relative;
+    width: 100%;
+    margin-bottom: 4rem;
+  }
+  
+  .featured-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 600px; /* 🔧 Taller image */
+    background-image: url('featured-image.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* 🔧 Keep the box on the left side */
+    padding-left: 5%;
+  }
+  
+  .featured-text-box {
+    background-color: rgba(240, 255, 255, 0.95); /* Light box */
+    padding: 2rem;
+    max-width: 400px; /* 🔧 Make it wider */
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  
+  .featured-text-box .meta {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 0.5rem;
+  }
+
+  .featured-text-box h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .featured-image {
+    flex: 1 1 100%;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    margin-top: 10px;
+  }
+
+  .featured-text-box .excerpt {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .latest-stories h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.2rem;
+  }
+  
+  .latest-stories h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .story-card {
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  .story-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .story-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .story-card .meta {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+  }
+  
+  .story-card p {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .story-card a {
+    font-size: 0.9rem;
+    color: #007acc;
+    text-decoration: none;
+  }
+  
+  .more-posts {
+    display: block;
+    margin: 3rem auto 0;
+    padding: 0.7rem 2rem;
+    background: #e04b87;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
