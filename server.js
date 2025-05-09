@@ -29,6 +29,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/article", articleRoutes);
+app.use("/api/news", require("./routes/news"));
 
 // Serve static files
 app.get("/", (req, res) => {

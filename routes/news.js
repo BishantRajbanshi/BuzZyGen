@@ -304,5 +304,21 @@ router.delete("/:id", adminAuth, async (req, res) => {
     res.status(500).json({ message: "Error deleting news article" });
   }
 });
+// GET articles by category
+router.get("/category/:category", async (req, res) => {
+  const { category } = req.params;
+
+  try {
+    const [articles] = await pool.query(
+      "SELECT * FROM news WHERE LOWER(category) = ?",
+      [category.toLowerCase()]
+    );
+
+    res.json(articles);
+  } catch (error) {
+    console.error("Error fetching articles by category:", error);
+    res.status(500).json({ message: "Error fetching category articles" });
+  }
+});
 
 module.exports = router;
