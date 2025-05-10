@@ -1,11 +1,27 @@
-// Toggle user profile dropdown
-document.querySelector('.user-profile').addEventListener('click', function (e) {
+// Sidebar toggle
+document.querySelector('.hamburger-menu').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.add('active');
+    document.getElementById('overlay').classList.add('active');
+  });
+  
+  document.getElementById('closeSidebar').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+  });
+  
+  document.getElementById('overlay').addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('active');
+    document.getElementById('overlay').classList.remove('active');
+  });
+  
+  // User profile dropdown
+  document.querySelector('.user-profile').addEventListener('click', function (e) {
     e.stopPropagation();
     document.querySelector('.profile-dropdown').classList.toggle('active');
     document.querySelector('.kebab-dropdown').classList.remove('active');
   });
   
-  // Toggle kebab menu dropdown
+  // Kebab menu dropdown
   document.querySelector('.kebab-menu').addEventListener('click', function (e) {
     e.stopPropagation();
     document.querySelector('.kebab-dropdown').classList.toggle('active');
@@ -18,7 +34,7 @@ document.querySelector('.user-profile').addEventListener('click', function (e) {
     document.querySelector('.kebab-dropdown').classList.remove('active');
   });
   
-  // Prevent dropdown from closing when clicked inside
+  // Prevent closing dropdown on internal click
   document.querySelector('.kebab-dropdown').addEventListener('click', function (e) {
     e.stopPropagation();
   });
