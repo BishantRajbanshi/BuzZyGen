@@ -86,8 +86,7 @@ document.querySelector('.hamburger-menu').onclick = () => {
   
   document.getElementById('addBlogBtn').onclick = () => {
     alert("Redirecting to blog creation page...");
-  
     // Optional: redirect to another page
     // window.location.href = 'add-blog.html';
-  };
+};
   

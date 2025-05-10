@@ -8,7 +8,7 @@
   body {
     font-family: "Arial", sans-serif;
     background-color: #f5f5f5;
-    padding-top: 180px;
+    padding-top: 100px;
     /* Adjusted to account for fixed header height */
   }
   
@@ -800,7 +800,7 @@
   .main-content {
     font-family: 'Helvetica Neue', sans-serif;
     color: #333;
-    padding: 2rem;
+    padding: 1rem 4rem;
   }
   
   .featured-story {
@@ -938,25 +938,155 @@
     font-size: 1rem;
   }
 
-  .add-blog-container {
-    display: flex;
-    justify-content: flex-end;  /* Aligns content to the right */
-    margin-top: 2rem;
-    margin-right: 2rem;
-  }
-
-  .button-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end; /* Pushes button to the right */
-    padding-right: 5%;
-    margin-top: 2rem;
+  .add-blog-header {
+    margin-left: 15px;
   }
   
-  #addBlogBtn {
-    background-color: #5c67f2; /* Optional: Purple-blue tone */
+  #addBlogBtnHeader {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.95rem;
+    background-color: #5c67f2;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
   
-  #addBlogBtn:hover {
+  #addBlogBtnHeader:hover {
     background-color: #4752d6;
   }
+  
+  .top-nav {
+    background-color: #000;
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .left-section, .user-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .search-container input {
+    padding: 5px 10px;
+    width: 0;
+    transition: width 0.3s ease;
+    border: none;
+    outline: none;
+  }
+  
+  .search-container:hover input {
+    width: 150px;
+  }
+  
+  .search-container button {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+  }
+  
+  .notifications {
+    color: white;
+    position: relative;
+  }
+  
+  .notifications .badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: red;
+    color: white;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 50%;
+  }
+  
+  .user-profile {
+    position: relative;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .profile-dropdown {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background: white;
+    padding: 10px;
+    display: none;
+    border-radius: 5px;
+  }
+  
+  .profile-dropdown button {
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  /* Add Blog button */
+
+  .add-blog-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add-blog-btn {
+    padding: 10px 20px;
+    background-color: #e04b87;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    transform: translateX(200px);
+}
+
+.add-blog-btn:hover {
+    background-color: #c23a72;
+}
+
+/* Blog title */
+
+.blog-title-wrapper {
+    max-width: 1200px;       /* Match your content width */
+    margin: 20px auto 0;     /* Spacing below header */
+    padding: 0 20px;         /* Side padding (same as your content) */
+    margin-left: 40px;
+}
+
+.blog-main-title {
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Match your font */
+    font-size: 2rem;         /* Adjust size as needed */
+    font-weight: bold;
+    color: #333;            /* Dark gray (adjust color) */
+    margin: 0;              /* Remove default margins */
+    display: inline-block;  /* For underline (optional) */
+    position: relative;     /* For underline (optional) */
+}
+
+/* Optional: Add underline (remove if not needed) */
+.blog-main-title::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #e04b87; /* Pink accent (match your theme) */
+}
+
+#addBlogBtn {
+    margin-top: -15px;  /* Negative margin lifts the button */
+    position: relative;
+    top: -10px;        /* Additional upward nudge */
+}
