@@ -931,7 +931,7 @@
     display: block;
     margin: 3rem auto 0;
     padding: 0.7rem 2rem;
-    background: #e04b87;
+    background: #000000;
     color: white;
     border: none;
     cursor: pointer;
@@ -954,7 +954,7 @@
   }
   
   #addBlogBtnHeader:hover {
-    background-color: #4752d6;
+    background-color: #5a5a5a;
   }
   
   .top-nav {
@@ -1033,7 +1033,7 @@
     position: relative;
     width: 100%;
     max-width: 1200px;
-    margin: 20px auto 0;
+    margin: 20px;
     padding: 0 20px;
     display: flex;
     justify-content: flex-end;
@@ -1041,7 +1041,7 @@
 
 .add-blog-btn {
     padding: 10px 20px;
-    background-color: #e04b87;
+    background-color: #000000;
     color: white;
     border: none;
     border-radius: 4px;
@@ -1052,7 +1052,7 @@
 }
 
 .add-blog-btn:hover {
-    background-color: #c23a72;
+    background-color: #5a5a5a;
 }
 
 /* Blog title */
@@ -1082,7 +1082,7 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background-color: #e04b87; /* Pink accent (match your theme) */
+    background-color: #000000; /* Pink accent (match your theme) */
 }
 
 #addBlogBtn {
