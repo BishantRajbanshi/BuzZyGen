@@ -5,19 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buzzy Gen - News Means Clarity</title>
-  <link rel="stylesheet" href="style.css" />
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
 </head>
 
 <body>
-
-<div class="page-wrapper">
-
-  <!-- Sidebar Section -->
-  <div class="sidebar">
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>Menu</h2>
-      <div class="close-sidebar">
+      <div class="close-sidebar" id="closeSidebar">
         <i class="fas fa-times"></i>
       </div>
     </div>
@@ -28,13 +27,11 @@
       <li><a href="#"><i class="fas fa-newspaper"></i> News</a></li>
       <li><a href="#"><i class="fas fa-plane"></i> Travel</a></li>
       <li><a href="#"><i class="fas fa-lightbulb"></i> Innovation</a></li>
-      <li><a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a></li>
-      <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
     </ul>
   </div>
 
   <!-- Overlay -->
-  <div class="overlay"></div>
+  <div class="overlay" id="overlay"></div>
 
   <!-- Header -->
   <header>
@@ -58,11 +55,16 @@
             <button id="signupBtn">Sign Up</button>
           </div>
         </div>
-        <div class="kebab-menu"><i class="fas fa-ellipsis-v"></i></div>
+        <div class="kebab-menu">
+          <i class="fas fa-ellipsis-v"></i>
+          <div class="kebab-dropdown">
+            <button>Help</button>
+            <button>Log Out</button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- <nav class="main-nav">
+    <nav class="main-nav">
       <div class="nav-links">
         <a href="#" class="active">Home</a>
         <a href="#">Business</a>
@@ -71,11 +73,11 @@
         <a href="#">Travel</a>
         <a href="#">Innovation</a>
       </div>
-    </nav> -->
+    </nav>
   </header>
 
   <div class="blog-title-wrapper">
-    <h1 class="blog-title">Blogs</h1>
+    <h1 class="blog-title">Blog</h1>
   </div>
   
   <div class="add-blog-container">
