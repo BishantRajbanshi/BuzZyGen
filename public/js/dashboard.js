@@ -820,4 +820,18 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAdminArticlesForUser();
     initialized = true;
   }
+
+    // Set date in navigation
+    const navDateEl = document.getElementById("navDate");
+    if (navDateEl) {
+      const today = new Date();
+    
+      const day = today.getDate();
+      const month = today.toLocaleString("default", { month: "long" });
+      const year = today.getFullYear();
+      const weekday = today.toLocaleString("default", { weekday: "long" });
+    
+      navDateEl.textContent = `${day} ${month} ${year}, ${weekday}`;
+    }
+    
 });

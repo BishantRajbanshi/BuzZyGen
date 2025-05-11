@@ -186,3 +186,19 @@
   font-size: 14px;
   color: #777;
 }
+
+/* Dtae */
+.main-nav {
+  position: relative;
+}
+
+.nav-date {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  white-space: nowrap;
+}
