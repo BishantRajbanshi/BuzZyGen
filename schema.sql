@@ -25,6 +25,17 @@ CREATE TABLE IF NOT EXISTS news (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+CREATE TABLE articles (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  subtitle VARCHAR(255),
+  content TEXT NOT NULL,
+  featured_image LONGTEXT,
+  category VARCHAR(100),
+  tags VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
