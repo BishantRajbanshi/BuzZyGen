@@ -1,4 +1,3 @@
-// routes/blogs.js
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -29,12 +28,12 @@ router.get("/:id", auth, async (req, res) => {
 
 // CREATE a new blog
 router.post("/", auth, async (req, res) => {
-  const { title, subtitle, content, featured_image, category, tags } = req.body;
+  const { title, subtitle, content, featured_image } = req.body;
   try {
     const [result] = await db.query(
-      `INSERT INTO blogs (title, subtitle, content, featured_image, category, tags, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, NOW())`,
-      [title, subtitle, content, featured_image, category, tags]
+      `INSERT INTO blogs (title, subtitle, content, featured_image, created_at)
+       VALUES (?, ?, ?, ?, NOW())`,
+      [title, subtitle, content, featured_image]
     );
     const [newBlog] = await db.query("SELECT * FROM blogs WHERE id = ?", [result.insertId]);
     res.status(201).json(newBlog[0]);
@@ -46,12 +45,12 @@ router.post("/", auth, async (req, res) => {
 
 // UPDATE a blog
 router.put("/:id", auth, async (req, res) => {
-  const { title, subtitle, content, featured_image, category, tags } = req.body;
+  const { title, subtitle, content, featured_image } = req.body;
   try {
     await db.query(
-      `UPDATE blogs SET title = ?, subtitle = ?, content = ?, featured_image = ?, category = ?, tags = ?
+      `UPDATE blogs SET title = ?, subtitle = ?, content = ?, featured_image = ?
        WHERE id = ?`,
-      [title, subtitle, content, featured_image, category, tags, req.params.id]
+      [title, subtitle, content, featured_image, req.params.id]
     );
     const [updatedBlog] = await db.query("SELECT * FROM blogs WHERE id = ?", [req.params.id]);
     res.json(updatedBlog[0]);
