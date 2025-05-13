@@ -37,9 +37,26 @@ app.use(passport.initialize());
 
 // Add security headers
 app.use((req, res, next) => {
+  // Basic security headers
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("X-XSS-Protection", "1; mode=block");
+
+  // Additional security headers
+  res.setHeader(
+    "Strict-Transport-Security",
+    "max-age=31536000; includeSubDomains"
+  );
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://via.placeholder.com"
+  );
+  res.setHeader("Referrer-Policy", "no-referrer-when-downgrade");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=()"
+  );
+
   next();
 });
 
@@ -61,10 +78,31 @@ app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
+// 404 handler - must be before error handler
+app.use((req, res, next) => {
+  res.status(404).json({
+    message: "Resource not found",
+    path: req.originalUrl,
+  });
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong!" });
+  // Log error details for debugging
+  console.error(`[${new Date().toISOString()}] Error:`, {
+    message: err.message,
+    stack: err.stack,
+    path: req.originalUrl,
+    method: req.method,
+  });
+
+  // Don't expose stack traces in production
+  const error =
+    process.env.NODE_ENV === "production"
+      ? { message: "Something went wrong!" }
+      : { message: err.message, stack: err.stack };
+
+  res.status(err.status || 500).json(error);
 });
 
 const PORT = process.env.PORT || 3000;

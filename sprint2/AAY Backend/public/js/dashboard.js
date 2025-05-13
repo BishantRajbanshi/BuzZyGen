@@ -177,6 +177,48 @@ if (hamburgerMenu && sidebar && closeSidebar && overlay) {
       closeSidebarMenu();
     }
   });
+
+  // Add click event listeners to sidebar menu items
+  const sidebarMenuItems = document.querySelectorAll(".sidebar-menu li a");
+  sidebarMenuItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const menuText = this.textContent.trim();
+
+      // Handle different menu items
+      if (menuText === "Home") {
+        filterNewsByCategory("all");
+      } else if (
+        [
+          "Business",
+          "Sports",
+          "Technology",
+          "Entertainment",
+          "Science",
+          "Articles",
+          "Blog",
+        ].includes(menuText)
+      ) {
+        // Convert "Articles" to "article" for consistency with data-category
+        const category =
+          menuText === "Articles"
+            ? "article"
+            : menuText === "Blog"
+            ? "blog"
+            : menuText.toLowerCase();
+        filterNewsByCategory(category);
+      } else if (menuText === "Saved Articles") {
+        // Show saved articles (to be implemented)
+        alert("Saved Articles feature coming soon!");
+      } else if (menuText === "Settings") {
+        // Show settings (to be implemented)
+        alert("Settings feature coming soon!");
+      }
+
+      // Close sidebar after selection on mobile
+      closeSidebarMenu();
+    });
+  });
 }
 
 // Add animation to navigation links
@@ -288,7 +330,12 @@ async function fetchNews(category = null) {
   try {
     // Handle special categories
     let url;
-    if (!category || category === "all" || category === "home") {
+
+    // Special handling for "article" category to fetch admin-created articles
+    if (category === "article") {
+      await fetchAdminArticles();
+      return; // Exit early as we've handled this special case
+    } else if (!category || category === "all" || category === "home") {
       url = "/api/news";
     } else {
       url = `/api/news/category/${category}`;
@@ -331,6 +378,114 @@ async function fetchNews(category = null) {
   } catch (error) {
     console.error("Error fetching news:", error);
     displayFallbackNews();
+  }
+}
+
+// Fetch and display admin-created articles
+async function fetchAdminArticles() {
+  try {
+    // Show loading state in the main content area
+    const mainContent = document.querySelector(".dashboard-main");
+    if (mainContent) {
+      // Create a temporary loading section
+      const loadingSection = document.createElement("div");
+      loadingSection.className = "articles-section";
+      loadingSection.innerHTML = `
+        <h2>Articles</h2>
+        <div class="articles-grid">
+          <div class="no-articles-message">
+            <h3>Loading articles...</h3>
+            <p>Please wait while we fetch the latest articles.</p>
+          </div>
+        </div>
+      `;
+
+      // Replace existing articles section if it exists, or append to main content
+      const existingSection = document.querySelector(".articles-section");
+      if (existingSection) {
+        mainContent.replaceChild(loadingSection, existingSection);
+      } else {
+        // Insert after welcome section
+        const welcomeSection = document.querySelector(".welcome-section");
+        if (welcomeSection) {
+          welcomeSection.insertAdjacentElement("afterend", loadingSection);
+        } else {
+          mainContent.prepend(loadingSection);
+        }
+      }
+    }
+
+    // Fetch admin articles from the database
+    const response = await fetch("/api/news/db", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch admin articles");
+    }
+
+    const data = await response.json();
+
+    // Check if response is in the new format or old format
+    const articles = data.articles || data;
+
+    // Display admin articles in admin-style layout
+    displayAdminArticles(articles);
+
+    // Hide other content sections when in Articles view
+    const sectionsToHide = [
+      ".breaking-news-banner",
+      ".top-stories",
+      ".news-by-category",
+      ".most-read",
+      ".news-feed",
+    ];
+
+    sectionsToHide.forEach((selector) => {
+      const section = document.querySelector(selector);
+      if (section) {
+        section.style.display = "none";
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching admin articles:", error);
+
+    // Display error message in admin-style layout
+    const mainContent = document.querySelector(".dashboard-main");
+    if (mainContent) {
+      const articlesSection = document.createElement("div");
+      articlesSection.className = "articles-section";
+      articlesSection.innerHTML = `
+        <h2>Articles</h2>
+        <div class="articles-grid">
+          <div class="no-articles-message">
+            <h3>Error loading articles</h3>
+            <p>There was a problem loading the articles. Please try again later.</p>
+          </div>
+        </div>
+      `;
+
+      // Replace existing articles section if it exists, or append to main content
+      const existingSection = document.querySelector(".articles-section");
+      if (existingSection) {
+        mainContent.replaceChild(articlesSection, existingSection);
+      } else {
+        // Insert after welcome section
+        const welcomeSection = document.querySelector(".welcome-section");
+        if (welcomeSection) {
+          welcomeSection.insertAdjacentElement("afterend", articlesSection);
+        } else {
+          mainContent.prepend(articlesSection);
+        }
+      }
+    }
   }
 }
 
@@ -384,6 +539,20 @@ function getFallbackNewsHTML() {
       description:
         "Simple lifestyle changes that can significantly improve your overall health and wellbeing.",
       category: "Health",
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      title: "Latest Articles from Our Contributors",
+      description:
+        "Explore in-depth articles from our expert contributors on various topics.",
+      category: "Article",
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      title: "Blog: Behind the Headlines",
+      description:
+        "Our editors share insights and perspectives on current events and trending topics.",
+      category: "Blog",
       date: new Date().toLocaleDateString(),
     },
   ];
@@ -688,6 +857,153 @@ function displayNews(news) {
     .join("");
 }
 
+// Display admin articles in admin-style layout
+function displayAdminArticles(articles) {
+  // Create or get the articles section
+  let articlesSection = document.querySelector(".articles-section");
+  const mainContent = document.querySelector(".dashboard-main");
+
+  if (!articlesSection && mainContent) {
+    articlesSection = document.createElement("div");
+    articlesSection.className = "articles-section";
+
+    // Insert after welcome section
+    const welcomeSection = document.querySelector(".welcome-section");
+    if (welcomeSection) {
+      welcomeSection.insertAdjacentElement("afterend", articlesSection);
+    } else {
+      mainContent.prepend(articlesSection);
+    }
+  }
+
+  if (!articlesSection) return;
+
+  // If no articles or empty array, show message
+  if (!articles || articles.length === 0) {
+    articlesSection.innerHTML = `
+      <h2>Articles</h2>
+      <div class="articles-grid">
+        <div class="no-articles-message">
+          <h3>No articles found</h3>
+          <p>There are currently no articles available. Please check back later.</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Create HTML for articles section
+  let html = `<h2>Articles</h2>
+    <div class="articles-grid">`;
+
+  // Add each article
+  articles.forEach((article) => {
+    // Handle both database news and API news formats
+    const title = article.title || "";
+    const subtitle = article.subtitle || article.description || "";
+    const category = article.category || "";
+    const date = article.created_at
+      ? new Date(article.created_at).toLocaleDateString()
+      : "";
+    const tags = article.tags || "";
+
+    // For image, check all possible image field names and validate
+    let imageUrl = "";
+    let hasValidImage = false;
+
+    if (article.featured_image && article.featured_image.trim() !== "") {
+      imageUrl = article.featured_image;
+      hasValidImage = true;
+    } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+      imageUrl = article.imageUrl;
+      hasValidImage = true;
+    } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+      imageUrl = article.urlToImage;
+      hasValidImage = true;
+    }
+
+    // Use placeholder if no valid image
+    if (!hasValidImage) {
+      imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+    }
+
+    html += `
+      <div class="article-card">
+        <div class="article-image">
+          <img src="${imageUrl}" alt="${title || "News article"}" />
+        </div>
+        <div class="article-content">
+          <h3>${title}</h3>
+          <p>${subtitle}</p>
+          <div class="article-meta">
+            ${category ? `<span>Category: ${category}</span>` : ""}
+            ${date ? `<span>Published: ${date}</span>` : ""}
+            ${tags ? `<span>Tags: ${tags}</span>` : ""}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  // Update the articles section
+  articlesSection.innerHTML = html;
+
+  // Show the articles section
+  articlesSection.style.display = "block";
+}
+
+// Function to filter news by category
+function filterNewsByCategory(category) {
+  // Update active state in main navigation
+  const navLinks = document.querySelectorAll(".nav-links a");
+  navLinks.forEach((link) => {
+    if (link.getAttribute("data-category") === category) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
+    }
+  });
+
+  // Update active state in category tabs
+  const categoryTabs = document.querySelectorAll(".category-tab");
+  categoryTabs.forEach((tab) => {
+    if (tab.getAttribute("data-category") === category) {
+      tab.classList.add("active");
+    } else {
+      tab.classList.remove("active");
+    }
+  });
+
+  // If switching to a category other than "article", show all sections again
+  if (category !== "article") {
+    const sectionsToShow = [
+      ".breaking-news-banner",
+      ".top-stories",
+      ".news-by-category",
+      ".most-read",
+      ".news-feed",
+    ];
+
+    sectionsToShow.forEach((selector) => {
+      const section = document.querySelector(selector);
+      if (section) {
+        section.style.display = "";
+      }
+    });
+
+    // Hide articles section if it exists
+    const articlesSection = document.querySelector(".articles-section");
+    if (articlesSection) {
+      articlesSection.style.display = "none";
+    }
+  }
+
+  // Fetch news for the selected category
+  fetchNews(category);
+}
+
 // Category navigation - using event delegation for better performance
 const navContainer = document.querySelector(".nav-links");
 if (navContainer) {
@@ -704,13 +1020,8 @@ if (navContainer) {
     // Get category from data attribute, defaulting to "all" for Home
     const category = link.getAttribute("data-category") || "all";
 
-    // Update active class
-    const navLinks = document.querySelectorAll(".nav-links a");
-    navLinks.forEach((l) => l.classList.remove("active"));
-    link.classList.add("active");
-
-    // Fetch news with the category
-    fetchNews(category);
+    // Filter news by category
+    filterNewsByCategory(category);
   });
 }
 

@@ -48,6 +48,92 @@
         width: 0;
         opacity: 0;
       }
+
+      /* Search results styles */
+      .search-results-section {
+        margin-bottom: 2rem;
+      }
+
+      #admin-search-results {
+        margin-top: 2rem;
+      }
+
+      .back-to-recent,
+      #back-to-recent {
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .back-to-recent:hover,
+      #back-to-recent:hover {
+        background-color: #e0e0e0;
+      }
+
+      /* Admin search container styles */
+      .admin-search input {
+        width: 200px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      .admin-search button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        color: #333;
+      }
+
+      .admin-search button:hover {
+        color: #bb1919;
+      }
+
+      /* Disabled search styles */
+      .search-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .search-disabled input {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+
+      .search-disabled button {
+        cursor: not-allowed;
+        color: #999;
+      }
+
+      .search-disabled button:hover {
+        color: #999;
+      }
+
+      /* Loading spinner */
+      .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .loading-spinner i {
+        font-size: 2rem;
+        color: #bb1919;
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body class="admin-body">
@@ -99,14 +185,22 @@
             <i class="fas fa-bars"></i>
           </div>
           <div class="logo">
-            <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
+            <a href="/admin.html" title="Go to Admin Dashboard">
+              <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
+            </a>
             <h1>ADMIN</h1>
           </div>
         </div>
         <div class="user-actions">
-          <div class="search-container">
-            <button><i class="fas fa-search"></i></button>
-            <input type="text" placeholder="Search..." />
+          <div class="search-container" id="admin-search-container">
+            <button id="admin-search-button">
+              <i class="fas fa-search"></i>
+            </button>
+            <input
+              type="text"
+              id="admin-search-input"
+              placeholder="Search articles by title..."
+            />
           </div>
           <div class="notifications">
             <i class="fas fa-bell"></i>
@@ -205,7 +299,9 @@
         <!-- Left Section: News, Arts, Lifestyle, More -->
         <div class="footer-left">
           <div class="footer-logo">
-            <img src="images/logoimage.png" alt="Logo" />
+            <a href="/admin.html" title="Go to Admin Dashboard">
+              <img src="images/logoimage.png" alt="Logo" />
+            </a>
           </div>
           <div class="footer-column">
             <h3>News</h3>

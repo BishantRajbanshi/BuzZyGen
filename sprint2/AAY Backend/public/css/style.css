@@ -57,6 +57,18 @@ header {
   gap: 10px;
 }
 
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.logo a:hover {
+  opacity: 0.9;
+}
+
 .logo img {
   height: 60px;
 }
@@ -815,6 +827,16 @@ footer {
   flex-wrap: nowrap;
   margin-left: 50px; /* Shift to the right */
 }
+.footer-logo a {
+  display: inline-block;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.footer-logo a:hover {
+  opacity: 0.8;
+}
+
 .footer-logo img {
   width: 120px; /* Adjust width of the logo */
   height: auto; /* Maintain aspect ratio */
@@ -894,7 +916,7 @@ footer {
   background: rgba(51, 51, 51, 0.5);
   background-color: transparent;
   color: white;
-  width: 600px;
+  width: 450px;
   max-width: 90%;
   border-radius: 40px;
   padding: 2.5rem 3.5rem;
@@ -903,7 +925,7 @@ footer {
   transform: scale(0.85);
   transform-origin: center top;
   position: relative;
-  margin: 0 auto;
+  margin: 2.5% auto;
 }
 
 .modal-content.login-redesign h2 {
@@ -956,6 +978,26 @@ footer {
   font-weight: 500;
   padding-left: 5px;
   animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Password Requirements Styles */
+.password-requirements {
+  color: #ccc;
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 5px;
+  text-align: left;
+  padding-left: 5px;
+}
+
+.password-requirements ul {
+  margin-top: 5px;
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+.password-requirements li {
+  margin-bottom: 3px;
 }
 
 .form-group.has-error input {
@@ -1365,21 +1407,39 @@ footer {
 /* Loading Spinner */
 .loading-spinner {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  justify-content: center;
+  padding: 3rem;
   font-size: 1.2rem;
   color: #666;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 1rem 0;
+  grid-column: 1 / -1;
+  text-align: center;
 }
 
 .loading-spinner i {
-  margin-right: 10px;
-  font-size: 1.5rem;
+  font-size: 3rem;
   color: #1a73e8;
+  margin-bottom: 1rem;
+  animation: spin 1.5s linear infinite;
+}
+
+.loading-spinner p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Sidebar Styles */

@@ -24,33 +24,20 @@ const auth = (req, res, next) => {
 
 const adminAuth = (req, res, next) => {
   try {
-    console.log("Admin auth middleware called");
-    const authHeader = req.header("Authorization");
-    console.log("Auth header:", authHeader);
-
-    const token = authHeader?.replace("Bearer ", "");
-    console.log("Token extracted:", token ? "Token exists" : "No token");
+    const token = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!token) {
-      console.log("No token provided");
       return res
         .status(401)
         .json({ message: "No token, authorization denied" });
     }
 
-    console.log(
-      "Verifying token with secret:",
-      process.env.JWT_SECRET ? "Secret exists" : "No secret"
-    );
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Token decoded:", decoded);
 
     if (decoded.role !== "admin") {
-      console.log("User is not admin, role:", decoded.role);
       return res.status(403).json({ message: "Access denied. Admin only." });
     }
 
-    console.log("Admin authentication successful");
     req.user = decoded;
     next();
   } catch (error) {

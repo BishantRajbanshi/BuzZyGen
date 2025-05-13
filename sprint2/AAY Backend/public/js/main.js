@@ -153,6 +153,75 @@ if (hamburgerMenu && sidebar && closeSidebar && overlay) {
       closeSidebarMenu();
     }
   });
+
+  // Add click event listeners to sidebar menu items
+  const sidebarMenuItems = document.querySelectorAll(".sidebar-menu li a");
+  sidebarMenuItems.forEach((item) => {
+    item.addEventListener("click", function (e) {
+      e.preventDefault();
+      const menuText = this.textContent.trim();
+
+      // Close sidebar first to prevent scrolling issues
+      closeSidebarMenu();
+
+      // Handle different menu items
+      if (menuText === "Home") {
+        // Navigate to home and show all news
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        // Use setTimeout to ensure scroll completes before fetching news
+        setTimeout(() => {
+          const homeLink = document.querySelector(
+            '.nav-links a[data-category="all"]'
+          );
+          if (homeLink) {
+            homeLink.click();
+          } else {
+            fetchNews("all");
+          }
+        }, 100);
+      } else if (
+        [
+          "Business",
+          "Sports",
+          "Technology",
+          "Entertainment",
+          "Science",
+        ].includes(menuText)
+      ) {
+        // First scroll to the category section
+        const categorySection = document.querySelector(".news-by-category");
+        if (categorySection) {
+          categorySection.scrollIntoView({ behavior: "smooth" });
+        }
+
+        // Use setTimeout to ensure scroll completes before fetching news
+        setTimeout(() => {
+          // Then navigate to the respective category
+          const categoryLink = document.querySelector(
+            `.nav-links a[data-category="${menuText.toLowerCase()}"]`
+          );
+          if (categoryLink) {
+            // Just update the active class without triggering the click event
+            const navLinks = document.querySelectorAll(".nav-links a");
+            navLinks.forEach((l) => l.classList.remove("active"));
+            categoryLink.classList.add("active");
+
+            // Fetch news directly instead of clicking the link
+            fetchNews(menuText.toLowerCase());
+          } else {
+            fetchNews(menuText.toLowerCase());
+          }
+        }, 300); // Slightly longer delay to ensure smooth scrolling completes
+      } else if (menuText === "Saved Articles") {
+        // Show saved articles (to be implemented)
+        alert("Saved Articles feature coming soon!");
+      } else if (menuText === "Settings") {
+        // Show settings (to be implemented)
+        alert("Settings feature coming soon!");
+      }
+    });
+  });
 }
 
 // This event listener has been moved inside the sidebar functionality check
@@ -720,9 +789,36 @@ if (signupForm) {
     if (!password) {
       showSignupError("Password", "Password is required");
       hasErrors = true;
-    } else if (password.length < 6) {
-      showSignupError("Password", "Password must be at least 6 characters");
-      hasErrors = true;
+    } else {
+      // Check password length
+      if (password.length < 8) {
+        showSignupError("Password", "Password must be at least 8 characters");
+        hasErrors = true;
+      }
+      // Check for uppercase letter
+      else if (!/[A-Z]/.test(password)) {
+        showSignupError(
+          "Password",
+          "Password must contain at least one uppercase letter"
+        );
+        hasErrors = true;
+      }
+      // Check for number
+      else if (!/[0-9]/.test(password)) {
+        showSignupError(
+          "Password",
+          "Password must contain at least one number"
+        );
+        hasErrors = true;
+      }
+      // Check for special character
+      else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        showSignupError(
+          "Password",
+          "Password must contain at least one special character"
+        );
+        hasErrors = true;
+      }
     }
 
     if (!confirmPassword) {
@@ -1429,6 +1525,96 @@ if (moreMenu && moreDropdown) {
   document.addEventListener("click", (e) => {
     if (!moreMenu.contains(e.target) && !moreDropdown.contains(e.target)) {
       moreDropdown.classList.remove("active");
+    }
+  });
+}
+
+// Fetch and display news
+async function fetchNews(category = null) {
+  try {
+    console.log(`Fetching news for category: ${category || "all"}`);
+
+    // Show loading state
+    const featuredNews = document.querySelector(".featured-news");
+    if (featuredNews) {
+      featuredNews.innerHTML = `
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading news...</p>
+        </div>
+      `;
+    }
+
+    // Handle special categories
+    let url;
+    if (!category || category === "all" || category === "home") {
+      url = "/api/news";
+    } else {
+      url = `/api/news/category/${category}`;
+    }
+
+    // Add a cache-busting parameter to avoid browser caching
+    const cacheBuster = `cacheBust=${Date.now()}`;
+    const finalUrl = `${url}?${cacheBuster}`;
+
+    // Set a timeout for the fetch request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+    const response = await fetch(finalUrl, {
+      headers: {
+        Accept: "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+      cache: "no-store",
+      signal: controller.signal,
+    });
+
+    // Clear the timeout
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const news = await response.json();
+
+    if (!news || news.length === 0 || news.message) {
+      console.log("No news data received, displaying fallback content");
+      displayFallbackNews();
+    } else {
+      console.log(`Received ${news.length} news items`);
+      // Display news in BBC style layout
+      displayBreakingNews(news[0]);
+      displayTopStories(news.slice(0, 3));
+      displayCategoryNews(news);
+      displayMostRead(news.slice(0, 5));
+      displayNews(news); // Keep original display for compatibility
+    }
+
+    // Update active navigation link
+    updateActiveNavLink(category);
+  } catch (error) {
+    console.error("Error fetching news:", error);
+    displayFallbackNews();
+  }
+}
+
+// Function to update the active navigation link
+function updateActiveNavLink(category) {
+  const navLinks = document.querySelectorAll(".nav-links a");
+  navLinks.forEach((link) => {
+    const linkCategory = link.getAttribute("data-category");
+    if (
+      (!category && linkCategory === "all") ||
+      (category === "all" && linkCategory === "all") ||
+      (category && linkCategory === category)
+    ) {
+      link.classList.add("active");
+    } else {
+      link.classList.remove("active");
     }
   });
 }

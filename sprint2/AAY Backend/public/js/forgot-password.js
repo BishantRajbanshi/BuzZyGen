@@ -75,14 +75,22 @@ document.addEventListener("DOMContentLoaded", function () {
       sendOtpBtn.textContent = "Send OTP";
 
       if (data.success) {
-        // Show success message
-        const successMessage = document.getElementById("successMessage");
-
         // If in development mode, show OTP prominently
         if (data.devMode && data.otp) {
+          // Show success message with animated checkmark
+          Confirmation.success(
+            `OTP sent successfully! Check below for your OTP.`,
+            null,
+            true,
+            () => {
+              // Move to OTP step immediately after animation
+              moveToStep(2);
+            }
+          );
+
           // Create a more visible OTP display
+          const successMessage = document.getElementById("successMessage");
           successMessage.innerHTML = `
-            ${data.message}
             <div style="margin-top: 15px; padding: 10px; background-color: #fffde7; border: 2px dashed #ffc107; border-radius: 5px; text-align: center;">
               <p style="margin: 0; color: #ff6f00; font-weight: bold;">DEVELOPMENT MODE</p>
               <p style="margin: 5px 0; color: #333;">Your OTP is:</p>
@@ -95,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </p>
             </div>
           `;
+          successMessage.style.display = "block";
 
           // Convert OTP to array of digits
           const otpDigits = data.otp.toString().split("");
@@ -108,7 +117,14 @@ document.addEventListener("DOMContentLoaded", function () {
             });
           }, 500);
         } else if (data.adminEmail) {
-          // For non-Gmail accounts, show admin email message
+          // For non-Gmail accounts, show admin email message with animated info icon
+          Confirmation.info(`OTP sent to admin email`, null, true, () => {
+            // Move to OTP step immediately
+            moveToStep(2);
+          });
+
+          // Show detailed message
+          const successMessage = document.getElementById("successMessage");
           successMessage.innerHTML = `
             <div style="margin-top: 15px; padding: 15px; background-color: #e3f2fd; border: 2px solid #2196f3; border-radius: 5px; text-align: center;">
               <p style="margin: 0; color: #0d47a1; font-weight: bold;">ADMIN EMAIL NOTIFICATION</p>
@@ -121,19 +137,24 @@ document.addEventListener("DOMContentLoaded", function () {
               </p>
             </div>
           `;
+          successMessage.style.display = "block";
         } else {
-          // Regular success message
+          // Regular success message with animated checkmark
+          Confirmation.success(data.message, null, true, () => {
+            // Move to OTP step immediately
+            moveToStep(2);
+          });
+
+          // Also show in the form
+          const successMessage = document.getElementById("successMessage");
           successMessage.textContent = data.message;
+          successMessage.style.display = "block";
         }
-
-        successMessage.style.display = "block";
-
-        // Move to OTP step after a short delay
-        setTimeout(() => {
-          moveToStep(2);
-        }, 1500);
       } else if (data.googleAccount) {
-        // Special case for Google accounts
+        // Special case for Google accounts - show error with animated icon
+        Confirmation.error(data.message);
+
+        // Also show in the form
         showError("general", data.message);
 
         // Add a Google login button
@@ -151,7 +172,12 @@ document.addEventListener("DOMContentLoaded", function () {
         errorElement.appendChild(document.createElement("br"));
         errorElement.appendChild(googleLoginBtn);
       } else {
-        // Show error message
+        // Show error message with animated icon
+        Confirmation.error(
+          data.message || "An error occurred. Please try again."
+        );
+
+        // Also show in the form
         showError(
           "general",
           data.message || "An error occurred. Please try again."
@@ -213,18 +239,27 @@ document.addEventListener("DOMContentLoaded", function () {
         // Store the reset token
         resetToken = data.token;
 
-        // Show success message
+        // Show success message with animated checkmark
+        Confirmation.success(
+          data.message || "OTP verified successfully",
+          null,
+          true,
+          () => {
+            // Move to password step immediately
+            moveToStep(3);
+          }
+        );
+
+        // Also show in the form
         const successMessage = document.getElementById("otpSuccessMessage");
         successMessage.textContent =
           data.message || "OTP verified successfully";
         successMessage.style.display = "block";
-
-        // Move to password step after a short delay
-        setTimeout(() => {
-          moveToStep(3);
-        }, 1500);
       } else {
-        // Show error message
+        // Show error message with animated icon
+        Confirmation.error(data.message || "Invalid OTP. Please try again.");
+
+        // Also show in the form
         showError("otp", data.message || "Invalid OTP. Please try again.");
       }
     } catch (error) {
@@ -252,8 +287,30 @@ document.addEventListener("DOMContentLoaded", function () {
     // Validate passwords
     let hasError = false;
 
-    if (password.length < 6) {
-      showError("password", "Password must be at least 6 characters long");
+    // Check password length
+    if (password.length < 8) {
+      showError("password", "Password must be at least 8 characters long");
+      hasError = true;
+    }
+    // Check for uppercase letter
+    else if (!/[A-Z]/.test(password)) {
+      showError(
+        "password",
+        "Password must contain at least one uppercase letter"
+      );
+      hasError = true;
+    }
+    // Check for number
+    else if (!/[0-9]/.test(password)) {
+      showError("password", "Password must contain at least one number");
+      hasError = true;
+    }
+    // Check for special character
+    else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      showError(
+        "password",
+        "Password must contain at least one special character"
+      );
       hasError = true;
     }
 
@@ -289,25 +346,98 @@ document.addEventListener("DOMContentLoaded", function () {
       resetPasswordBtn.textContent = "Reset Password";
 
       if (data.success) {
-        // Show success message
+        // Decode the JWT token to check user role for the success message
+        let customSuccessMessage =
+          "Password reset successfully. Redirecting to dashboard...";
+
+        try {
+          if (data.token) {
+            const tokenParts = data.token.split(".");
+            if (tokenParts.length === 3) {
+              const payload = JSON.parse(atob(tokenParts[1]));
+              const isAdmin =
+                payload.role && payload.role.toLowerCase() === "admin";
+
+              // Customize message based on user role
+              customSuccessMessage = isAdmin
+                ? "Password reset successfully. Redirecting to admin panel..."
+                : "Password reset successfully. Redirecting to your dashboard...";
+            }
+          }
+        } catch (error) {
+          console.error("Error parsing JWT token for message:", error);
+        }
+
+        // Show success message with animated checkmark
+        Confirmation.success(
+          data.message || customSuccessMessage,
+          null,
+          true,
+          () => {
+            // Redirect will happen automatically
+          }
+        );
+
+        // Also show in the form
         const successMessage = document.getElementById(
           "passwordSuccessMessage"
         );
-        successMessage.textContent =
-          data.message || "Password reset successfully";
+        successMessage.textContent = data.message || customSuccessMessage;
         successMessage.style.display = "block";
 
         // Store the token for automatic login
         if (data.token) {
           localStorage.setItem("token", data.token);
-        }
 
-        // Redirect to dashboard after a delay
-        setTimeout(() => {
-          window.location.href = "/dashboard.html";
-        }, 2000);
+          // Decode the JWT token to check user role
+          try {
+            // Get the payload part of the JWT (second part)
+            const tokenParts = data.token.split(".");
+            if (tokenParts.length === 3) {
+              const payload = JSON.parse(atob(tokenParts[1]));
+
+              // Log token information for debugging
+              console.log("Token payload:", payload);
+              console.log("User role:", payload.role);
+
+              // Check if user is admin (handle undefined role gracefully)
+              const isAdmin =
+                payload.role && payload.role.toLowerCase() === "admin";
+
+              // Redirect to appropriate dashboard after a short delay
+              setTimeout(() => {
+                if (isAdmin) {
+                  window.location.href = "/admin.html";
+                } else {
+                  window.location.href = "/dashboard.html";
+                }
+              }, 1000);
+            } else {
+              // Fallback to user dashboard if token format is invalid
+              setTimeout(() => {
+                window.location.href = "/dashboard.html";
+              }, 1000);
+            }
+          } catch (error) {
+            console.error("Error parsing JWT token:", error);
+            // Fallback to user dashboard on error
+            setTimeout(() => {
+              window.location.href = "/dashboard.html";
+            }, 1000);
+          }
+        } else {
+          // No token provided, redirect to user dashboard as fallback
+          setTimeout(() => {
+            window.location.href = "/dashboard.html";
+          }, 1000);
+        }
       } else {
-        // Show error message
+        // Show error message with animated icon
+        Confirmation.error(
+          data.message || "Failed to reset password. Please try again."
+        );
+
+        // Also show in the form
         showError(
           "passwordGeneral",
           data.message || "Failed to reset password. Please try again."
@@ -378,22 +508,36 @@ document.addEventListener("DOMContentLoaded", function () {
       "strength-strong"
     );
 
-    if (password.length >= 6) {
+    // Check for minimum length
+    let strength = 0;
+
+    // Check for minimum length
+    if (password.length >= 8) {
+      strength += 1;
+    }
+
+    // Check for uppercase and lowercase letters
+    if (/[A-Z]/.test(password) && /[a-z]/.test(password)) {
+      strength += 1;
+    }
+
+    // Check for numbers
+    if (/[0-9]/.test(password)) {
+      strength += 1;
+    }
+
+    // Check for special characters
+    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      strength += 1;
+    }
+
+    // Update strength bar based on criteria met
+    if (strength <= 2) {
       strengthBar.classList.add("strength-weak");
-
-      if (
-        password.length >= 8 &&
-        /[A-Z]/.test(password) &&
-        /[a-z]/.test(password)
-      ) {
-        strengthBar.classList.remove("strength-weak");
-        strengthBar.classList.add("strength-medium");
-
-        if (/[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)) {
-          strengthBar.classList.remove("strength-medium");
-          strengthBar.classList.add("strength-strong");
-        }
-      }
+    } else if (strength === 3) {
+      strengthBar.classList.add("strength-medium");
+    } else if (strength === 4) {
+      strengthBar.classList.add("strength-strong");
     }
   });
 
