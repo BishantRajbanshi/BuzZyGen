@@ -1,92 +1,87 @@
-// Sidebar toggle
-document.querySelector('.hamburger-menu').onclick = () => {
-    document.querySelector('.sidebar').classList.toggle('active');
-    document.querySelector('.overlay').classList.toggle('active');
-  };
+document.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("token");
+    if (!token) return (window.location.href = "/");
   
-  document.querySelector('.close-sidebar').onclick = () => {
-    document.querySelector('.sidebar').classList.remove('active');
-    document.querySelector('.overlay').classList.remove('active');
-  };
-  
-  // Close sidebar on overlay click
-  document.querySelector('.overlay').onclick = () => {
-    document.querySelector('.sidebar').classList.remove('active');
-    document.querySelector('.overlay').classList.remove('active');
-  };
-  
-  // Profile dropdown toggle
-  document.querySelector('.user-profile').onclick = () => {
-    document.querySelector('.profile-dropdown').classList.toggle('active');
-  };
-  
-  // Toggle login password visibility
-  document.querySelector('.toggle-password').onclick = () => {
-    const input = document.getElementById('loginPassword');
-    const icon = document.querySelector('.toggle-password');
-    input.type = input.type === 'password' ? 'text' : 'password';
-    icon.classList.toggle('fa-eye');
-    icon.classList.toggle('fa-eye-slash');
-  };
-  
-  // Toggle signup password visibility
-  document.querySelector('.toggle-password-signup').onclick = () => {
-    const input = document.getElementById('signupPassword');
-    const icon = document.querySelector('.toggle-password-signup');
-    input.type = input.type === 'password' ? 'text' : 'password';
-    icon.classList.toggle('fa-eye');
-    icon.classList.toggle('fa-eye-slash');
-  };
-  
-  // Toggle confirm password visibility
-  document.querySelector('.toggle-password-confirm').onclick = () => {
-    const input = document.getElementById('signupConfirmPassword');
-    const icon = document.querySelector('.toggle-password-confirm');
-    input.type = input.type === 'password' ? 'text' : 'password';
-    icon.classList.toggle('fa-eye');
-    icon.classList.toggle('fa-eye-slash');
-  };
-  
-  // Show login modal
-  document.getElementById('loginBtn').onclick = () => {
-    document.getElementById('loginModal').style.display = 'block';
-  };
-  
-  // Show signup modal
-  document.getElementById('signupBtn').onclick = () => {
-    document.getElementById('signupModal').style.display = 'block';
-  };
-  
-  // Close modals
-  document.querySelectorAll('.modal .close').forEach(btn => {
-    btn.onclick = () => {
-      btn.closest('.modal').style.display = 'none';
-    };
-  });
-  
-  // Switch modals
-  document.getElementById('registerNowLink').onclick = () => {
-    document.getElementById('loginModal').style.display = 'none';
-    document.getElementById('signupModal').style.display = 'block';
-  };
-  
-  document.getElementById('loginNowLink').onclick = () => {
-    document.getElementById('signupModal').style.display = 'none';
-    document.getElementById('loginModal').style.display = 'block';
-  };
-  
-  // Close modal when clicking outside
-  window.onclick = function(event) {
-    document.querySelectorAll('.modal').forEach(modal => {
-      if (event.target === modal) {
-        modal.style.display = 'none';
+    fetch("/api/blogs", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((blogs) => renderUserArticles(blogs))
+      .catch((err) => {
+        console.error("Failed to fetch user blogs:", err);
+        document.querySelector(".stories-grid").innerHTML = `<p>Error loading blogs.</p>`;
+      });
+        // ✅ Add logout event listener here
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      if (confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem("token");
+        sessionStorage.clear();
+        window.location.href = "/";
       }
     });
-  };
+  }
+    // ✅ Add back button event listener INSIDE DOMContentLoaded
+    const backBtn = document.querySelector(".back-btn");
+    if (backBtn) {
+      backBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.location.href = "dashboard.html#article";
+      });
+    }
+  });
   
-  document.getElementById('addBlogBtn').onclick = () => {
-    alert("Redirecting to blog creation page...");
-    // Optional: redirect to another page
-    // window.location.href = 'add-blog.html';
-};
+function renderUserArticles(blogs) {
+    const container = document.querySelector(".stories-grid");
+    const featured = document.querySelector(".featured-image-wrapper");
+    const featuredTextBox = document.querySelector(".featured-text-box");
+  
+    if (!container) return;
+  
+    if (!blogs || blogs.length === 0) {
+      container.innerHTML = `<p>You haven't posted any blogs yet.</p>`;
+      if (featuredTextBox) {
+        featuredTextBox.innerHTML = `<p>No featured blog available.</p>`;
+      }
+      return;
+    }
+  
+    // ✅ Use the first blog as the featured blog
+    const featuredBlog = blogs[0];
+    const imageUrl = featuredBlog.featured_image || "https://via.placeholder.com/1200x500?text=No+Image";
+  
+    if (featured) {
+      featured.style.backgroundImage = `url('${imageUrl}')`;
+    }
+  
+    if (featuredTextBox) {
+      featuredTextBox.innerHTML = `
+        <p class="meta">${new Date(featuredBlog.created_at).toLocaleDateString()} • ${featuredBlog.category}</p>
+        <h2>${featuredBlog.title}</h2>
+        <p class="excerpt">${featuredBlog.subtitle || featuredBlog.content?.slice(0, 150) || ""}</p>
+      `;
+    }
+  
+    // Remove featured blog from the list before rendering others
+    const rest = blogs.slice(1);
+    container.innerHTML = rest
+      .map((blog) => {
+        const image = blog.featured_image || "https://via.placeholder.com/600x300?text=No+Image";
+        const excerpt = blog.subtitle || (blog.content ? blog.content.slice(0, 120) + "..." : "");
+        return `
+          <article class="story-card">
+            <img src="${image}" alt="${blog.title}" />
+            <h4>${blog.title}</h4>
+            <p class="meta">${new Date(blog.created_at).toLocaleDateString()} • ${blog.category}</p>
+            <p>${excerpt}</p>
+            <a href="article.html?id=${blog.id}">Read More →</a>
+          </article>
+        `;
+      })
+      .join("");
+  }
+   
   
