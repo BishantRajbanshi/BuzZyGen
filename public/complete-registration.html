@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complete Registration - News Portal</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+        padding-top: 0; /* Override the default padding-top */
+      }
+
+      .complete-registration-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("../images/buzzy-gen-logo.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .complete-registration-card {
+        background: rgba(51, 51, 51, 0.5);
+        color: white;
+        width: 450px;
+        max-width: 90%;
+        border-radius: 40px;
+        padding: 2.5rem 3.5rem;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        text-align: center;
+        transform: scale(0.7);
+        transform-origin: center;
+      }
+
+      .complete-registration-card h1 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
+
+      .complete-registration-card p {
+        margin-bottom: 20px;
+        line-height: 1.6;
+        color: #ccc;
+      }
+
+      .complete-registration-card .form-group {
+        margin-bottom: 1.5rem;
+        text-align: left;
+      }
+
+      .complete-registration-card label {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-size: 14px;
+        color: #ccc;
+      }
+
+      .complete-registration-card input {
+        width: 100%;
+        padding: 12px 15px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-size: 15px;
+        margin-top: 5px;
+      }
+
+      .complete-registration-card input::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .complete-registration-card button {
+        width: 100%;
+        padding: 12px;
+        background-color: white;
+        color: black;
+        font-weight: 600;
+        font-size: 15px;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .complete-registration-card button:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-2px);
+      }
+
+      .form-error {
+        color: #ff6b6b;
+        font-size: 12px;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .form-success {
+        color: #4caf50;
+        font-size: 14px;
+        margin: 15px 0;
+        padding: 10px;
+        background-color: rgba(76, 175, 80, 0.1);
+        border-radius: 5px;
+        display: none;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+      }
+
+      .user-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        margin-right: 15px;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .user-details {
+        text-align: left;
+      }
+
+      .user-name {
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+
+      .user-email {
+        font-size: 14px;
+        color: #ccc;
+      }
+
+      .password-input-container {
+        position: relative;
+      }
+
+      .password-input-container i {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .password-requirements {
+        font-size: 12px;
+        color: #ccc;
+        margin-top: 8px;
+        text-align: left;
+      }
+
+      .password-strength {
+        height: 5px;
+        background-color: #444;
+        border-radius: 5px;
+        margin-top: 10px;
+        overflow: hidden;
+      }
+
+      .password-strength-bar {
+        height: 100%;
+        width: 0;
+        transition: width 0.3s ease;
+      }
+
+      .strength-weak {
+        background-color: #ff6b6b;
+        width: 33%;
+      }
+
+      .strength-medium {
+        background-color: #ffb86c;
+        width: 66%;
+      }
+
+      .strength-strong {
+        background-color: #4caf50;
+        width: 100%;
+      }
+
+      @media (max-width: 768px) {
+        .complete-registration-card {
+          padding: 2.5rem;
+          transform: scale(0.9);
+          width: 90%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .complete-registration-card {
+          padding: 2rem;
+          transform: scale(1);
+          border-radius: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="complete-registration-container">
+      <div class="complete-registration-card">
+        <h1>Complete Your Registration</h1>
+
+        <div class="user-info">
+          <img
+            id="userAvatar"
+            src="images/default-avatar.png"
+            alt="Profile Picture"
+            class="user-avatar"
+          />
+          <div class="user-details">
+            <div id="userName" class="user-name">Loading...</div>
+            <div id="userEmail" class="user-email">Loading...</div>
+          </div>
+        </div>
+
+        <p>
+          Please set a password to complete your registration. This will allow
+          you to log in using either Google or your email and password.
+        </p>
+
+        <form id="completeRegistrationForm">
+          <input type="hidden" id="userId" name="userId" />
+          <input type="hidden" id="token" name="token" />
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                id="password"
+                placeholder="Create a password"
+                required
+              />
+              <i class="fas fa-eye-slash toggle-password"></i>
+            </div>
+            <div class="password-strength">
+              <div id="passwordStrengthBar" class="password-strength-bar"></div>
+            </div>
+            <div class="form-error" id="passwordError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="password-input-container">
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm your password"
+                required
+              />
+              <i class="fas fa-eye-slash toggle-password-confirm"></i>
+            </div>
+            <div class="form-error" id="confirmPasswordError"></div>
+          </div>
+
+          <div class="form-error" id="generalError"></div>
+          <div class="form-success" id="successMessage"></div>
+
+          <button type="submit" id="submitButton">Complete Registration</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="js/confirmation.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get token from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+
+        if (!token) {
+          // Show error message with animation
+          Confirmation.error(
+            "No authentication token provided. Please try signing up again."
+          );
+
+          // Also show in the form
+          showError(
+            "No authentication token provided. Please try signing up again."
+          );
+          document.getElementById("completeRegistrationForm").style.display =
+            "none";
+          return;
+        }
+
+        // Set token in form
+        document.getElementById("token").value = token;
+
+        // Fetch user data using token
+        fetchUserData(token);
+
+        // Toggle password visibility
+        const togglePassword = document.querySelector(".toggle-password");
+        if (togglePassword) {
+          togglePassword.addEventListener("click", function () {
+            const passwordInput = document.getElementById("password");
+            const type =
+              passwordInput.getAttribute("type") === "password"
+                ? "text"
+                : "password";
+            passwordInput.setAttribute("type", type);
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+          });
+        }
+
+        // Toggle confirm password visibility
+        const togglePasswordConfirm = document.querySelector(
+          ".toggle-password-confirm"
+        );
+        if (togglePasswordConfirm) {
+          togglePasswordConfirm.addEventListener("click", function () {
+            const passwordInput = document.getElementById("confirmPassword");
+            const type =
+              passwordInput.getAttribute("type") === "password"
+                ? "text"
+                : "password";
+            passwordInput.setAttribute("type", type);
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+          });
+        }
+
+        // Password strength meter
+        const passwordInput = document.getElementById("password");
+        const strengthBar = document.getElementById("passwordStrengthBar");
+
+        passwordInput.addEventListener("input", function () {
+          const password = this.value;
+          let strength = 0;
+
+          // Remove previous classes
+          strengthBar.classList.remove(
+            "strength-weak",
+            "strength-medium",
+            "strength-strong"
+          );
+
+          // Check for minimum length
+          if (password.length >= 8) {
+            strength += 1;
+          }
+
+          // Check for uppercase and lowercase letters
+          if (/[A-Z]/.test(password) && /[a-z]/.test(password)) {
+            strength += 1;
+          }
+
+          // Check for numbers
+          if (/[0-9]/.test(password)) {
+            strength += 1;
+          }
+
+          // Check for special characters
+          if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            strength += 1;
+          }
+
+          // Update strength bar based on criteria met
+          if (strength <= 2) {
+            strengthBar.classList.add("strength-weak");
+          } else if (strength === 3) {
+            strengthBar.classList.add("strength-medium");
+          } else if (strength === 4) {
+            strengthBar.classList.add("strength-strong");
+          }
+        });
+
+        // Form submission
+        const form = document.getElementById("completeRegistrationForm");
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Clear previous errors
+          clearErrors();
+
+          // Get form values
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const userId = document.getElementById("userId").value;
+
+          // Validate form
+          let hasError = false;
+
+          // Check password length
+          if (password.length < 8) {
+            showFieldError(
+              "password",
+              "Password must be at least 8 characters long"
+            );
+            hasError = true;
+          }
+          // Check for uppercase letter
+          else if (!/[A-Z]/.test(password)) {
+            showFieldError(
+              "password",
+              "Password must contain at least one uppercase letter"
+            );
+            hasError = true;
+          }
+          // Check for number
+          else if (!/[0-9]/.test(password)) {
+            showFieldError(
+              "password",
+              "Password must contain at least one number"
+            );
+            hasError = true;
+          }
+          // Check for special character
+          else if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+            showFieldError(
+              "password",
+              "Password must contain at least one special character"
+            );
+            hasError = true;
+          }
+
+          if (password !== confirmPassword) {
+            showFieldError("confirmPassword", "Passwords do not match");
+            hasError = true;
+          }
+
+          if (hasError) return;
+
+          // Submit form
+          const submitButton = document.getElementById("submitButton");
+          submitButton.disabled = true;
+          submitButton.textContent = "Processing...";
+
+          fetch("/api/auth/complete-google-registration", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              token,
+              password,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              submitButton.disabled = false;
+              submitButton.textContent = "Complete Registration";
+
+              if (data.success) {
+                // Show success message with animation
+                Confirmation.success(
+                  data.message || "Registration completed successfully!",
+                  null,
+                  true,
+                  () => {
+                    // Callback after animation completes
+                    window.location.href =
+                      data.redirectUrl || "/dashboard.html";
+                  }
+                );
+
+                // Also show in the form
+                const successMessage =
+                  document.getElementById("successMessage");
+                successMessage.textContent =
+                  data.message || "Registration completed successfully!";
+                successMessage.style.display = "block";
+              } else {
+                // Show error message with animation
+                Confirmation.error(
+                  data.message || "An error occurred. Please try again."
+                );
+
+                // Also show in the form
+                showError(
+                  data.message || "An error occurred. Please try again."
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              submitButton.disabled = false;
+              submitButton.textContent = "Complete Registration";
+
+              // Show error message with animation
+              Confirmation.error("An error occurred. Please try again.");
+
+              // Also show in the form
+              showError("An error occurred. Please try again.");
+            });
+        });
+
+        // Helper functions
+        function fetchUserData(token) {
+          fetch(`/api/auth/google-user-data?token=${token}`)
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Update user info
+                document.getElementById("userName").textContent = data.name;
+                document.getElementById("userEmail").textContent = data.email;
+                document.getElementById("userId").value = data.id;
+
+                if (data.profilePicture) {
+                  document.getElementById("userAvatar").src =
+                    data.profilePicture;
+                }
+              } else {
+                // Show error message with animation
+                Confirmation.error(data.message || "Failed to load user data");
+
+                // Also show in the form
+                showError(data.message || "Failed to load user data");
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error);
+
+              // Show error message with animation
+              Confirmation.error("Failed to load user data. Please try again.");
+
+              // Also show in the form
+              showError("Failed to load user data. Please try again.");
+            });
+        }
+
+        function showFieldError(field, message) {
+          const errorElement = document.getElementById(`${field}Error`);
+          if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = "block";
+          }
+        }
+
+        function showError(message) {
+          const errorElement = document.getElementById("generalError");
+          if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = "block";
+          }
+        }
+
+        function clearErrors() {
+          const errorElements = document.querySelectorAll(".form-error");
+          errorElements.forEach((el) => {
+            el.textContent = "";
+            el.style.display = "none";
+          });
+
+          document.getElementById("successMessage").style.display = "none";
+        }
+      });
+    </script>
+  </body>
+</html>
