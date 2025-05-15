@@ -206,75 +206,55 @@ router.get("/category/:category", async (req, res) => {
 // Get news from database
 router.get("/db", auth, async (req, res) => {
   try {
-    // Get pagination parameters with defaults
-    const limit = parseInt(req.query.limit) || 20;
-    const page = parseInt(req.query.page) || 1;
-    const offset = (page - 1) * limit;
-
     // Get the latest news articles ordered by creation date (newest first)
     const [rows] = await pool.query(
-      "SELECT id, title, subtitle, SUBSTRING(content, 1, 300) AS content_preview, featured_image, category, tags, created_at, updated_at FROM news ORDER BY created_at DESC LIMIT ? OFFSET ?",
-      [limit, offset]
+      "SELECT id, title, subtitle, content, featured_image, category, tags, created_at, updated_at FROM news ORDER BY created_at DESC LIMIT 20"
     );
-
-    // Get total count for pagination
-    const [countResult] = await pool.query(
-      "SELECT COUNT(*) as total FROM news"
-    );
-    const total = countResult[0].total;
-
-    // Return structured response with pagination info
-    res.json({
-      articles: rows,
-      pagination: {
-        total,
-        page,
-        limit,
-        pages: Math.ceil(total / limit),
-      },
-      success: true,
-    });
+    // Always return the actual database results, even if empty
+    res.json(rows);
+    console.log(`Fetched ${rows.length} news articles from database`);
   } catch (error) {
     console.error("Error fetching news from database:", error);
-    res.status(500).json({
-      message: "Error fetching news from database",
-      error: error.message,
-      success: false,
-    });
+    // Return empty array on error, not fallback data
+    res.status(500).json([]);
   }
 });
 
 // Admin routes for managing news
 router.post("/", adminAuth, async (req, res) => {
   try {
+    console.log("Creating news article...");
+    console.log("Request body keys:", Object.keys(req.body));
+
     const { title, subtitle, content, featured_image, category, tags } =
       req.body;
 
-    // Validate required fields
-    if (!title || !content) {
-      return res.status(400).json({
-        message: "Title and content are required fields",
-        success: false,
-      });
-    }
+    console.log("Title:", title);
+    console.log("Subtitle:", subtitle);
+    console.log("Category:", category);
+    console.log("Tags:", tags);
+    console.log("Content length:", content ? content.length : 0);
+    console.log(
+      "Featured image length:",
+      featured_image ? featured_image.length : 0
+    );
 
     const [result] = await pool.query(
       "INSERT INTO news (title, subtitle, content, featured_image, category, tags) VALUES (?, ?, ?, ?, ?, ?)",
       [title, subtitle, content, featured_image, category, tags]
     );
 
+    console.log("News article created with ID:", result.insertId);
+
     res.status(201).json({
       id: result.insertId,
       message: "News article created successfully",
-      success: true,
     });
   } catch (error) {
     console.error("Error creating news:", error);
-    res.status(500).json({
-      message: "Error creating news article",
-      error: error.message,
-      success: false,
-    });
+    res
+      .status(500)
+      .json({ message: "Error creating news article", error: error.message });
   }
 });
 
@@ -283,45 +263,14 @@ router.put("/:id", adminAuth, async (req, res) => {
     const { id } = req.params;
     const { title, subtitle, content, featured_image, category, tags } =
       req.body;
-
-    // Validate required fields
-    if (!title || !content) {
-      return res.status(400).json({
-        message: "Title and content are required fields",
-        success: false,
-      });
-    }
-
-    // Validate that the article exists and belongs to this admin
-    const [existingArticle] = await pool.query(
-      "SELECT id FROM news WHERE id = ?",
-      [id]
-    );
-
-    if (existingArticle.length === 0) {
-      return res.status(404).json({
-        message: "News article not found",
-        success: false,
-      });
-    }
-
-    // Update the article
     await pool.query(
-      "UPDATE news SET title = ?, subtitle = ?, content = ?, featured_image = ?, category = ?, tags = ?, updated_at = NOW() WHERE id = ?",
+      "UPDATE news SET title = ?, subtitle = ?, content = ?, featured_image = ?, category = ?, tags = ? WHERE id = ?",
       [title, subtitle, content, featured_image, category, tags, id]
     );
-
-    res.json({
-      message: "News article updated successfully",
-      success: true,
-    });
+    res.json({ message: "News article updated successfully" });
   } catch (error) {
     console.error("Error updating news:", error);
-    res.status(500).json({
-      message: "Error updating news article",
-      error: error.message,
-      success: false,
-    });
+    res.status(500).json({ message: "Error updating news article" });
   }
 });
 
@@ -329,82 +278,47 @@ router.put("/:id", adminAuth, async (req, res) => {
 router.get("/:id", adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Validate ID is a number
-    if (isNaN(parseInt(id))) {
-      return res.status(400).json({
-        message: "Invalid article ID",
-        success: false,
-      });
-    }
-
     const [rows] = await pool.query(
       "SELECT id, title, subtitle, content, featured_image, category, tags, created_at, updated_at FROM news WHERE id = ?",
       [id]
     );
 
     if (rows.length === 0) {
-      return res.status(404).json({
-        message: "News article not found",
-        success: false,
-      });
+      return res.status(404).json({ message: "News article not found" });
     }
 
-    res.json({
-      article: rows[0],
-      success: true,
-    });
+    res.json(rows[0]);
   } catch (error) {
     console.error("Error fetching news article:", error);
-    res.status(500).json({
-      message: "Error fetching news article",
-      error: error.message,
-      success: false,
-    });
+    res.status(500).json({ message: "Error fetching news article" });
   }
 });
 
 router.delete("/:id", adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
-
-    // Validate that the article exists
-    const [existingArticle] = await pool.query(
-      "SELECT id FROM news WHERE id = ?",
-      [id]
-    );
-
-    if (existingArticle.length === 0) {
-      return res.status(404).json({
-        message: "News article not found",
-        success: false,
-      });
-    }
-
-    // Delete the article
-    const [result] = await pool.query("DELETE FROM news WHERE id = ?", [id]);
-
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: "News article could not be deleted",
-        success: false,
-      });
-    }
-
-    res.json({
-      message: "News article deleted successfully",
-      success: true,
-    });
+    await pool.query("DELETE FROM news WHERE id = ?", [id]);
+    res.json({ message: "News article deleted successfully" });
   } catch (error) {
     console.error("Error deleting news:", error);
-    res.status(500).json({
-      message: "Error deleting news article",
-      error: error.message,
-      success: false,
-    });
+    res.status(500).json({ message: "Error deleting news article" });
   }
 });
+// GET articles by category
+router.get("/category/:category", async (req, res) => {
+  const { category } = req.params;
 
-// Note: Admin search functionality moved to routes/admin-search.js
+  try {
+    const [articles] = await pool.query(
+      "SELECT * FROM news WHERE LOWER(category) = ?",
+      [category.toLowerCase()]
+    );
+
+    res.json(articles);
+  } catch (error) {
+    console.error("Error fetching articles by category:", error);
+    res.status(500).json({ message: "Error fetching category articles" });
+  }
+});
 
 module.exports = router;
