@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - News Portal</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            color: #333;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-header {
+            padding: 16px 16px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #222;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-footer {
+            padding: 12px 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Horizontal Profile Section */
+        .profile-horizontal {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .profile-horizontal {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-fallback {
+            font-size: 28px;
+            font-weight: bold;
+            color: #999;
+        }
+
+        .change-avatar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #222;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 2px solid white;
+            transition: background 0.2s;
+        }
+
+        .change-avatar:hover {
+            background: #000;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #222;
+        }
+
+        .profile-since {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .profile-stats {
+            margin-top: 6px;
+            padding-top: 12px;
+            border-top: 1px solid #f0f0f0;
+            width: 100%;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Account Info Card */
+        .account-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .account-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .account-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #222;
+        }
+
+        .account-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .account-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .account-label {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .account-value {
+            font-weight: 500;
+            color: #222;
+            font-size: 14px;
+        }
+
+        /* File Upload Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 360px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #222;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-input-button {
+            display: inline-block;
+            padding: 12px;
+            background-color: #f8f9fc;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            color: #666;
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .file-input-wrapper:hover .file-input-button {
+            background-color: #f0f0f0;
+            border-color: #999;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #222;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #000;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .btn-outline:hover {
+            background-color: #f5f7fa;
+            border-color: #ccc;
+            color: #222;
+        }
+
+        .btn-danger {
+            color: #e53e3e;
+            border: 1px solid #fbd5d5;
+            background-color: #fff5f5;
+        }
+
+        .btn-danger:hover {
+            background-color: #fed7d7;
+        }
+
+        .btn-icon {
+            margin-right: 6px;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 16px;
+        }
+
+        .tab-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .tab-trigger {
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .tab-trigger:hover {
+            background-color: #e0e0e0;
+            color: #222;
+        }
+
+        .tab-trigger.active {
+            background-color: #222;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Articles */
+        .article-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .article-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            background-color: #eee;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .article-item:hover .article-image img {
+            transform: scale(1.05);
+        }
+
+        .article-content {
+            flex: 1;
+        }
+
+        .article-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #222;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .article-meta .separator {
+            margin: 0 6px;
+        }
+
+        .article-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            background-color: #e6effd;
+            color: #4a6cf7;
+        }
+
+        .article-badge.business {
+            background-color: #e6f7ef;
+            color: #38a169;
+        }
+
+        .article-badge.politics {
+            background-color: #fee2e2;
+            color: #e53e3e;
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            background-color: white;
+            color: #666;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #222;
+            color: white;
+            border-color: #222;
+        }
+
+        /* Settings */
+        .setting-item {
+            margin-bottom: 16px;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #222;
+            font-size: 14px;
+        }
+
+        .setting-description {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .setting-text {
+            font-size: 13px;
+            color: #666;
+            max-width: 80%;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #222;
+            font-size: 13px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #222;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 13px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        /* Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .3s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked+.slider {
+            background-color: #222;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(18px);
+        }
+
+        /* Icons */
+        .icon {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+            stroke: currentColor;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Horizontal Profile Section -->
+        <div class="profile-horizontal">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <div class="avatar-container">
+                    <div class="avatar">
+                        <img src="https://via.placeholder.com/80" alt="User profile">
+                        <!-- Fallback if image fails to load -->
+                        <div class="avatar-fallback" style="display: none;">JD</div>
+                    </div>
+                    <div class="change-avatar" onclick="openModal()">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"></path>
+                            <path
+                                d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="profile-name">John Doe</h1>
+                <p class="profile-since">Member since January 2023</p>
+
+                <!-- Saved Articles Stats (now in profile card) -->
+                <div class="profile-stats">
+                    <div class="stat-value">42</div>
+                    <div class="stat-label">Saved Articles</div>
+                </div>
+            </div>
+
+            <!-- Account Info Card -->
+            <div class="account-card">
+                <h2 class="account-title">Account Info</h2>
+                <div class="account-item">
+                    <div class="account-label">Email</div>
+                    <div class="account-value">john.doe@example.com</div>
+                </div>
+                <div class="account-item">
+                    <div class="account-label">Member Type</div>
+                    <div class="account-value">Standard</div>
+                </div>
+                <div class="account-item">
+                    <div class="account-label">Time Zone</div>
+                    <div class="account-value">Eastern Time (UTC-05:00)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Section -->
+        <div class="tabs">
+            <div class="tab-list">
+                <div class="tab-trigger active" onclick="switchTab('saved')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Saved Articles
+                </div>
+                <div class="tab-trigger" onclick="switchTab('settings')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path
+                            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                        </path>
+                    </svg>
+                    Settings
+                </div>
+            </div>
+
+            <!-- Saved Articles Tab -->
+            <div id="saved" class="tab-content active">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Saved Articles</h2>
+                        <p class="card-description">Articles you've bookmarked for later</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="article-item">
+                            <div class="article-image">
+                                <img src="https://via.placeholder.com/60" alt="Article thumbnail">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">The Future of AI in Journalism: How Technology is Reshaping
+                                    News</h3>
+                                <div class="article-meta">
+                                    <span>May 2, 2023</span>
+                                    <span class="separator">•</span>
+                                    <span class="article-badge">Technology</span>
+                                </div>
+                                <div class="article-actions">
+                                    <button class="action-btn">Read Now</button>
+                                    <button class="action-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="article-item">
+                            <div class="article-image">
+                                <img src="https://via.placeholder.com/60" alt="Article thumbnail">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Global Markets Report: Q2 Outlook and Investment Strategies
+                                </h3>
+                                <div class="article-meta">
+                                    <span>April 28, 2023</span>
+                                    <span class="separator">•</span>
+                                    <span class="article-badge business">Business</span>
+                                </div>
+                                <div class="article-actions">
+                                    <button class="action-btn">Read Now</button>
+                                    <button class="action-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="article-item">
+                            <div class="article-image">
+                                <img src="https://via.placeholder.com/60" alt="Article thumbnail">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">New Climate Policy Announced: What It Means for Industries
+                                </h3>
+                                <div class="article-meta">
+                                    <span>April 25, 2023</span>
+                                    <span class="separator">•</span>
+                                    <span class="article-badge politics">Politics</span>
+                                </div>
+                                <div class="article-actions">
+                                    <button class="action-btn">Read Now</button>
+                                    <button class="action-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="article-item">
+                            <div class="article-image">
+                                <img src="https://via.placeholder.com/60" alt="Article thumbnail">
+                            </div>
+                            <div class="article-content">
+                                <h3 class="article-title">Review: Latest Smartphone Releases and Comparison Guide</h3>
+                                <div class="article-meta">
+                                    <span>April 20, 2023</span>
+                                    <span class="separator">•</span>
+                                    <span class="article-badge">Technology</span>
+                                </div>
+                                <div class="article-actions">
+                                    <button class="action-btn">Read Now</button>
+                                    <button class="action-btn">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-outline">View All Saved Articles</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Account Settings</h2>
+                        <p class="card-description">Manage your account preferences</p>
+                    </div>
+                    <div class="card-content">
+                        <!-- Email Notifications Setting -->
+                        <div class="setting-item">
+                            <label class="setting-label" for="email-notifications">Email Notifications</label>
+                            <div class="setting-description">
+                                <p class="setting-text">Receive email notifications for account updates and new content
+                                </p>
+                                <label class="switch">
+                                    <input type="checkbox" id="email-notifications" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Time Zone Setting -->
+                        <div class="setting-item">
+                            <label class="setting-label" for="timezone">Time Zone</label>
+                            <select id="timezone" class="form-select">
+                                <option value="UTC-12:00">(UTC-12:00) International Date Line West</option>
+                                <option value="UTC-11:00">(UTC-11:00) Coordinated Universal Time-11</option>
+                                <option value="UTC-10:00">(UTC-10:00) Hawaii</option>
+                                <option value="UTC-09:00">(UTC-09:00) Alaska</option>
+                                <option value="UTC-08:00">(UTC-08:00) Pacific Time (US & Canada)</option>
+                                <option value="UTC-07:00">(UTC-07:00) Mountain Time (US & Canada)</option>
+                                <option value="UTC-06:00">(UTC-06:00) Central Time (US & Canada)</option>
+                                <option value="UTC-05:00" selected>(UTC-05:00) Eastern Time (US & Canada)</option>
+                                <option value="UTC-04:00">(UTC-04:00) Atlantic Time (Canada)</option>
+                                <option value="UTC-03:00">(UTC-03:00) Brasilia</option>
+                                <option value="UTC-02:00">(UTC-02:00) Coordinated Universal Time-02</option>
+                                <option value="UTC-01:00">(UTC-01:00) Azores</option>
+                                <option value="UTC+00:00">(UTC+00:00) London, Dublin, Lisbon</option>
+                                <option value="UTC+01:00">(UTC+01:00) Berlin, Paris, Rome, Madrid</option>
+                                <option value="UTC+02:00">(UTC+02:00) Helsinki, Kiev, Athens</option>
+                                <option value="UTC+03:00">(UTC+03:00) Moscow, Istanbul</option>
+                                <option value="UTC+04:00">(UTC+04:00) Dubai, Baku</option>
+                                <option value="UTC+05:00">(UTC+05:00) Islamabad, Karachi</option>
+                                <option value="UTC+05:30">(UTC+05:30) New Delhi, Mumbai</option>
+                                <option value="UTC+06:00">(UTC+06:00) Dhaka, Almaty</option>
+                                <option value="UTC+07:00">(UTC+07:00) Bangkok, Jakarta</option>
+                                <option value="UTC+08:00">(UTC+08:00) Beijing, Singapore, Hong Kong</option>
+                                <option value="UTC+09:00">(UTC+09:00) Tokyo, Seoul</option>
+                                <option value="UTC+10:00">(UTC+10:00) Sydney, Melbourne</option>
+                                <option value="UTC+11:00">(UTC+11:00) Vladivostok</option>
+                                <option value="UTC+12:00">(UTC+12:00) Auckland, Fiji</option>
+                            </select>
+                            <p style="font-size: 12px; color: #666; margin-top: 4px;">
+                                Your time zone is used to display dates and times correctly
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-danger">Delete Account</button>
+                        <button class="btn btn-primary">Save Settings</button>
+                    </div>
+                </div>
+
+                <!-- Password Change Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Change Password</h2>
+                        <p class="card-description">Update your account password</p>
+                    </div>
+                    <div class="card-content">
+                        <div class="form-group">
+                            <label class="form-label" for="current-password">Current Password</label>
+                            <input type="password" id="current-password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="new-password">New Password</label>
+                            <input type="password" id="new-password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="confirm-password">Confirm New Password</label>
+                            <input type="password" id="confirm-password" class="form-control">
+                        </div>
+                    </div>
+                    <div class="card-footer" style="justify-content: flex-end;">
+                        <button class="btn btn-primary">Update Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Picture Upload Modal -->
+    <div id="profilePicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Change Profile Picture</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="file-input-wrapper">
+                <div class="file-input-button">
+                    <svg class="icon" viewBox="0 0 24 24" style="margin-right: 6px;">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Choose a file
+                </div>
+                <input type="file" accept="image/*" id="profilePicInput">
+            </div>
+            <p style="font-size: 12px; color: #666; margin-bottom: 12px;">
+                Recommended: Square image, at least 200x200 pixels
+            </p>
+            <div id="imagePreview" style="display: none; margin-bottom: 12px;">
+                <img id="previewImg" src="/placeholder.svg" alt="Preview"
+                    style="max-width: 100%; max-height: 160px; border-radius: 6px;">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProfilePic()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Deactivate all tab triggers
+            const tabTriggers = document.querySelectorAll('.tab-trigger');
+            tabTriggers.forEach(trigger => {
+                trigger.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Activate the clicked tab trigger
+            const clickedTrigger = document.querySelector(`.tab-trigger[onclick="switchTab('${tabId}')"]`);
+            clickedTrigger.classList.add('active');
+        }
+
+        // Handle image error for avatar
+        document.querySelector('.avatar img').onerror = function () {
+            this.style.display = 'none';
+            document.querySelector('.avatar-fallback').style.display = 'flex';
+        };
+
+        // Modal functionality
+        function openModal() {
+            document.getElementById('profilePicModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('profilePicModal').style.display = 'none';
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('profilePicInput').value = '';
+        }
+
+        // Image preview functionality
+        document.getElementById('profilePicInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    document.getElementById('previewImg').src = event.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Save profile picture (mock functionality)
+        function saveProfilePic() {
+            const previewSrc = document.getElementById('previewImg').src;
+            if (previewSrc) {
+                document.querySelector('.avatar img').src = previewSrc;
+                closeModal();
+                // In a real application, you would upload the image to a server here
+            }
+        }
+    </script>
+</body>
+
+</html>
