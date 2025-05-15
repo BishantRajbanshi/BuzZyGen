@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Privacy Policy - BuzzYGen</title>
+  <title>Contact Us - BuzzYGen</title>
   <link rel="stylesheet" href="css/style.css" />
   <style>
     .sticky-header {
@@ -57,7 +57,7 @@
       color: #007bff;
     }
 
-    .privacy-header {
+    .contact-header {
       position: fixed;
       top: 0;
       left: 0;
@@ -71,65 +71,129 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
 
-    .privacy-header h1, .privacy-header p {
+    .contact-header h1, .contact-header p {
       color: #fff;
     }
 
-    .privacy-header h1 {
+    .contact-header h1 {
       font-size: 3em;
       margin-bottom: 10px;
     }
 
-    .privacy-header p {
+    .contact-header p {
       font-size: 1.2em;
       max-width: 800px;
       margin: 0 auto;
     }
 
-    .privacy-content {
+    .contact-content {
       max-width: 1200px;
       margin: 0 auto;
       padding: 90px 20px 0 20px;
     }
 
-    .privacy-section {
+    .contact-section {
       margin-bottom: 60px;
     }
 
-    .privacy-section h2 {
+    .contact-section h2 {
       color: #333;
       font-size: 2em;
       margin-bottom: 20px;
       text-align: center;
     }
 
-    .privacy-grid {
+    .contact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
       margin-top: 40px;
     }
 
-    .privacy-card {
+    .contact-card {
       background: #fff;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: transform 0.3s ease;
+      text-align: center;
     }
 
-    .privacy-card:hover {
+    .contact-card:hover {
       transform: translateY(-5px);
     }
 
-    .privacy-card h3 {
+    .contact-card h3 {
       color: #2c3e50;
       margin-bottom: 15px;
     }
 
-    .privacy-card p {
+    .contact-card p {
       color: #666;
       line-height: 1.6;
+    }
+
+    .contact-form {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .form-group textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background: #007bff;
+      color: #fff;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #0056b3;
+    }
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-info i {
+      color: #007bff;
+      font-size: 20px;
     }
 
     @media (max-width: 768px) {
@@ -144,83 +208,90 @@
         justify-content: center;
       }
 
-      .privacy-header {
+      .contact-header {
         padding: 25px 10px 15px 10px;
       }
 
-      .privacy-header h1 {
+      .contact-header h1 {
         font-size: 2.5em;
       }
 
-      .privacy-grid {
+      .contact-grid {
         grid-template-columns: 1fr;
       }
 
-      .privacy-content {
+      .contact-content {
         padding-top: 60px;
+      }
+
+      .contact-form {
+        padding: 20px;
       }
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-  <header class="privacy-header">
-    <h1>Privacy Policy</h1>
-    <p>How we collect, use, and protect your personal information</p>
+  <header class="contact-header">
+    <h1>Contact Us</h1>
+    <p>Get in touch with our team for any questions or concerns</p>
   </header>
 
-  <main class="privacy-content">
-    <section class="privacy-section">
-      <h2>Information We Collect</h2>
-      <div class="privacy-grid">
-        <div class="privacy-card">
-          <h3>Personal Information</h3>
-          <p>We collect information that you provide directly to us, including your name, email address, and any other information you choose to provide when creating an account or using our services.</p>
+  <main class="contact-content">
+    <section class="contact-section">
+      <h2>Ways to Reach Us</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <i class="fas fa-envelope fa-3x" style="color: #007bff; margin-bottom: 20px;"></i>
+          <h3>Email Us</h3>
+          <p>Send us an email and we'll get back to you as soon as possible.</p>
+          <div class="contact-info">
+            <i class="fas fa-envelope"></i>
+            <p>support@buzzygen.com</p>
+          </div>
         </div>
-        <div class="privacy-card">
-          <h3>Usage Data</h3>
-          <p>We automatically collect certain information about your device and how you interact with our website, including IP address, browser type, pages visited, and time spent on pages.</p>
+        <div class="contact-card">
+          <i class="fas fa-phone fa-3x" style="color: #007bff; margin-bottom: 20px;"></i>
+          <h3>Call Us</h3>
+          <p>Our customer service team is available during business hours.</p>
+          <div class="contact-info">
+            <i class="fas fa-phone"></i>
+            <p>+1 (555) 123-4567</p>
+          </div>
         </div>
-        <div class="privacy-card">
-          <h3>Cookies</h3>
-          <p>We use cookies and similar tracking technologies to track activity on our website and hold certain information to improve your browsing experience.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="privacy-section">
-      <h2>How We Use Your Information</h2>
-      <div class="privacy-grid">
-        <div class="privacy-card">
-          <h3>Service Provision</h3>
-          <p>To provide, maintain, and improve our services, including processing your transactions and managing your account.</p>
-        </div>
-        <div class="privacy-card">
-          <h3>Communication</h3>
-          <p>To communicate with you about our services, respond to your inquiries, and send you updates and marketing communications.</p>
-        </div>
-        <div class="privacy-card">
-          <h3>Analytics</h3>
-          <p>To analyze how you use our website and services to improve user experience and develop new features.</p>
+        <div class="contact-card">
+          <i class="fas fa-map-marker-alt fa-3x" style="color: #007bff; margin-bottom: 20px;"></i>
+          <h3>Visit Us</h3>
+          <p>Our office is open Monday through Friday, 9 AM to 5 PM.</p>
+          <div class="contact-info">
+            <i class="fas fa-map-marker-alt"></i>
+            <p>123 News Street, Media City, MC 12345</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="privacy-section">
-      <h2>Data Protection</h2>
-      <div class="privacy-grid">
-        <div class="privacy-card">
-          <h3>Security Measures</h3>
-          <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access or disclosure.</p>
+    <section class="contact-section">
+      <h2>Send Us a Message</h2>
+      <form class="contact-form" action="#" method="POST">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
         </div>
-        <div class="privacy-card">
-          <h3>Data Retention</h3>
-          <p>We retain your personal information only for as long as necessary to fulfill the purposes for which it was collected and to comply with legal obligations.</p>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
         </div>
-        <div class="privacy-card">
-          <h3>Your Rights</h3>
-          <p>You have the right to access, correct, or delete your personal information, and to object to or restrict certain processing of your data.</p>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" required>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
     </section>
   </main>
 
@@ -296,4 +367,4 @@
     </div>
   </footer>
 </body>
-</html>
+</html> 
