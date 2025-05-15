@@ -48,6 +48,92 @@
         width: 0;
         opacity: 0;
       }
+
+      /* Search results styles */
+      .search-results-section {
+        margin-bottom: 2rem;
+      }
+
+      #admin-search-results {
+        margin-top: 2rem;
+      }
+
+      .back-to-recent,
+      #back-to-recent {
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: flex;
+        align-items: center;
+      }
+
+      .back-to-recent:hover,
+      #back-to-recent:hover {
+        background-color: #e0e0e0;
+      }
+
+      /* Admin search container styles */
+      .admin-search input {
+        width: 200px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      .admin-search button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        color: #333;
+      }
+
+      .admin-search button:hover {
+        color: #bb1919;
+      }
+
+      /* Disabled search styles */
+      .search-disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .search-disabled input {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+
+      .search-disabled button {
+        cursor: not-allowed;
+        color: #999;
+      }
+
+      .search-disabled button:hover {
+        color: #999;
+      }
+
+      /* Loading spinner */
+      .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        width: 100%;
+        text-align: center;
+      }
+
+      .loading-spinner i {
+        font-size: 2rem;
+        color: #bb1919;
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
   <body class="admin-body">
@@ -99,16 +185,22 @@
             <i class="fas fa-bars"></i>
           </div>
           <div class="logo">
-            <a href="dashboard.html">
+            <a href="/admin.html" title="Go to Admin Dashboard">
               <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
-              <h1>ADMIN</h1>
             </a>
+            <h1>ADMIN</h1>
           </div>
         </div>
         <div class="user-actions">
-          <div class="search-container">
-            <button><i class="fas fa-search"></i></button>
-            <input type="text" placeholder="Search..." />
+          <div class="search-container" id="admin-search-container">
+            <button id="admin-search-button">
+              <i class="fas fa-search"></i>
+            </button>
+            <input
+              type="text"
+              id="admin-search-input"
+              placeholder="Search articles by title..."
+            />
           </div>
           <div class="notifications">
             <i class="fas fa-bell"></i>
@@ -207,38 +299,40 @@
         <!-- Left Section: News, Arts, Lifestyle, More -->
         <div class="footer-left">
           <div class="footer-logo">
-            <img src="images/logoimage.png" alt="Logo" />
+            <a href="/admin.html" title="Go to Admin Dashboard">
+              <img src="images/logoimage.png" alt="Logo" />
+            </a>
           </div>
           <div class="footer-column">
             <h3>News</h3>
             <ul>
-              <li><a href="world-news.html">World News</a></li>
-              <li><a href="sports.html">Sports</a></li>
-              <li><a href="business.html">Business</a></li>
+              <li><a href="Homepage/world-news.html">World News</a></li>
+              <li><a href="Homepage/sports.html">Sports</a></li>
+              <li><a href="Homepage/business.html">Business</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h3>Arts</h3>
             <ul>
-              <li><a href="novels.html">Novels</a></li>
+              <li><a href="Homepage/novels.html">Novels</a></li>
               <li>
-                <a href="bestseller.html">Best Seller Book List</a>
+                <a href="Homepage/bestseller.html">Best Seller Book List</a>
               </li>
-              <li><a href="movies.html">Movies</a></li>
+              <li><a href="Homepage/movies.html">Movies</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h3>Lifestyle</h3>
             <ul>
-              <li><a href="health.html">Health</a></li>
-              <li><a href="travel.html">Travel</a></li>
+              <li><a href="Homepage/health.html">Health</a></li>
+              <li><a href="Homepage/travel.html">Travel</a></li>
             </ul>
           </div>
           <div class="footer-column">
             <h3>More</h3>
             <ul>
-              <li><a href="games.html">Games</a></li>
-              <li><a href="live-events.html">Live Events</a></li>
+              <li><a href="Homepage/games.html">Games</a></li>
+              <li><a href="Homepage/live-events.html">Live Events</a></li>
             </ul>
           </div>
         </div>
@@ -273,14 +367,14 @@
       <div class="footer-bottom">
         <p>Copyright © 2025 BuzzYGen. All rights reserved.</p>
         <ul>
-          <li><a href="aboutus.html">About Us</a></li>
-          <li><a href="termsAndConditions.html">Terms of Service</a></li>
-          <li><a href="contactus.html">Contact Us</a></li>
-          <li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
-          <li><a href="Help.html">Help</a></li>
-          <li><a href="AdvertiseWithUs.html">Advertise with us</a></li>
-          <li><a href="accessibility.html">Accessibility</a></li>
-          <li><a href="cookies.html">Cookies</a></li>
+          <li><a href="Homepage/about.html">About Us</a></li>
+          <li><a href="Homepage/terms.html">Terms of Service</a></li>
+          <li><a href="Homepage/contact.html">Contact Us</a></li>
+          <li><a href="Homepage/privacy.html">Privacy Policy</a></li>
+          <li><a href="Homepage/help.html">Help</a></li>
+          <li><a href="Homepage/advertise.html">Advertise with us</a></li>
+          <li><a href="Homepage/accessibility.html">Accessibility</a></li>
+          <li><a href="Homepage/cookies.html">Cookies</a></li>
         </ul>
       </div>
     </footer>
@@ -307,7 +401,6 @@
               <select id="category" name="category" required>
                 <option value="">Select a category</option>
                 <option value="world">World</option>
-                <option vakue="article">Article</option>
                 <option value="politics">Politics</option>
                 <option value="business">Business</option>
                 <option value="technology">Technology</option>
