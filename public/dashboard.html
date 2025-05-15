@@ -17,44 +17,38 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="sidebar-header">
-        <h2>Menu</h2>
-        <div class="close-sidebar">
-          <i class="fas fa-times"></i>
-        </div>
+          <h2>Menu</h2>
+          <div class="close-sidebar">
+              <i class="fas fa-times"></i>
+          </div>
       </div>
       <ul class="sidebar-menu">
-        <li>
-          <a href="#"><i class="fas fa-home"></i> Home</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-briefcase"></i> Business</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-running"></i> Sports</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-film"></i> Entertainment</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-flask"></i> Science</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-newspaper"></i> Articles</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-blog"></i> Blog</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-cog"></i> Settings</a>
-        </li>
+          <li>
+              <a href="dashboard.html"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li>
+              <a href="#"><i class="fas fa-briefcase"></i> Business</a>
+          </li>
+          <li>
+              <a href="#"><i class="fas fa-running"></i> Sports</a>
+          </li>
+          <li>
+              <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
+          </li>
+          <li>
+              <a href="#"><i class="fas fa-film"></i> Entertainment</a>
+          </li>
+          <li>
+              <a href="#"><i class="fas fa-flask"></i> Science</a>
+          </li>
+          <li>
+              <a href="blog.html"><i class="fas fa-blog"></i> Blogs</a>
+          </li>
+          <li>
+              <a href="userBlogPost.html"><i class="fas fa-pen-nib"></i> Post Blog</a>
+          </li>
       </ul>
-    </div>
+  </div>
 
     <!-- Overlay -->
     <div class="overlay"></div>
@@ -66,9 +60,7 @@
             <i class="fas fa-bars"></i>
           </div>
           <div class="logo">
-            <a href="/dashboard.html" title="Go to User Dashboard">
-              <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
-            </a>
+            <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
           </div>
         </div>
         <div class="user-actions">
@@ -90,13 +82,13 @@
         <div class="nav-links">
           <a href="#" class="active" data-category="all">Home</a>
           <a href="#" data-category="business">Business</a>
+          <a href="#" data-category="article">Article</a>
           <a href="#" data-category="sports">Sports</a>
           <a href="#" data-category="technology">Technology</a>
           <a href="#" data-category="entertainment">Entertainment</a>
           <a href="#" data-category="science">Science</a>
-          <a href="#" data-category="article">Articles</a>
-          <a href="#" data-category="blog">Blog</a>
         </div>
+        <div class="nav-date" id="navDate"></div>
       </nav>
     </header>
 
@@ -137,8 +129,6 @@
             Entertainment
           </button>
           <button class="category-tab" data-category="science">Science</button>
-          <button class="category-tab" data-category="article">Articles</button>
-          <button class="category-tab" data-category="blog">Blog</button>
           <button class="category-tab" data-category="health">Health</button>
         </div>
         <div class="category-content" id="categoryContent">
@@ -153,14 +143,22 @@
           <!-- Personalized articles will be loaded here -->
         </div>
       </section>
+            <!-- 👇 Admin articles section -->
+            <section class="user-articles-section">
+              <div class="container" id="userArticleContainer">
+                </div>
+                <!-- Admin-posted articles will be injected here -->
+              </div>
+            </section>
+            
+            <!-- Your News Feed (Original) -->
+            <section class="news-feed">
+              <h2>Your News Feed</h2>
+              <div class="news-grid" id="newsGrid">
+                <!-- News items will be loaded here -->
+              </div>
+            </section>
 
-      <!-- Your News Feed (Original) -->
-      <section class="news-feed">
-        <h2>Your News Feed</h2>
-        <div class="news-grid" id="newsGrid">
-          <!-- News items will be loaded here -->
-        </div>
-      </section>
     </main>
 
     <footer>
@@ -168,9 +166,7 @@
         <!-- Left Section: News, Arts, Lifestyle, More -->
         <div class="footer-left">
           <div class="footer-logo">
-            <a href="/dashboard.html" title="Go to User Dashboard">
-              <img src="images/logoimage.png" alt="Logo" />
-            </a>
+            <img src="images/logoimage.png" alt="Logo" />
           </div>
           <div class="footer-column">
             <h3>News</h3>
@@ -237,9 +233,9 @@
           <li><a href="aboutus.html">About Us</a></li>
           <li><a href="termsAndConditions.html">Terms of Service</a></li>
           <li><a href="contactus.html">Contact Us</a></li>
-          <li><a href="privacyPolicy.html">Privacy Policy</a></li>
-          <li><a href="help.html">Help</a></li>
-          <li><a href="advertise.html">Advertise with us</a></li>
+          <li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
+          <li><a href="Help.html">Help</a></li>
+          <li><a href="AdvertiseWithUs.html">Advertise with us</a></li>
           <li><a href="accessibility.html">Accessibility</a></li>
           <li><a href="cookies.html">Cookies</a></li>
         </ul>

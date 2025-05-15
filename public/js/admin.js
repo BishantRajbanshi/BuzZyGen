@@ -27,13 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Search functionality is disabled
-function searchDisabledNotice() {
-  alert(
-    "Search functionality is currently under maintenance. Please check back later."
-  );
-}
-
 // Initialize admin dashboard
 function initAdminDashboard(token) {
   // DOM Elements
@@ -169,10 +162,7 @@ function initAdminDashboard(token) {
         }
         return response.json();
       })
-      .then((response) => {
-        // Check if response is in the new format or old format
-        const news = response.articles || response;
-
+      .then((news) => {
         // Display news from database (even if empty)
         displayNews(news);
 
@@ -585,10 +575,7 @@ function initAdminDashboard(token) {
         }
         return response.json();
       })
-      .then((response) => {
-        // Check if response is in the new format or old format
-        const article = response.article || response;
-
+      .then((article) => {
         // Populate form with article data
         const titleInput = document.getElementById("title");
         const subtitleInput = document.getElementById("subtitle");
@@ -734,28 +721,116 @@ function initAdminDashboard(token) {
     });
   }
 
-  // Setup search bar functionality - DISABLED
+  // Setup search bar functionality
   function setupSearchBar() {
-    // Get search container
     const searchContainer = document.querySelector(".search-container");
+    const searchInput = searchContainer
+      ? searchContainer.querySelector("input")
+      : null;
+    const searchButton = searchContainer
+      ? searchContainer.querySelector("button")
+      : null;
+    let searchInteractionTimeout;
 
-    if (searchContainer) {
-      // Style the disabled search container
-      searchContainer.classList.add("search-disabled");
-      searchContainer.title =
-        "Search functionality is currently under maintenance";
+    if (searchContainer && searchInput && searchButton) {
+      // Hover event for search container
+      searchContainer.addEventListener("mouseenter", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
 
-      // Get and disable the search input
-      const searchInput = searchContainer.querySelector("input");
-      if (searchInput) {
-        searchInput.disabled = true;
-        searchInput.placeholder = "Search unavailable";
-      }
+        // Expand the search container
+        searchContainer.classList.add("expanded");
 
-      // Add click handler to show message
-      searchContainer.addEventListener("click", function (e) {
-        e.preventDefault();
-        searchDisabledNotice();
+        // Set a timeout to collapse after 3 seconds if no interaction
+        searchInteractionTimeout = setTimeout(() => {
+          // Only collapse if not active and no text in input
+          if (
+            !searchContainer.classList.contains("active") &&
+            searchInput.value.trim() === ""
+          ) {
+            searchContainer.classList.remove("expanded");
+          }
+        }, 3000);
+      });
+
+      // Focus event for search input
+      searchInput.addEventListener("focus", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        // Add active class to keep it expanded
+        searchContainer.classList.add("active");
+        searchContainer.classList.add("expanded");
+      });
+
+      // Input event to maintain active state when typing
+      searchInput.addEventListener("input", () => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        // Keep active while typing
+        if (searchInput.value.trim() !== "") {
+          searchContainer.classList.add("active");
+        }
+      });
+
+      // Blur event for search input
+      searchInput.addEventListener("blur", () => {
+        // If input is empty, remove active class after a short delay
+        if (searchInput.value.trim() === "") {
+          // Set a timeout to allow for button clicks
+          setTimeout(() => {
+            searchContainer.classList.remove("active");
+
+            // Start the collapse timeout
+            searchInteractionTimeout = setTimeout(() => {
+              searchContainer.classList.remove("expanded");
+            }, 500);
+          }, 200);
+        }
+      });
+
+      // Click event for search button
+      searchButton.addEventListener("click", (e) => {
+        // Clear any existing timeout
+        if (searchInteractionTimeout) {
+          clearTimeout(searchInteractionTimeout);
+        }
+
+        if (!searchContainer.classList.contains("expanded")) {
+          e.preventDefault();
+          searchContainer.classList.add("expanded");
+          searchContainer.classList.add("active");
+          searchInput.focus();
+        } else if (searchInput.value.trim() !== "") {
+          // Perform search
+          console.log("Searching for:", searchInput.value);
+          // Add ripple effect to button
+          const ripple = document.createElement("span");
+          ripple.classList.add("ripple-effect");
+          searchButton.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        } else {
+          // If button is clicked but input is empty, focus on input
+          searchInput.focus();
+        }
+      });
+
+      // Click outside to collapse if empty
+      document.addEventListener("click", (e) => {
+        if (
+          !searchContainer.contains(e.target) &&
+          searchInput.value.trim() === ""
+        ) {
+          searchContainer.classList.remove("active");
+          searchContainer.classList.remove("expanded");
+        }
       });
     }
   }
