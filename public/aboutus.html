@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - BuzzYGen</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      padding: 15px 0;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .header-logo img {
+      height: 40px;
+      width: auto;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-menu a {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      padding: 5px 10px;
+    }
+
+    .nav-menu a:hover {
+      color: #007bff;
+    }
+
+    .about-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #111;
+      color: #fff;
+      text-align: center;
+      padding: 40px 20px 20px 20px;
+      margin: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .about-header h1, .about-header p, .about-header h2 {
+      color: #fff;
+    }
+
+    .about-header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+
+    .about-header p {
+      font-size: 1.2em;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .about-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 90px 20px 0 20px;
+    }
+
+    .about-section {
+      margin-bottom: 60px;
+    }
+
+    .about-section h2 {
+      color: #333;
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .about-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .about-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .about-card h3 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+
+    .about-card p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .team-section {
+      text-align: center;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .team-member {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .team-member img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    .team-member h3 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .team-member p {
+      color: #666;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .nav-menu {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .about-header {
+        padding: 25px 10px 15px 10px;
+      }
+
+      .about-header h1 {
+        font-size: 2.5em;
+      }
+
+      .about-grid, .team-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .about-content {
+        padding-top: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="about-header">
+    <h1>About BuzzYGen</h1>
+    <p>Your trusted source for news, entertainment, and lifestyle content since 2025</p>
+  </header>
+
+  <main class="about-content">
+    <section class="about-section">
+      <h2>Our Story</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>Our Mission</h3>
+          <p>At BuzzYGen, we're dedicated to delivering high-quality, engaging content that informs, entertains, and inspires our readers. We believe in the power of storytelling and the importance of staying connected in today's fast-paced world.</p>
+        </div>
+        <div class="about-card">
+          <h3>Our Vision</h3>
+          <p>We strive to be the leading digital platform for news and entertainment, creating a community where readers can discover, share, and engage with content that matters to them.</p>
+        </div>
+        <div class="about-card">
+          <h3>Our Values</h3>
+          <p>Integrity, innovation, and inclusivity are at the core of everything we do. We're committed to providing accurate, diverse, and engaging content while maintaining the highest standards of journalistic excellence.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section team-section">
+      <h2>Our Team</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <img src="images/team/Bishant.png" alt="Bishant Rajbanshi">
+          <h3>Bishant Rajbanshi</h3>
+        </div>
+        <div class="team-member">
+          <img src="images/team/Mallika.jpg" alt="Mallika Rana">
+          <h3>Mallika Rana</h3>
+        </div>
+        <div class="team-member">
+          <img src="images/team/Sunil.png" alt="Sunil Rajbanshi">
+          <h3>Sunil Rajbanshi</h3>
+        </div>
+        <div class="team-member">
+          <img src="images/team/Subash.jpg" alt="Subash Bikram Tamang">
+          <h3>Subash Bikram Tamang</h3>
+        </div>
+        <div class="team-member">
+          <img src="images/team/AyushShreshtha.jpg" alt="Aayush Shreshtha">
+          <h3>Aayush Shreshtha</h3>
+        </div>
+        <div class="team-member">
+          <img src="images/team/AyushGurung.png" alt="Aayush Gurung">
+          <h3>Aayush Gurung</h3>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <h2>What We Offer</h2>
+      <div class="about-grid">
+        <div class="about-card">
+          <h3>News Coverage</h3>
+          <p>From breaking world news to in-depth business analysis, we keep you informed with accurate and timely reporting.</p>
+        </div>
+        <div class="about-card">
+          <h3>Entertainment</h3>
+          <p>Discover the latest in movies, books, and arts through our comprehensive entertainment coverage.</p>
+        </div>
+        <div class="about-card">
+          <h3>Lifestyle</h3>
+          <p>Explore health tips, travel guides, and lifestyle trends to enhance your daily life.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <!-- Left Section: News, Arts, Lifestyle, More -->
+      <div class="footer-left">
+        <div class="footer-logo">
+          <img src="images/logoimage.png" alt="Logo" />
+        </div>
+        <div class="footer-column">
+          <h3>News</h3>
+          <ul>
+            <li><a href="Homepage/world-news.html">World News</a></li>
+            <li><a href="Homepage/sports.html">Sports</a></li>
+            <li><a href="Homepage/business.html">Business</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Arts</h3>
+          <ul>
+            <li><a href="Homepage/novels.html">Novels</a></li>
+            <li>
+              <a href="Homepage/bestseller.html">Best Seller Book List</a>
+            </li>
+            <li><a href="Homepage/movies.html">Movies</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Lifestyle</h3>
+          <ul>
+            <li><a href="Homepage/health.html">Health</a></li>
+            <li><a href="Homepage/travel.html">Travel</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>More</h3>
+          <ul>
+            <li><a href="Homepage/games.html">Games</a></li>
+            <li><a href="Homepage/live-events.html">Live Events</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Section: Social Media -->
+      <div class="footer-social">
+        <h3>Follow BuzzYGen on:</h3>
+        <div class="social-icons">
+          <a href="https://www.instagram.com/" target="_blank">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+              alt="Instagram"
+            />
+          </a>
+          <a href="https://www.facebook.com/" target="_blank">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+              alt="Facebook"
+            />
+          </a>
+          <a href="https://twitter.com/" target="_blank">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733579.png"
+              alt="Twitter"
+            />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Links -->
+    <div class="footer-bottom">
+      <p>Copyright © 2025 BuzzYGen. All rights reserved.</p>
+      <ul>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="Homepage/terms.html">Terms of Service</a></li>
+        <li><a href="Homepage/contact.html">Contact Us</a></li>
+        <li><a href="Homepage/privacy.html">Privacy Policy</a></li>
+        <li><a href="Homepage/help.html">Help</a></li>
+        <li><a href="Homepage/advertise.html">Advertise with us</a></li>
+        <li><a href="Homepage/accessibility.html">Accessibility</a></li>
+        <li><a href="Homepage/cookies.html">Cookies</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>
