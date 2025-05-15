@@ -7,6 +7,7 @@ const passport = require("./config/passport");
 const authRoutes = require("./routes/auth");
 const newsRoutes = require("./routes/news");
 const articleRoutes = require("./routes/article");
+const blogsRoutes = require("./routes/blogs");
 
 // Load environment variables
 dotenv.config();
@@ -64,6 +65,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/article", articleRoutes);
+app.use("/api/blogs", blogsRoutes);
 app.use("/api/news", require("./routes/news"));
 
 // Serve static files
@@ -110,17 +112,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// blogs
-const blogsRoutes = require("./routes/blogs"); // <--- Add this line
-
-// Existing routes
-app.use("/api/auth", authRoutes);
-app.use("/api/news", newsRoutes);
-app.use("/api/article", articleRoutes);
-app.use("/api/news", require("./routes/news"));
-
-// ✅ Add this route to serve blogs
-app.use("/api/blogs", blogsRoutes); // <--- Add this line
 
 
