@@ -205,6 +205,22 @@ function initAdminDashboard(token) {
       });
   }
 
+  //Fetch Blog 
+  function fetchPendingBlogs() {
+    fetch("/api/blogs/pending", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    })
+      .then(res => res.json())
+      .then(blogs => renderPendingBlogs(blogs))
+      .catch(err => {
+        console.error("Error fetching pending blogs:", err);
+        const container = document.querySelector(".articles-grid");
+        if (container) {
+          container.innerHTML += `<p style="color:red;">Error loading approval blogs</p>`;
+        }
+      });
+  }  
+
   // Display news in the admin dashboard
   function displayNews(news) {
     const articlesGrid = document.querySelector(".articles-grid");
@@ -220,7 +236,6 @@ function initAdminDashboard(token) {
       `;
       return;
     }
-
     // Take only the latest 5 articles
     const recentArticles = news.slice(0, 5);
 
@@ -284,6 +299,77 @@ function initAdminDashboard(token) {
       .join("");
   }
 
+  //Fetching renderpending blog
+  function renderPendingBlogs(blogs) {
+    const container = document.querySelector(".articles-grid");
+    if (!container) return;
+  
+    if (!blogs || blogs.length === 0) {
+      container.innerHTML += `<div class="no-articles-message"><p>No pending blogs to approve.</p></div>`;
+      return;
+    }
+  
+    const html = blogs.map(blog => {
+      const image = blog.featured_image || "https://via.placeholder.com/300x200?text=No+Image";
+      const subtitle = blog.subtitle || blog.content?.slice(0, 100) || "";
+  
+      return `
+        <div class="article-card">
+          <div class="article-content">
+            <h3>${blog.title}</h3>
+            <p>${subtitle}</p>
+            <div class="article-meta">
+              <span>Pending Approval</span> • 
+              <span>${new Date(blog.created_at).toLocaleDateString()}</span>
+            </div>
+            <div class="article-actions">
+              <button class="approve-btn" data-id="${blog.id}"><i class="fas fa-check-circle"></i> Approve</button>
+            </div>
+          </div>
+          <div class="article-image">
+            <img src="${image}" alt="${blog.title}" />
+          </div>
+        </div>
+      `;
+    }).join("");
+  
+    container.innerHTML += html;
+  
+    // Attach approve handlers
+    document.querySelectorAll(".approve-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.id;
+        approveBlog(id);
+      });
+    });
+  }
+  
+  //Approve Blogs 
+  function approveBlog(id) {
+    if (!confirm("Approve this blog?")) return;
+  
+    fetch(`/api/blogs/${id}/approve`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => {
+        if (res.ok) {
+          alert("Blog approved successfully.");
+          fetchNews();           // reload approved articles
+          fetchPendingBlogs();   // reload pending section
+        } else {
+          alert("Failed to approve blog.");
+        }
+      })
+      .catch(err => {
+        console.error("Approval error:", err);
+        alert("Error approving blog.");
+      });
+  }
+  
   // Setup image upload functionality
   function setupImageUpload() {
     const imageDropArea = document.getElementById("image-drop-area");
@@ -718,21 +804,33 @@ function initAdminDashboard(token) {
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
-
+  
         // Remove active class from all links
         navLinks.forEach((l) => l.classList.remove("active"));
-
+  
         // Add active class to clicked link
         link.classList.add("active");
-
-        // Get category from data attribute
+  
         const category = link.getAttribute("data-category");
-
-        // You can add functionality here to load different content based on category
-        console.log(`Selected category: ${category}`);
+  
+        const articlesGrid = document.querySelector(".articles-grid");
+        if (!articlesGrid) return;
+  
+        // Clear grid before loading new content
+        articlesGrid.innerHTML = "";
+  
+        // Load section content based on category
+        if (category === "all") {
+          fetchNews(); // Show latest 5 articles
+        } else if (category === "approve") {
+          fetchPendingBlogs(); // Show unapproved blogs
+        } else {
+          articlesGrid.innerHTML = `<div class="no-articles-message"><p>Feature under development for "${category}"</p></div>`;
+        }
       });
     });
   }
+  
 
   // Setup search bar functionality - DISABLED
   function setupSearchBar() {
@@ -762,6 +860,7 @@ function initAdminDashboard(token) {
 
   // Initialize all components
   fetchNews();
+  fetchPendingBlogs();
   setupSidebar();
   setupLogout();
   setupImageUpload();

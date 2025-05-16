@@ -129,8 +129,9 @@ function setupForm(token) {
   };
 }
 
+//fUser Blogs
 function fetchUserBlogs(token) {
-  fetch("/api/blogs", {
+  fetch("/api/blogs/my/posts", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -142,6 +143,7 @@ function fetchUserBlogs(token) {
       document.querySelector(".blog-grid").innerHTML = `<p>Error loading blogs.</p>`;
     });
 }
+
 
 function renderUserBlogs(blogs) {
   const container = document.querySelector(".blog-grid");
