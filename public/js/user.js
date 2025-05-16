@@ -137,45 +137,53 @@ function fetchUserBlogs(token) {
     },
   })
     .then((res) => res.json())
-    .then((blogs) => renderUserBlogs(blogs))
+    .then((blogs) => {
+      const approved = blogs.filter(b => b.approved === 1);
+      const pending = blogs.filter(b => b.approved === 0);
+      renderUserBlogs(approved, pending);
+    })
     .catch((err) => {
       console.error("Error loading blogs:", err);
       document.querySelector(".blog-grid").innerHTML = `<p>Error loading blogs.</p>`;
     });
 }
 
+function renderUserBlogs(approvedBlogs, pendingBlogs) {
+  const approvedContainer = document.getElementById("approved-blogs-container");
+  const pendingContainer = document.getElementById("pending-blogs-container");
 
-function renderUserBlogs(blogs) {
-  const container = document.querySelector(".blog-grid");
-  if (!container) return;
+  if (!approvedContainer || !pendingContainer) return;
 
-  if (!blogs || blogs.length === 0) {
-    container.innerHTML = `<p>No blogs posted yet.</p>`;
-    return;
-  }
-
-  const latestBlogs = blogs.slice(0, 5);
-  container.innerHTML = latestBlogs
-    .map(
-      (blog) => `
-      <div class="blog-card">
-        <div class="blog-content">
-          <h3>${blog.title}</h3>
-          <p>${blog.subtitle || blog.content?.slice(0, 100) || ""}</p>
-          <button class="edit-btn" data-id="${blog.id}">Edit</button>
+  const renderCard = (blog, isPending) => `
+    <div class="blog-card">
+      <div class="blog-content">
+        <h3>${blog.title}</h3>
+        <p>${blog.subtitle || blog.content?.slice(0, 100) || ""}</p>
+        <div class="blog-actions">
+          ${isPending ? `<button class="edit-btn" data-id="${blog.id}">Edit</button>` : ""}
           <button class="delete-btn" data-id="${blog.id}">Delete</button>
         </div>
-        <div class="blog-image">
-          <img src="${blog.featured_image || "https://via.placeholder.com/300x200?text=No+Image"}" alt="${blog.title}">
-        </div>
       </div>
-    `
-    )
-    .join("");
+      <div class="blog-image">
+        <img src="${blog.featured_image || "https://via.placeholder.com/300x200?text=No+Image"}" alt="${blog.title}">
+      </div>
+    </div>
+  `;
+
+  // Inject HTML separately
+  approvedContainer.innerHTML = approvedBlogs.length
+    ? approvedBlogs.map(b => renderCard(b, false)).join("")
+    : "<p>No approved blogs yet.</p>";
+
+  pendingContainer.innerHTML = pendingBlogs.length
+    ? pendingBlogs.map(b => renderCard(b, true)).join("")
+    : "<p>No pending blogs.</p>";
 
   setupEditDelete(localStorage.getItem("token"));
 }
 
+
+//edit and delete
 function setupEditDelete(token) {
   document.querySelectorAll(".edit-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {

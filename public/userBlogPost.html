@@ -64,27 +64,22 @@
 
         <section class="recent-blog">
             <div class="section-header">
-                <h2>Latest 5 Blogs</h2>
+                <h2>Your Blogs</h2>
                 <a href="#" class="view-all">View all →</a>
             </div>
 
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-content">
-                        <h3>${blog.title}</h3>
-                        <p>${blog.subtitle || blog.content.slice(0, 100)}</p>
-                        <p><strong>Category:</strong> ${blog.category} &nbsp; <strong>Published:</strong> ${new
-                            Date(blog.created_at).toLocaleDateString()} &nbsp; <strong>Tags:</strong> ${blog.tags}</p>
-                        <div class="blog-actions">
-                            <button class="edit-btn" data-id="${blog.id}"><i class="fas fa-edit"></i> Edit</button>
-                            <button class="delete-btn" data-id="${blog.id}"><i class="fas fa-trash"></i> Delete</button>
-                        </div>            </div>
-                    <div class="blog-image">
-                        <img src="images/nepal.jpg" alt="Nepal landscape"
-                            onerror="this.src='https://via.placeholder.com/300x200?text=Nepal'" />
-                    </div>
+            <div class="blog-columns">
+                <div class="approved-blogs">
+                    <h2>Approved Blogs</h2>
+                    <div id="approved-blogs-container" class="blog-grid"></div>
+                </div>
+            
+                <div class="pending-blogs">
+                    <h2>Pending Approval</h2>
+                    <div id="pending-blogs-container" class="blog-grid"></div>
                 </div>
             </div>
+              
         </section>
     </main>
 
