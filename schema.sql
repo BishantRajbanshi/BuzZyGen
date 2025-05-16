@@ -27,15 +27,16 @@ CREATE TABLE IF NOT EXISTS news (
 );
 
 CREATE TABLE blogs (
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  subtitle VARCHAR(255),
-  content TEXT NOT NULL,
-  featured_image LONGTEXT,
-  category VARCHAR(100),
-  tags VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    subtitle VARCHAR(255),
+    content TEXT,
+    featured_image LONGTEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    approved BOOLEAN DEFAULT 0,
+    user_id INT,
 );
+
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
