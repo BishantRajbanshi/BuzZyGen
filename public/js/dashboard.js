@@ -182,9 +182,17 @@ if (hamburgerMenu && sidebar && closeSidebar && overlay) {
   const sidebarMenuItems = document.querySelectorAll(".sidebar-menu li a");
   sidebarMenuItems.forEach((item) => {
     item.addEventListener("click", function (e) {
-      e.preventDefault();
+      const href = this.getAttribute("href");
+  
+      // ✅ Allow natural navigation for blog.html and userBlogPost.html
+      if (href && (href.includes("blog.html") || href.includes("userBlogPost.html"))) {
+        return; // don't preventDefault, allow redirect
+      }
+  
+      e.preventDefault(); // block only category links
+  
       const menuText = this.textContent.trim();
-
+  
       // Handle different menu items
       if (menuText === "Home") {
         filterNewsByCategory("all");
@@ -857,7 +865,7 @@ function displayNews(news) {
     .join("");
 }
 
-// Display admin articles in admin-style layout
+//Article Display 
 function displayAdminArticles(articles) {
   // Create or get the articles section
   let articlesSection = document.querySelector(".articles-section");
@@ -898,7 +906,6 @@ function displayAdminArticles(articles) {
 
   // Add each article
   articles.forEach((article) => {
-    // Handle both database news and API news formats
     const title = article.title || "";
     const subtitle = article.subtitle || article.description || "";
     const category = article.category || "";
@@ -907,7 +914,6 @@ function displayAdminArticles(articles) {
       : "";
     const tags = article.tags || "";
 
-    // For image, check all possible image field names and validate
     let imageUrl = "";
     let hasValidImage = false;
 
@@ -922,13 +928,12 @@ function displayAdminArticles(articles) {
       hasValidImage = true;
     }
 
-    // Use placeholder if no valid image
     if (!hasValidImage) {
       imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
     }
 
     html += `
-      <div class="article-card">
+      <div class="article-card" onclick="window.location.href='articleReading.html?id=${article.id}'">
         <div class="article-image">
           <img src="${imageUrl}" alt="${title || "News article"}" />
         </div>
@@ -946,13 +951,10 @@ function displayAdminArticles(articles) {
   });
 
   html += `</div>`;
-
-  // Update the articles section
   articlesSection.innerHTML = html;
-
-  // Show the articles section
   articlesSection.style.display = "block";
 }
+
 
 // Function to filter news by category
 function filterNewsByCategory(category) {
@@ -1025,26 +1027,20 @@ if (navContainer) {
   });
 }
 
-// Initialize - using a single DOMContentLoaded listener for better performance
-let initialized = false;
+// Initialize News + Date Setup After DOM Loads
 document.addEventListener("DOMContentLoaded", () => {
-  if (!initialized) {
-    fetchNews();
-    loadAdminArticlesForUser();
-    initialized = true;
-  }
+  fetchNews(); // 🟢 This will fetch and render news when page loads
 
-    // Set date in navigation
-    const navDateEl = document.getElementById("navDate");
-    if (navDateEl) {
-      const today = new Date();
-    
-      const day = today.getDate();
-      const month = today.toLocaleString("default", { month: "long" });
-      const year = today.getFullYear();
-      const weekday = today.toLocaleString("default", { weekday: "long" });
-    
-      navDateEl.textContent = `${day} ${month} ${year}, ${weekday}`;
-    }
-    
+  const navDateEl = document.getElementById("navDate");
+  if (navDateEl) {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.toLocaleString("default", { month: "long" });
+    const year = today.getFullYear();
+    const weekday = today.toLocaleString("default", { weekday: "long" });
+
+    navDateEl.textContent = `${day} ${month} ${year}, ${weekday}`;
+  }
 });
+
+
