@@ -1,42 +1,61 @@
--- Create database
-CREATE DATABASE IF NOT EXISTS news_portal;
+CREATE DATABASE `news_portal`;
 USE news_portal;
 
--- Users table
-CREATE TABLE IF NOT EXISTS users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    role ENUM('user', 'admin') DEFAULT 'user',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `news` (                                                               
+  `id` int NOT NULL AUTO_INCREMENT,                                                           
+  `title` varchar(255) NOT NULL,                                                              
+  `subtitle` varchar(255) DEFAULT NULL,                                                       
+  `content` text,                                                                             
+  `featured_image` longtext,                                                                  
+  `category` varchar(50) DEFAULT NULL,                                                        
+  `tags` varchar(255) DEFAULT NULL,                                                           
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,                                      
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,          
+  PRIMARY KEY (`id`)                                                                          
+);       
+
+CREATE TABLE `password_reset_otps` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `otp` varchar(6) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `idx_email` (`email`),
+  KEY `idx_otp` (`otp`),
+  CONSTRAINT `password_reset_otps_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
--- News table
-CREATE TABLE IF NOT EXISTS news (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    subtitle VARCHAR(255),
-    content TEXT,
-    featured_image LONGTEXT,
-    category VARCHAR(50),
-    tags VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role` enum('user','admin') DEFAULT 'user',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `google_id` varchar(255) DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `idx_google_id` (`google_id`)
 );
 
-CREATE TABLE blogs (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    subtitle TEXT,
-    content TEXT NOT NULL,
-    featured_image LONGTEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    approved TINYINT(1) DEFAULT 0,
-    user_id INT
-);
 
+CREATE TABLE `blogs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `subtitle` text,
+  `content` text NOT NULL,
+  `featured_image` longtext,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `approved` tinyint(1) DEFAULT '0',
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+);
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
