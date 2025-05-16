@@ -129,7 +129,13 @@ if (searchContainer && searchInput && searchButton) {
       searchInput.focus();
     } else if (searchInput.value.trim() !== "") {
       // Perform search
-      console.log("Searching for:", searchInput.value);
+      e.preventDefault();
+      const searchQuery = searchInput.value.trim();
+      console.log("Searching for:", searchQuery);
+
+      // Perform the search
+      searchDashboardNews(searchQuery);
+
       // Add ripple effect to button
       const ripple = document.createElement("span");
       ripple.classList.add("ripple-effect");
@@ -149,6 +155,20 @@ if (searchContainer && searchInput && searchButton) {
     ) {
       searchContainer.classList.remove("active");
       searchContainer.classList.remove("expanded");
+    }
+  });
+}
+
+// Add search functionality when user presses Enter in the search input
+if (searchInput) {
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter" && searchInput.value.trim() !== "") {
+      e.preventDefault();
+      const searchQuery = searchInput.value.trim();
+      console.log("Searching for:", searchQuery);
+
+      // Perform the search
+      searchDashboardNews(searchQuery);
     }
   });
 }
@@ -183,16 +203,19 @@ if (hamburgerMenu && sidebar && closeSidebar && overlay) {
   sidebarMenuItems.forEach((item) => {
     item.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
-  
+
       // ✅ Allow natural navigation for blog.html and userBlogPost.html
-      if (href && (href.includes("blog.html") || href.includes("userBlogPost.html"))) {
+      if (
+        href &&
+        (href.includes("blog.html") || href.includes("userBlogPost.html"))
+      ) {
         return; // don't preventDefault, allow redirect
       }
-  
+
       e.preventDefault(); // block only category links
-  
+
       const menuText = this.textContent.trim();
-  
+
       // Handle different menu items
       if (menuText === "Home") {
         filterNewsByCategory("all");
@@ -865,7 +888,7 @@ function displayNews(news) {
     .join("");
 }
 
-//Article Display 
+//Article Display
 function displayAdminArticles(articles) {
   // Create or get the articles section
   let articlesSection = document.querySelector(".articles-section");
@@ -933,7 +956,9 @@ function displayAdminArticles(articles) {
     }
 
     html += `
-      <div class="article-card" onclick="window.location.href='articleReading.html?id=${article.id}'">
+      <div class="article-card" onclick="window.location.href='articleReading.html?id=${
+        article.id
+      }'">
         <div class="article-image">
           <img src="${imageUrl}" alt="${title || "News article"}" />
         </div>
@@ -954,7 +979,6 @@ function displayAdminArticles(articles) {
   articlesSection.innerHTML = html;
   articlesSection.style.display = "block";
 }
-
 
 // Function to filter news by category
 function filterNewsByCategory(category) {
@@ -1049,7 +1073,8 @@ const notifCount = document.getElementById("notif-count");
 
 bell.addEventListener("click", async (e) => {
   e.stopPropagation();
-  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  dropdown.style.display =
+    dropdown.style.display === "block" ? "none" : "block";
   dropdown.innerHTML = "<div style='padding: 10px;'>Loading...</div>";
 
   try {
@@ -1065,29 +1090,36 @@ bell.addEventListener("click", async (e) => {
 
     if (!Array.isArray(articles) || articles.length === 0) {
       notifCount.textContent = "0";
-      dropdown.innerHTML = "<div style='padding: 10px;'>No articles found.</div>";
+      dropdown.innerHTML =
+        "<div style='padding: 10px;'>No articles found.</div>";
       return;
     }
 
-    const validArticles = articles.filter(a => a.title);
-    validArticles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    const validArticles = articles.filter((a) => a.title);
+    validArticles.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
 
     const recent = validArticles.slice(0, 5);
     notifCount.textContent = recent.length.toString();
-    
-    dropdown.innerHTML = recent.map(item => `
+
+    dropdown.innerHTML = recent
+      .map(
+        (item) => `
       <div>
         <a href="articleReading.html?id=${item.id}">
         <strong>${item.title}</strong>
         <small>${new Date(item.created_at).toLocaleDateString()}</small>
         </a>
       </div>
-    `).join("");
-
+    `
+      )
+      .join("");
   } catch (error) {
     console.error("Failed to load articles for notification:", error);
     notifCount.textContent = "0";
-    dropdown.innerHTML = "<div style='padding: 10px;'>Error loading notifications.</div>";
+    dropdown.innerHTML =
+      "<div style='padding: 10px;'>Error loading notifications.</div>";
   }
 });
 
@@ -1096,3 +1128,260 @@ document.addEventListener("click", (e) => {
     dropdown.style.display = "none";
   }
 });
+
+// Search news function - for dashboard
+async function searchDashboardNews(query) {
+  if (!query || query.trim() === "") {
+    return;
+  }
+
+  // Show loading state
+  showGlobalLoading();
+
+  // Hide existing content sections
+  const sectionsToHide = [
+    ".welcome-section",
+    ".articles-section",
+    ".breaking-news-banner",
+    ".top-stories",
+    ".news-by-category",
+    ".most-read",
+    ".news-feed",
+  ];
+
+  sectionsToHide.forEach((selector) => {
+    const section = document.querySelector(selector);
+    if (section) {
+      section.style.display = "none";
+    }
+  });
+
+  // Get or create search results section
+  let searchResultsSection = document.querySelector(".search-results-section");
+  const dashboardMain = document.querySelector(".dashboard-main");
+
+  if (!searchResultsSection && dashboardMain) {
+    searchResultsSection = document.createElement("div");
+    searchResultsSection.className = "search-results-section";
+    dashboardMain.prepend(searchResultsSection);
+  }
+
+  // Show loading indicator in search results section
+  if (searchResultsSection) {
+    searchResultsSection.innerHTML = `
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Searching for "${query}"...</p>
+      </div>
+    `;
+  }
+
+  // Fetch search results
+  try {
+    const cacheBuster = `cacheBust=${Date.now()}`;
+    const url = `/api/news/search?query=${encodeURIComponent(
+      query
+    )}&${cacheBuster}`;
+
+    console.log("Sending search request to:", url);
+
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+      cache: "no-store",
+    });
+
+    console.log("Search response status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(
+        `Search failed with status ${response.status}: ${errorText}`
+      );
+    }
+
+    const searchResults = await response.json();
+    console.log("Search results:", searchResults);
+
+    // Display search results
+    displayDashboardSearchResults(searchResults, query);
+  } catch (error) {
+    console.error("Error searching news:", error);
+
+    if (searchResultsSection) {
+      searchResultsSection.innerHTML = `
+        <div class="search-error">
+          <h3>Error searching for "${query}"</h3>
+          <p>There was a problem with your search: ${error.message}. Please try again later.</p>
+          <button class="back-to-dashboard-btn" onclick="window.location.reload()">Back to Dashboard</button>
+        </div>
+      `;
+    }
+  } finally {
+    hideGlobalLoading();
+  }
+}
+
+// Display search results in dashboard
+function displayDashboardSearchResults(articles, query) {
+  const searchResultsSection = document.querySelector(
+    ".search-results-section"
+  );
+
+  if (!searchResultsSection) return;
+
+  // Check if we have results
+  if (!articles || articles.length === 0) {
+    searchResultsSection.innerHTML = `
+      <div class="search-results-header">
+        <h2>Search Results for "${query}"</h2>
+        <button class="back-to-dashboard-btn" onclick="window.location.reload()">Back to Dashboard</button>
+      </div>
+      <div class="no-results">
+        <i class="fas fa-search"></i>
+        <h3>No results found</h3>
+        <p>We couldn't find any articles matching your search. Try different keywords or check back later.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Display search results
+  searchResultsSection.innerHTML = `
+    <div class="search-results-header">
+      <h2>Search Results for "${query}"</h2>
+      <p>${articles.length} articles found</p>
+      <button class="back-to-dashboard-btn" onclick="window.location.reload()">Back to Dashboard</button>
+    </div>
+    <div class="search-results-grid">
+      ${articles
+        .map((article) => {
+          // Check for valid image URL
+          let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+
+          // Check all possible image sources
+          if (article.featured_image && article.featured_image.trim() !== "") {
+            imageUrl = article.featured_image;
+          } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+            imageUrl = article.urlToImage;
+          } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+            imageUrl = article.imageUrl;
+          }
+
+          return `
+          <div class="news-card search-result-card">
+            <div class="news-image">
+              <img src="${imageUrl}" alt="${article.title || "News article"}">
+            </div>
+            <div class="news-content">
+              <h3>${article.title}</h3>
+              <p>${article.description || article.subtitle || ""}</p>
+              <div class="news-meta">
+                <span class="category">${article.category || "General"}</span>
+                <span class="date">${new Date(
+                  article.publishedAt || article.created_at || new Date()
+                ).toLocaleDateString()}</span>
+              </div>
+              <a href="${
+                article.url || `/article/${article.id}` || "#"
+              }" class="read-more">Read More</a>
+            </div>
+          </div>
+        `;
+        })
+        .join("")}
+    </div>
+  `;
+
+  // Make sure the search results section is visible
+  searchResultsSection.style.display = "block";
+}
+
+// Show global loading indicator
+function showGlobalLoading() {
+  // Check if loading indicator already exists
+  if (document.querySelector(".global-loading-overlay")) {
+    return;
+  }
+
+  // Create loading overlay
+  const loadingOverlay = document.createElement("div");
+  loadingOverlay.className = "global-loading-overlay";
+  loadingOverlay.innerHTML = `
+    <div class="loading-spinner">
+      <i class="fas fa-spinner fa-spin"></i>
+      <p>Loading...</p>
+    </div>
+  `;
+
+  // Add to body
+  document.body.appendChild(loadingOverlay);
+
+  // Prevent scrolling
+  document.body.style.overflow = "hidden";
+}
+
+// Hide global loading indicator
+function hideGlobalLoading() {
+  const loadingOverlay = document.querySelector(".global-loading-overlay");
+  if (loadingOverlay) {
+    // Add fade-out animation
+    loadingOverlay.classList.add("fade-out");
+
+    // Remove after animation completes
+    setTimeout(() => {
+      loadingOverlay.remove();
+      document.body.style.overflow = "";
+    }, 300);
+  }
+}
+
+// Show global error message
+function showGlobalError(title, message) {
+  // Check if error message already exists
+  if (document.querySelector(".global-error-overlay")) {
+    return;
+  }
+
+  // Create error overlay
+  const errorOverlay = document.createElement("div");
+  errorOverlay.className = "global-error-overlay";
+  errorOverlay.innerHTML = `
+    <div class="global-error-content">
+      <i class="fas fa-exclamation-circle"></i>
+      <h3>${title}</h3>
+      <p>${message}</p>
+      <button class="error-dismiss-btn">Dismiss</button>
+    </div>
+  `;
+
+  // Add to body
+  document.body.appendChild(errorOverlay);
+
+  // Add event listener to dismiss button
+  const dismissBtn = errorOverlay.querySelector(".error-dismiss-btn");
+  dismissBtn.addEventListener("click", () => {
+    errorOverlay.classList.add("fade-out");
+    setTimeout(() => {
+      errorOverlay.remove();
+    }, 300);
+  });
+
+  // Auto-dismiss after 8 seconds
+  setTimeout(() => {
+    if (errorOverlay.parentNode) {
+      errorOverlay.classList.add("fade-out");
+      setTimeout(() => {
+        if (errorOverlay.parentNode) {
+          errorOverlay.remove();
+        }
+      }, 300);
+    }
+  }, 8000);
+}

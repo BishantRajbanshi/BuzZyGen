@@ -66,7 +66,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/article", articleRoutes);
 app.use("/api/blogs", blogsRoutes);
-app.use("/api/news", require("./routes/news"));
 
 // Serve static files
 app.get("/", (req, res) => {
@@ -112,5 +111,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-

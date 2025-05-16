@@ -16,61 +16,51 @@ const newsCache = {
 // Cache duration in milliseconds (15 minutes)
 const CACHE_DURATION = 15 * 60 * 1000;
 
-// Sample news data for fallback
+// Define SAMPLE_NEWS for fallback when API and DB searches fail
 const SAMPLE_NEWS = [
   {
-    title: "Technology Trends for 2024",
+    title: "Technology Trends for the Future",
     description:
       "Discover the latest technology trends that are shaping our future.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Technology+Trends",
+    url: "https://example.com/tech-trends",
+    urlToImage: "https://via.placeholder.com/600x400?text=Technology+Trends",
     publishedAt: new Date().toISOString(),
-    category: "technology",
-    url: "#",
+    category: "Technology",
   },
   {
     title: "Global Economic Outlook",
     description:
       "Experts analyze the current state of the global economy and future projections.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Economic+Outlook",
+    url: "https://example.com/economic-outlook",
+    urlToImage: "https://via.placeholder.com/600x400?text=Economic+Outlook",
     publishedAt: new Date().toISOString(),
-    category: "business",
-    url: "#",
+    category: "Business",
   },
   {
     title: "Health and Wellness Tips",
     description:
       "Simple lifestyle changes that can significantly improve your overall health and wellbeing.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Health+Tips",
+    url: "https://example.com/health-tips",
+    urlToImage: "https://via.placeholder.com/600x400?text=Health+Tips",
     publishedAt: new Date().toISOString(),
-    category: "health",
-    url: "#",
+    category: "Health",
   },
   {
-    title: "Sports Highlights of the Week",
+    title: "Sports Championships Update",
     description:
-      "Catch up on all the major sporting events and highlights from around the world.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Sports+Highlights",
+      "Get the latest updates on sports championships from around the world.",
+    url: "https://example.com/sports-update",
+    urlToImage: "https://via.placeholder.com/600x400?text=Sports+Update",
     publishedAt: new Date().toISOString(),
-    category: "sports",
-    url: "#",
+    category: "Sports",
   },
   {
-    title: "Entertainment News Roundup",
-    description:
-      "The latest updates from the world of entertainment, movies, music, and celebrity news.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Entertainment+News",
+    title: "Entertainment Industry News",
+    description: "The latest news and updates from the entertainment industry.",
+    url: "https://example.com/entertainment-news",
+    urlToImage: "https://via.placeholder.com/600x400?text=Entertainment+News",
     publishedAt: new Date().toISOString(),
-    category: "entertainment",
-    url: "#",
-  },
-  {
-    title: "Science Breakthroughs This Month",
-    description:
-      "Exciting new discoveries and advancements in the world of science and research.",
-    urlToImage: "https://via.placeholder.com/800x400?text=Science+News",
-    publishedAt: new Date().toISOString(),
-    category: "science",
-    url: "#",
+    category: "Entertainment",
   },
 ];
 
@@ -321,6 +311,140 @@ router.put("/:id", adminAuth, async (req, res) => {
       message: "Error updating news article",
       error: error.message,
       success: false,
+    });
+  }
+});
+
+// Search news from external API
+router.get("/search", async (req, res) => {
+  try {
+    const { query } = req.query;
+
+    console.log("Received search request with query:", query);
+
+    if (!query || query.trim() === "") {
+      console.warn("Empty search query received");
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    console.log(`Searching for news with query: ${query}`);
+
+    // Try to fetch fresh data from the API first
+    try {
+      const apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+        query
+      )}&apiKey=${process.env.NEWS_API_KEY}`;
+      console.log(`Requesting data from News API: ${apiUrl}`);
+
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "X-Api-Key": process.env.NEWS_API_KEY,
+          "User-Agent": "news-portal/1.0",
+        },
+        timeout: 8000, // 8 second timeout
+      });
+
+      if (
+        response.data &&
+        response.data.articles &&
+        response.data.articles.length > 0
+      ) {
+        console.log(
+          `Successfully fetched ${response.data.articles.length} articles from News API for search: ${query}`
+        );
+        return res.json(response.data.articles);
+      } else {
+        console.warn(
+          `News API returned empty articles array for search: ${query}`
+        );
+      }
+    } catch (error) {
+      console.error("Error searching news from API:", error.message);
+      if (error.response) {
+        console.error("API response error data:", error.response.data);
+        console.error("API response status:", error.response.status);
+      }
+    }
+
+    // If API search fails or returns no results, search the database
+    console.log("Falling back to database search");
+    try {
+      const sqlQuery = `SELECT id, title, subtitle, SUBSTRING(content, 1, 300) AS content_preview, 
+        featured_image AS urlToImage, category, tags, created_at, updated_at
+        FROM news 
+        WHERE title LIKE ? OR subtitle LIKE ? OR content LIKE ? OR tags LIKE ?
+        ORDER BY created_at DESC
+        LIMIT 20`;
+
+      console.log("Executing SQL query:", sqlQuery);
+      console.log("With search parameters:", [
+        `%${query}%`,
+        `%${query}%`,
+        `%${query}%`,
+        `%${query}%`,
+      ]);
+
+      const [rows] = await pool.query(sqlQuery, [
+        `%${query}%`,
+        `%${query}%`,
+        `%${query}%`,
+        `%${query}%`,
+      ]);
+
+      if (rows.length > 0) {
+        console.log(
+          `Found ${rows.length} articles in database for search: ${query}`
+        );
+        // Format the database results to match the News API format
+        const articles = rows.map((article) => ({
+          ...article,
+          description: article.subtitle || article.content_preview,
+          publishedAt: article.created_at,
+          url: `/article/${article.id}`,
+        }));
+        return res.json(articles);
+      } else {
+        console.log("No matching articles found in database");
+      }
+    } catch (dbError) {
+      console.error(
+        "Error searching database:",
+        dbError.message,
+        dbError.stack
+      );
+    }
+
+    // If both API and database search fail, return filtered sample news
+    console.log("Falling back to sample news search");
+
+    // Check if SAMPLE_NEWS is defined
+    if (!SAMPLE_NEWS || !Array.isArray(SAMPLE_NEWS)) {
+      console.error("SAMPLE_NEWS is not properly defined");
+      return res.json([]);
+    }
+
+    const filteredSampleNews = SAMPLE_NEWS.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query.toLowerCase()) ||
+        item.description.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if (filteredSampleNews.length > 0) {
+      console.log(
+        `Found ${filteredSampleNews.length} matching items in sample news`
+      );
+      return res.json(filteredSampleNews);
+    }
+
+    // If no results found, return empty array
+    console.log("No results found in any source, returning empty array");
+    return res.json([]);
+  } catch (error) {
+    console.error("Search error:", error.message, error.stack);
+    res.status(500).json({
+      message: "Error searching for news",
+      error: error.message,
+      errorDetails: error.stack,
     });
   }
 });

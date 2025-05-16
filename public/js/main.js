@@ -105,7 +105,13 @@ if (searchContainer && searchInput && searchButton) {
       searchInput.focus();
     } else if (searchInput.value.trim() !== "") {
       // Perform search
-      console.log("Searching for:", searchInput.value);
+      e.preventDefault();
+      const searchQuery = searchInput.value.trim();
+      console.log("Searching for:", searchQuery);
+
+      // Perform the search
+      searchNews(searchQuery);
+
       // Add ripple effect to button
       const ripple = document.createElement("span");
       ripple.classList.add("ripple-effect");
@@ -127,6 +133,20 @@ if (searchContainer && searchInput && searchButton) {
       searchContainer.classList.remove("expanded");
     }
   });
+
+  // Add search functionality when user presses Enter in the search input
+  if (searchInput) {
+    searchInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" && searchInput.value.trim() !== "") {
+        e.preventDefault();
+        const searchQuery = searchInput.value.trim();
+        console.log("Searching for:", searchQuery);
+
+        // Perform the search
+        searchNews(searchQuery);
+      }
+    });
+  }
 }
 
 // Only set up sidebar functionality if all required elements exist
@@ -1576,7 +1596,11 @@ async function fetchNews(category = null) {
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(
+        `Search failed with status ${response.status}: ${errorText}`
+      );
     }
 
     const news = await response.json();
@@ -1855,4 +1879,150 @@ if (forgotPasswordForm) {
       showForgotGeneralError("An error occurred. Please try again later.");
     }
   });
+}
+
+// Search news function
+async function searchNews(query) {
+  if (!query || query.trim() === "") {
+    return;
+  }
+
+  // Show loading state in main content area
+  const featuredNews = document.querySelector(".featured-news");
+  const topStoriesSection = document.querySelector(".top-stories");
+  const newsByCategorySection = document.querySelector(".news-by-category");
+  const mostReadSection = document.querySelector(".most-read");
+
+  if (featuredNews) {
+    featuredNews.innerHTML = `
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Searching for "${query}"...</p>
+      </div>
+    `;
+  }
+
+  // Hide other sections temporarily
+  if (topStoriesSection) topStoriesSection.style.display = "none";
+  if (newsByCategorySection) newsByCategorySection.style.display = "none";
+  if (mostReadSection) mostReadSection.style.display = "none";
+
+  // Fetch search results
+  try {
+    const cacheBuster = `cacheBust=${Date.now()}`;
+    const url = `/api/news/search?query=${encodeURIComponent(
+      query
+    )}&${cacheBuster}`;
+
+    console.log("Sending search request to:", url);
+
+    const response = await fetch(url, {
+      headers: {
+        Accept: "application/json",
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+      cache: "no-store",
+    });
+
+    console.log("Search response status:", response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Error response:", errorText);
+      throw new Error(
+        `Search failed with status ${response.status}: ${errorText}`
+      );
+    }
+
+    const searchResults = await response.json();
+    console.log("Search results:", searchResults);
+
+    // Display search results
+    displaySearchResults(searchResults, query);
+  } catch (error) {
+    console.error("Error searching news:", error);
+
+    if (featuredNews) {
+      featuredNews.innerHTML = `
+        <div class="search-error">
+          <i class="fas fa-exclamation-circle"></i>
+          <h3>Error searching for "${query}"</h3>
+          <p>There was a problem with your search: ${error.message}. Please try again later.</p>
+          <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
+        </div>
+      `;
+    }
+  }
+}
+
+// Display search results
+function displaySearchResults(articles, query) {
+  const featuredNews = document.querySelector(".featured-news");
+
+  if (!featuredNews) return;
+
+  // Check if we have results
+  if (!articles || articles.length === 0) {
+    featuredNews.innerHTML = `
+      <div class="search-results-header">
+        <h2>Search Results for "${query}"</h2>
+        <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
+      </div>
+      <div class="no-results">
+        <i class="fas fa-search"></i>
+        <h3>No results found</h3>
+        <p>We couldn't find any articles matching your search. Try different keywords or check back later.</p>
+      </div>
+    `;
+    return;
+  }
+
+  // Display search results
+  featuredNews.innerHTML = `
+    <div class="search-results-header">
+      <h2>Search Results for "${query}"</h2>
+      <p>${articles.length} articles found</p>
+      <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
+    </div>
+    <div class="search-results-grid">
+      ${articles
+        .map((article) => {
+          // Check for valid image URL
+          let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+
+          // Check all possible image sources
+          if (article.featured_image && article.featured_image.trim() !== "") {
+            imageUrl = article.featured_image;
+          } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+            imageUrl = article.urlToImage;
+          } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+            imageUrl = article.imageUrl;
+          }
+
+          return `
+          <div class="news-card search-result-card">
+            <div class="news-image">
+              <img src="${imageUrl}" alt="${article.title || "News article"}">
+            </div>
+            <div class="news-content">
+              <h3>${article.title}</h3>
+              <p>${article.description || article.subtitle || ""}</p>
+              <div class="news-meta">
+                <span class="category">${article.category || "General"}</span>
+                <span class="date">${new Date(
+                  article.publishedAt || article.created_at || new Date()
+                ).toLocaleDateString()}</span>
+              </div>
+              <a href="${
+                article.url || `/article/${article.id}` || "#"
+              }" class="read-more">Read More</a>
+            </div>
+          </div>
+        `;
+        })
+        .join("")}
+    </div>
+  `;
 }

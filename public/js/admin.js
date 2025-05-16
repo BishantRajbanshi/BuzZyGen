@@ -205,21 +205,21 @@ function initAdminDashboard(token) {
       });
   }
 
-  //Fetch Blog 
+  //Fetch Blog
   function fetchPendingBlogs() {
     fetch("/api/blogs/pending", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     })
-      .then(res => res.json())
-      .then(blogs => renderPendingBlogs(blogs))
-      .catch(err => {
+      .then((res) => res.json())
+      .then((blogs) => renderPendingBlogs(blogs))
+      .catch((err) => {
         console.error("Error fetching pending blogs:", err);
         const container = document.querySelector(".articles-grid");
         if (container) {
           container.innerHTML += `<p style="color:red;">Error loading approval blogs</p>`;
         }
       });
-  }  
+  }
 
   // Display news in the admin dashboard
   function displayNews(news) {
@@ -303,17 +303,20 @@ function initAdminDashboard(token) {
   function renderPendingBlogs(blogs) {
     const container = document.querySelector(".articles-grid");
     if (!container) return;
-  
+
     if (!blogs || blogs.length === 0) {
       container.innerHTML += `<div class="no-articles-message"><p>No pending blogs to approve.</p></div>`;
       return;
     }
-  
-    const html = blogs.map(blog => {
-      const image = blog.featured_image || "https://via.placeholder.com/300x200?text=No+Image";
-      const subtitle = blog.subtitle || blog.content?.slice(0, 100) || "";
-  
-      return `
+
+    const html = blogs
+      .map((blog) => {
+        const image =
+          blog.featured_image ||
+          "https://via.placeholder.com/300x200?text=No+Image";
+        const subtitle = blog.subtitle || blog.content?.slice(0, 100) || "";
+
+        return `
         <div class="article-card">
           <div class="article-content">
             <h3>${blog.title}</h3>
@@ -323,7 +326,9 @@ function initAdminDashboard(token) {
               <span>${new Date(blog.created_at).toLocaleDateString()}</span>
             </div>
             <div class="article-actions">
-              <button class="approve-btn" data-id="${blog.id}"><i class="fas fa-check-circle"></i> Approve</button>
+              <button class="approve-btn" data-id="${
+                blog.id
+              }"><i class="fas fa-check-circle"></i> Approve</button>
             </div>
           </div>
           <div class="article-image">
@@ -331,45 +336,46 @@ function initAdminDashboard(token) {
           </div>
         </div>
       `;
-    }).join("");
-  
+      })
+      .join("");
+
     container.innerHTML += html;
-  
+
     // Attach approve handlers
-    document.querySelectorAll(".approve-btn").forEach(button => {
+    document.querySelectorAll(".approve-btn").forEach((button) => {
       button.addEventListener("click", () => {
         const id = button.dataset.id;
         approveBlog(id);
       });
     });
   }
-  
-  //Approve Blogs 
+
+  //Approve Blogs
   function approveBlog(id) {
     if (!confirm("Approve this blog?")) return;
-  
+
     fetch(`/api/blogs/${id}/approve`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json"
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(res => {
+      .then((res) => {
         if (res.ok) {
           alert("Blog approved successfully.");
-          fetchNews();           // reload approved articles
-          fetchPendingBlogs();   // reload pending section
+          fetchNews(); // reload approved articles
+          fetchPendingBlogs(); // reload pending section
         } else {
           alert("Failed to approve blog.");
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Approval error:", err);
         alert("Error approving blog.");
       });
   }
-  
+
   // Setup image upload functionality
   function setupImageUpload() {
     const imageDropArea = document.getElementById("image-drop-area");
@@ -804,21 +810,21 @@ function initAdminDashboard(token) {
     navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
-  
+
         // Remove active class from all links
         navLinks.forEach((l) => l.classList.remove("active"));
-  
+
         // Add active class to clicked link
         link.classList.add("active");
-  
+
         const category = link.getAttribute("data-category");
-  
+
         const articlesGrid = document.querySelector(".articles-grid");
         if (!articlesGrid) return;
-  
+
         // Clear grid before loading new content
         articlesGrid.innerHTML = "";
-  
+
         // Load section content based on category
         if (category === "all") {
           fetchNews(); // Show latest 5 articles
@@ -830,32 +836,218 @@ function initAdminDashboard(token) {
       });
     });
   }
-  
 
-  // Setup search bar functionality - DISABLED
+  // Setup search bar functionality
   function setupSearchBar() {
     // Get search container
     const searchContainer = document.querySelector(".search-container");
 
     if (searchContainer) {
-      // Style the disabled search container
-      searchContainer.classList.add("search-disabled");
-      searchContainer.title =
-        "Search functionality is currently under maintenance";
+      // Remove disabled class if it exists
+      searchContainer.classList.remove("search-disabled");
+      searchContainer.title = "Search for news and articles";
 
-      // Get and disable the search input
+      // Get and enable the search input and button
       const searchInput = searchContainer.querySelector("input");
+      const searchButton = searchContainer.querySelector("button");
+
       if (searchInput) {
-        searchInput.disabled = true;
-        searchInput.placeholder = "Search unavailable";
+        searchInput.disabled = false;
+        searchInput.placeholder = "Search...";
+
+        // Add event listener for search input
+        searchInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && searchInput.value.trim() !== "") {
+            e.preventDefault();
+            const searchQuery = searchInput.value.trim();
+            searchAdminNews(searchQuery);
+          }
+        });
+
+        // Add event listener for search button
+        if (searchButton) {
+          searchButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (searchInput.value.trim() !== "") {
+              const searchQuery = searchInput.value.trim();
+              searchAdminNews(searchQuery);
+            }
+          });
+        }
+      }
+    }
+  }
+
+  // Function to search news in admin dashboard
+  async function searchAdminNews(query) {
+    if (!query || query.trim() === "") {
+      return;
+    }
+
+    // Show loading state
+    showGlobalLoading();
+
+    // Clear any existing search results
+    const currentResults = document.querySelector(".admin-search-results");
+    if (currentResults) {
+      currentResults.remove();
+    }
+
+    // Get the articles container
+    const articlesGrid = document.querySelector(".articles-grid");
+    if (articlesGrid) {
+      articlesGrid.innerHTML = `
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Searching for "${query}"...</p>
+        </div>
+      `;
+    }
+
+    try {
+      // Create URL with query parameter
+      const cacheBuster = `cacheBust=${Date.now()}`;
+      const url = `/api/news/search?query=${encodeURIComponent(
+        query
+      )}&${cacheBuster}`;
+
+      // Fetch search results
+      const response = await fetch(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      // Add click handler to show message
-      searchContainer.addEventListener("click", function (e) {
-        e.preventDefault();
-        searchDisabledNotice();
-      });
+      const searchResults = await response.json();
+
+      // Display search results
+      displayAdminSearchResults(searchResults, query);
+    } catch (error) {
+      console.error("Error searching news:", error);
+
+      // Show error message
+      if (articlesGrid) {
+        articlesGrid.innerHTML = `
+          <div class="search-error">
+            <h3>Error searching for "${query}"</h3>
+            <p>There was a problem with your search. Please try again later.</p>
+            <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+          </div>
+        `;
+      }
+    } finally {
+      hideGlobalLoading();
     }
+  }
+
+  // Display search results in admin dashboard
+  function displayAdminSearchResults(articles, query) {
+    const articlesGrid = document.querySelector(".articles-grid");
+
+    if (!articlesGrid) return;
+
+    // Change page heading to reflect search
+    const articlesHeading = document.querySelector(".articles-section h2");
+    if (articlesHeading) {
+      articlesHeading.textContent = `Search Results for "${query}"`;
+    }
+
+    // Check if we have results
+    if (!articles || articles.length === 0) {
+      articlesGrid.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-search"></i>
+          <h3>No results found</h3>
+          <p>We couldn't find any articles matching your search. Try different keywords.</p>
+          <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+        </div>
+      `;
+      return;
+    }
+
+    // Build search results HTML
+    let resultsHTML = `
+      <div class="search-results-info">
+        <p>${articles.length} articles found</p>
+        <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+      </div>
+    `;
+
+    // Add search results
+    resultsHTML += articles
+      .map((article) => {
+        // Check for valid image URL
+        let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+
+        // Check all possible image sources
+        if (article.featured_image && article.featured_image.trim() !== "") {
+          imageUrl = article.featured_image;
+        } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+          imageUrl = article.urlToImage;
+        } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+          imageUrl = article.imageUrl;
+        }
+
+        return `
+        <div class="article-card search-result-card">
+          <div class="article-image">
+            <img src="${imageUrl}" alt="${article.title || "News article"}">
+          </div>
+          <div class="article-content">
+            <h3>${article.title}</h3>
+            <p>${article.description || article.subtitle || ""}</p>
+            <div class="article-meta">
+              <span class="category">${article.category || "General"}</span>
+              <span class="date">${new Date(
+                article.publishedAt || article.created_at || new Date()
+              ).toLocaleDateString()}</span>
+            </div>
+            <div class="article-actions">
+              <a href="${
+                article.url || `/article/${article.id}` || "#"
+              }" class="view-btn" target="_blank">View</a>
+              ${
+                article.id
+                  ? `<button class="edit-btn" data-id="${article.id}">Edit</button>
+                 <button class="delete-btn" data-id="${article.id}">Delete</button>`
+                  : ""
+              }
+            </div>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+
+    // Update the articles grid with search results
+    articlesGrid.innerHTML = resultsHTML;
+
+    // Add event listeners for edit and delete buttons
+    const editButtons = articlesGrid.querySelectorAll(".edit-btn");
+    const deleteButtons = articlesGrid.querySelectorAll(".delete-btn");
+
+    editButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const articleId = button.getAttribute("data-id");
+        showEditNewsForm(articleId);
+      });
+    });
+
+    deleteButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const articleId = button.getAttribute("data-id");
+        confirmDeleteNews(articleId);
+      });
+    });
   }
 
   // Initialize all components

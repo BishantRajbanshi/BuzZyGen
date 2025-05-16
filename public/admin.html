@@ -134,6 +134,99 @@
         color: #bb1919;
         margin-bottom: 1rem;
       }
+
+      /* Admin search results styles */
+      .search-results-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eaeaea;
+      }
+
+      .search-results-info p {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
+      }
+
+      .back-to-admin-btn {
+        background-color: #bb1919;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background-color 0.3s ease;
+      }
+
+      .back-to-admin-btn:hover {
+        background-color: #a00;
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+      }
+
+      .no-results i {
+        font-size: 3rem;
+        color: #ccc;
+        margin-bottom: 1rem;
+      }
+
+      .no-results h3 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      .no-results p {
+        color: #666;
+        max-width: 60%;
+        margin: 0 auto 1.5rem auto;
+      }
+
+      .search-error {
+        text-align: center;
+        padding: 3rem 1rem;
+        background-color: #fff8f8;
+        border-radius: 8px;
+        border: 1px solid #ffeeee;
+      }
+
+      .search-error h3 {
+        font-size: 1.5rem;
+        color: #bb1919;
+        margin-bottom: 1rem;
+      }
+
+      .search-error p {
+        color: #333;
+        max-width: 60%;
+        margin: 0 auto 1.5rem auto;
+      }
+
+      /* Responsive styles for search results */
+      @media (max-width: 768px) {
+        .search-results-info {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .search-results-info p {
+          margin-bottom: 1rem;
+        }
+
+        .no-results p,
+        .search-error p {
+          max-width: 90%;
+        }
+      }
     </style>
   </head>
   <body class="admin-body">
