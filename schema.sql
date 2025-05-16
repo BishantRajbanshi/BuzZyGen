@@ -29,12 +29,12 @@ CREATE TABLE IF NOT EXISTS news (
 CREATE TABLE blogs (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    subtitle VARCHAR(255),
-    content TEXT,
+    subtitle TEXT,
+    content TEXT NOT NULL,
     featured_image LONGTEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    approved BOOLEAN DEFAULT 0,
-    user_id INT,
+    approved TINYINT(1) DEFAULT 0,
+    user_id INT
 );
 
 
