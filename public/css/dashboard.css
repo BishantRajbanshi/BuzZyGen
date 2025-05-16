@@ -337,3 +337,62 @@
   font-size: 14px;
   white-space: nowrap;
 }
+
+/* Container for the notification bell */
+.notifications {
+  position: relative;
+}
+
+/* Notification dropdown container */
+.notif-dropdown {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  width: 300px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  padding: 0;
+  font-family: 'Times New Roman', serif;
+}
+
+/* Each notification item */
+.notif-dropdown div {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect */
+.notif-dropdown div:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+/* Remove bottom border on last item */
+.notif-dropdown div:last-child {
+  border-bottom: none;
+}
+
+/* Notification link */
+.notif-dropdown a {
+  color: #111;
+  text-decoration: none;
+  display: block;
+  font-family: 'Times New Roman', serif;
+}
+
+/* Title */
+.notif-dropdown a strong {
+  font-size: 16px;
+  display: block;
+}
+
+/* Date */
+.notif-dropdown a small {
+  font-size: 12px;
+  color: #777;
+}

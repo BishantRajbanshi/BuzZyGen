@@ -1029,7 +1029,7 @@ if (navContainer) {
 
 // Initialize News + Date Setup After DOM Loads
 document.addEventListener("DOMContentLoaded", () => {
-  fetchNews(); // 🟢 This will fetch and render news when page loads
+  fetchNews(); // This will fetch and render news when page loads
 
   const navDateEl = document.getElementById("navDate");
   if (navDateEl) {
@@ -1043,4 +1043,56 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+const bell = document.getElementById("notif-bell");
+const dropdown = document.getElementById("notif-dropdown");
+const notifCount = document.getElementById("notif-count");
 
+bell.addEventListener("click", async (e) => {
+  e.stopPropagation();
+  dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  dropdown.innerHTML = "<div style='padding: 10px;'>Loading...</div>";
+
+  try {
+    const response = await fetch("/api/news/db", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    const data = await response.json();
+    const articles = data.articles || data;
+
+    if (!Array.isArray(articles) || articles.length === 0) {
+      notifCount.textContent = "0";
+      dropdown.innerHTML = "<div style='padding: 10px;'>No articles found.</div>";
+      return;
+    }
+
+    const validArticles = articles.filter(a => a.title);
+    validArticles.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+    const recent = validArticles.slice(0, 5);
+    notifCount.textContent = recent.length.toString();
+    
+    dropdown.innerHTML = recent.map(item => `
+      <div>
+        <a href="articleReading.html?id=${item.id}">
+        <strong>${item.title}</strong>
+        <small>${new Date(item.created_at).toLocaleDateString()}</small>
+        </a>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    console.error("Failed to load articles for notification:", error);
+    notifCount.textContent = "0";
+    dropdown.innerHTML = "<div style='padding: 10px;'>Error loading notifications.</div>";
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
+    dropdown.style.display = "none";
+  }
+});
