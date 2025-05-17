@@ -50,6 +50,44 @@ const searchButton = searchContainer
   : null;
 let searchInteractionTimeout;
 
+//Kebab Menu funcationality 
+// Logout & Profile from kebab menu
+const kebabLogout = document.getElementById("logoutBtn");
+const profileBtn = document.getElementById("profileBtn");
+
+if (kebabLogout) {
+  kebabLogout.addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "/";
+  });
+}
+
+if (profileBtn) {
+  profileBtn.addEventListener("click", () => {
+    window.location.href = "userprofile.html";
+  });
+}
+
+// Kebab menu toggle logic
+
+// Toggle dropdown on icon click
+const kebabToggle = document.getElementById("kebabToggle");
+const kebabDropdown = document.getElementById("kebabDropdown");
+
+kebabToggle.addEventListener("click", (e) => {
+  e.stopPropagation();
+  kebabDropdown.style.display =
+    kebabDropdown.style.display === "block" ? "none" : "block";
+});
+
+// Close dropdown if clicked outside
+document.addEventListener("click", (e) => {
+  if (!kebabToggle.contains(e.target) && !kebabDropdown.contains(e.target)) {
+    kebabDropdown.style.display = "none";
+  }
+});
+
+
 // Add animation to search container
 if (searchContainer && searchInput && searchButton) {
   // Hover event for search container

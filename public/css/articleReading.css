@@ -1423,3 +1423,6 @@ footer {
     margin: 30px 0;
 }
 
+.bookmarked {
+    color: gold;
+}

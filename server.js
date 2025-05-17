@@ -8,7 +8,11 @@ const authRoutes = require("./routes/auth");
 const newsRoutes = require("./routes/news");
 const articleRoutes = require("./routes/article");
 const blogsRoutes = require("./routes/blogs");
+const db = require("./config/db"); // adjust path if needed
+const { auth } = require("./middleware/auth");// required for secure access
 
+ const bookmarkRoutes = require("./routes/bookmark");
+ 
 // Load environment variables
 dotenv.config();
 
@@ -66,6 +70,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/article", articleRoutes);
 app.use("/api/blogs", blogsRoutes);
+app.use("/api/bookmark", bookmarkRoutes);
+
 
 // Serve static files
 app.get("/", (req, res) => {
@@ -111,3 +117,22 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+// Bookmark POST route
+// Bookmark article for logged-in user
+app.post("/api/bookmark", auth, async (req, res) => {
+  const { articleId } = req.body;
+  const userId = req.user.id;
+
+  try {
+    await db.query(
+      "INSERT INTO bookmarks (user_id, article_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE article_id = article_id",
+      [userId, articleId]
+    );
+    res.status(200).json({ message: "Bookmarked!" });
+  } catch (err) {
+    console.error("Bookmark error:", err);
+    res.status(500).json({ message: "DB error", error: err.message });
+  }
+});
+

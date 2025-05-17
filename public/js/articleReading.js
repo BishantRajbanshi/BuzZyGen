@@ -444,3 +444,44 @@ if (navLinks && navLinks.length > 0) {
 }
 });
 }
+
+//BookMark
+document.addEventListener("DOMContentLoaded", () => {
+  const bookmarkBtn = document.getElementById("bookmarkBtn");
+
+  if (bookmarkBtn) {
+    bookmarkBtn.addEventListener("click", async () => {
+      const token = localStorage.getItem("token");
+      const params = new URLSearchParams(window.location.search);
+      const articleId = params.get("id");
+
+      if (!token || !articleId) {
+        alert("Please log in to bookmark this article.");
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/bookmark", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ articleId }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Article bookmarked successfully!");
+          bookmarkBtn.querySelector("i").classList.add("bookmarked"); // optional style
+        } else {
+          alert(data.message || "Failed to bookmark.");
+        }
+      } catch (error) {
+        console.error("Bookmark error:", error);
+        alert("Something went wrong. Try again later.");
+      }
+    });
+  }
+});
