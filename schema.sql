@@ -57,6 +57,16 @@ CREATE TABLE `blogs` (
   UNIQUE KEY `id` (`id`)
 );
 
+CREATE TABLE bookmarks (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  article_id INT NOT NULL,
+  UNIQUE KEY unique_user_article (user_id, article_id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (article_id) REFERENCES news(id)
+);
+
+
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@newsportal.com', '$2a$10$ZVtYxCsmmFk0WGWJlZJP7ec6EUtNIGaPW4WiqsFH4rksy2qQMaKhO', 'admin')
