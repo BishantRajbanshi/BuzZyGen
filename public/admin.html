@@ -285,16 +285,6 @@
           </div>
         </div>
         <div class="user-actions">
-          <div class="search-container" id="admin-search-container">
-            <button id="admin-search-button">
-              <i class="fas fa-search"></i>
-            </button>
-            <input
-              type="text"
-              id="admin-search-input"
-              placeholder="Search articles by title..."
-            />
-          </div>
           <div class="notifications">
             <i class="fas fa-bell"></i>
             <span class="badge">1</span>
@@ -308,8 +298,6 @@
       <nav class="main-nav">
         <div class="nav-links">
           <a href="#" class="active" data-category="all">Home</a>
-          <a href="#" data-category="articles">Articles</a>
-          <a href="#" data-category="categories">Categories</a>
           <a href="#" data-category="approve">Approval</a>
         </div>
       </nav>
@@ -399,9 +387,9 @@
           <div class="footer-column">
             <h3>News</h3>
             <ul>
-              <li><a href="world-news.html">World News</a></li>
-              <li><a href="sports.html">Sports</a></li>
-              <li><a href="business.html">Business</a></li>
+              <li><a href="https://www.wsj.com/news/world">World News</a></li>
+              <li><a href="https://www.wsj.com/news/sports">Sports</a></li>
+              <li><a href="https://www.wsj.com/news/business">Business</a></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -534,7 +522,13 @@
                   style="display: none"
                 >
                   <img id="preview-image" src="" alt="Preview" />
-                  <button type="button" id="remove-image">Remove</button>
+                  <button
+                    type="button"
+                    id="remove-image"
+                    aria-label="Remove image"
+                  >
+                    &times;
+                  </button>
                 </div>
                 <input
                   type="hidden"
