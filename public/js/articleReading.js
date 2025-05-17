@@ -35,162 +35,6 @@ async function loadArticle() {
 
 document.addEventListener("DOMContentLoaded", loadArticle);
 
-// DOM Elements - safely get elements that might not exist on all pages
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
-const loginModal = document.getElementById("loginModal");
-const signupModal = document.getElementById("signupModal");
-const closeButtons = document.querySelectorAll(".close");
-const navLinks = document.querySelectorAll(".nav-links a");
-const authButtons = document.querySelector(".auth-buttons");
-const userProfile = document.querySelector(".user-profile");
-const profileDropdown = document.querySelector(".profile-dropdown");
-
-// Sidebar functionality
-const hamburgerMenu = document.querySelector(".hamburger-menu");
-const sidebar = document.querySelector(".sidebar");
-const closeSidebar = document.querySelector(".close-sidebar");
-const overlay = document.querySelector(".overlay");
-
-// Search bar functionality with enhanced animations
-const searchContainer = document.querySelector(".search-container");
-const searchInput = searchContainer
-  ? searchContainer.querySelector("input")
-  : null;
-const searchButton = searchContainer
-  ? searchContainer.querySelector("button")
-  : null;
-let searchTimeout;
-let searchInteractionTimeout;
-
-// Add animation to search container
-if (searchContainer && searchInput && searchButton) {
-  // Hover event for search container
-  searchContainer.addEventListener("mouseenter", () => {
-    // Clear any existing timeout
-    if (searchInteractionTimeout) {
-      clearTimeout(searchInteractionTimeout);
-    }
-
-    // Expand the search container
-    searchContainer.classList.add("expanded");
-
-    // Set a timeout to collapse after 3 seconds if no interaction
-    searchInteractionTimeout = setTimeout(() => {
-      // Only collapse if not active and no text in input
-      if (
-        !searchContainer.classList.contains("active") &&
-        searchInput.value.trim() === ""
-      ) {
-        searchContainer.classList.remove("expanded");
-      }
-    }, 3000);
-  });
-
-  // Focus event for search input
-  searchInput.addEventListener("focus", () => {
-    // Clear any existing timeout
-    if (searchInteractionTimeout) {
-      clearTimeout(searchInteractionTimeout);
-    }
-
-    // Add active class to keep it expanded
-    searchContainer.classList.add("active");
-    searchContainer.classList.add("expanded");
-  });
-
-  // Input event to maintain active state when typing
-  searchInput.addEventListener("input", () => {
-    // Clear any existing timeout
-    if (searchInteractionTimeout) {
-      clearTimeout(searchInteractionTimeout);
-    }
-
-    // Keep active while typing
-    if (searchInput.value.trim() !== "") {
-      searchContainer.classList.add("active");
-    }
-  });
-
-  // Blur event for search input
-  searchInput.addEventListener("blur", () => {
-    // If input is empty, remove active class after a short delay
-    if (searchInput.value.trim() === "") {
-      // Set a timeout to allow for button clicks
-      setTimeout(() => {
-        searchContainer.classList.remove("active");
-
-        // Start the collapse timeout
-        searchInteractionTimeout = setTimeout(() => {
-          searchContainer.classList.remove("expanded");
-        }, 500);
-      }, 200);
-    }
-  });
-
-  // Click event for search button
-  searchButton.addEventListener("click", (e) => {
-    // Clear any existing timeout
-    if (searchInteractionTimeout) {
-      clearTimeout(searchInteractionTimeout);
-    }
-
-    if (!searchContainer.classList.contains("expanded")) {
-      e.preventDefault();
-      searchContainer.classList.add("expanded");
-      searchContainer.classList.add("active");
-      searchInput.focus();
-    } else if (searchInput.value.trim() !== "") {
-      // Perform search
-      console.log("Searching for:", searchInput.value);
-      // Add ripple effect to button
-      const ripple = document.createElement("span");
-      ripple.classList.add("ripple-effect");
-      searchButton.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    } else {
-      // If button is clicked but input is empty, focus on input
-      searchInput.focus();
-    }
-  });
-
-  // Click outside to collapse if empty
-  document.addEventListener("click", (e) => {
-    if (
-      !searchContainer.contains(e.target) &&
-      searchInput.value.trim() === ""
-    ) {
-      searchContainer.classList.remove("active");
-      searchContainer.classList.remove("expanded");
-    }
-  });
-}
-
-// Only set up sidebar functionality if all required elements exist
-if (hamburgerMenu && sidebar && closeSidebar && overlay) {
-  function openSidebar() {
-    sidebar.classList.add("active");
-    overlay.classList.add("active");
-    document.body.style.overflow = "hidden"; // Prevent scrolling when sidebar is open
-  }
-
-  function closeSidebarMenu() {
-    sidebar.classList.remove("active");
-    overlay.classList.remove("active");
-    document.body.style.overflow = ""; // Restore scrolling
-  }
-
-  hamburgerMenu.addEventListener("click", openSidebar);
-  closeSidebar.addEventListener("click", closeSidebarMenu);
-  overlay.addEventListener("click", closeSidebarMenu);
-
-  // Close sidebar with escape key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && sidebar.classList.contains("active")) {
-      closeSidebarMenu();
-    }
-  });
-}
 
 // This event listener has been moved inside the sidebar functionality check
 
@@ -446,22 +290,38 @@ if (navLinks && navLinks.length > 0) {
 }
 
 //BookMark
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const bookmarkBtn = document.getElementById("bookmarkBtn");
+  const token = localStorage.getItem("token");
+  const params = new URLSearchParams(window.location.search);
+  const articleId = params.get("id");
 
-  if (bookmarkBtn) {
-    bookmarkBtn.addEventListener("click", async () => {
-      const token = localStorage.getItem("token");
-      const params = new URLSearchParams(window.location.search);
-      const articleId = params.get("id");
+  if (!articleId) return;
 
-      if (!token || !articleId) {
-        alert("Please log in to bookmark this article.");
-        return;
+  if (token && bookmarkBtn) {
+    try {
+      // ✅ Check if bookmarked
+      const res = await fetch("/api/bookmark", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const bookmarks = await res.json();
+
+      const isBookmarked = bookmarks.some(article => article.id == articleId);
+      if (isBookmarked) {
+        bookmarkBtn.querySelector("i").classList.add("bookmarked"); // golden class
+        bookmarkBtn.dataset.bookmarked = "true";
       }
 
-      try {
-        const response = await fetch("/api/bookmark", {
+      // ✅ On click, prevent duplicate bookmarking
+      bookmarkBtn.addEventListener("click", async () => {
+        if (bookmarkBtn.dataset.bookmarked === "true") {
+          alert("This article is already bookmarked.");
+          return;
+        }
+
+        const postRes = await fetch("/api/bookmark", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -470,18 +330,18 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify({ articleId }),
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
+        const data = await postRes.json();
+        if (postRes.ok) {
           alert("Article bookmarked successfully!");
-          bookmarkBtn.querySelector("i").classList.add("bookmarked"); // optional style
+          bookmarkBtn.querySelector("i").classList.add("bookmarked");
+          bookmarkBtn.dataset.bookmarked = "true";
         } else {
           alert(data.message || "Failed to bookmark.");
         }
-      } catch (error) {
-        console.error("Bookmark error:", error);
-        alert("Something went wrong. Try again later.");
-      }
-    });
+      });
+    } catch (err) {
+      console.error("Bookmark check/bookmark error:", err);
+    }
   }
 });
+

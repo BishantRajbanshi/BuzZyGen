@@ -8,11 +8,12 @@ const authRoutes = require("./routes/auth");
 const newsRoutes = require("./routes/news");
 const articleRoutes = require("./routes/article");
 const blogsRoutes = require("./routes/blogs");
-const db = require("./config/db"); // adjust path if needed
-const { auth } = require("./middleware/auth");// required for secure access
+const bookmarkRoutes = require("./routes/bookmark");
+const { auth } = require("./middleware/auth");
+const db = require("./config/db"); // optional if used elsewhere
+const userRoutes = require("./routes/user"); // 👈 add this
 
- const bookmarkRoutes = require("./routes/bookmark");
- 
+
 // Load environment variables
 dotenv.config();
 
@@ -40,14 +41,11 @@ app.use(
 // Initialize Passport
 app.use(passport.initialize());
 
-// Add security headers
+// Security headers
 app.use((req, res, next) => {
-  // Basic security headers
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
   res.setHeader("X-XSS-Protection", "1; mode=block");
-
-  // Additional security headers
   res.setHeader(
     "Strict-Transport-Security",
     "max-age=31536000; includeSubDomains"
@@ -57,23 +55,20 @@ app.use((req, res, next) => {
     "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://via.placeholder.com"
   );
   res.setHeader("Referrer-Policy", "no-referrer-when-downgrade");
-  res.setHeader(
-    "Permissions-Policy",
-    "camera=(), microphone=(), geolocation=()"
-  );
-
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
   next();
 });
 
-// Routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/article", articleRoutes);
 app.use("/api/blogs", blogsRoutes);
-app.use("/api/bookmark", bookmarkRoutes);
+app.use("/api/bookmark", bookmarkRoutes); 
+app.use("/api/user", userRoutes); 
 
 
-// Serve static files
+// Serve static HTML pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
@@ -86,7 +81,7 @@ app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
-// 404 handler - must be before error handler
+// 404 Handler
 app.use((req, res, next) => {
   res.status(404).json({
     message: "Resource not found",
@@ -94,9 +89,8 @@ app.use((req, res, next) => {
   });
 });
 
-// Error handling middleware
+// Global Error Handler
 app.use((err, req, res, next) => {
-  // Log error details for debugging
   console.error(`[${new Date().toISOString()}] Error:`, {
     message: err.message,
     stack: err.stack,
@@ -104,7 +98,6 @@ app.use((err, req, res, next) => {
     method: req.method,
   });
 
-  // Don't expose stack traces in production
   const error =
     process.env.NODE_ENV === "production"
       ? { message: "Something went wrong!" }
@@ -113,26 +106,8 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json(error);
 });
 
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// Bookmark POST route
-// Bookmark article for logged-in user
-app.post("/api/bookmark", auth, async (req, res) => {
-  const { articleId } = req.body;
-  const userId = req.user.id;
-
-  try {
-    await db.query(
-      "INSERT INTO bookmarks (user_id, article_id) VALUES (?, ?) ON DUPLICATE KEY UPDATE article_id = article_id",
-      [userId, articleId]
-    );
-    res.status(200).json({ message: "Bookmarked!" });
-  } catch (err) {
-    console.error("Bookmark error:", err);
-    res.status(500).json({ message: "DB error", error: err.message });
-  }
-});
-

@@ -5,6 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Read Article</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/typography.css" />
     <link rel="stylesheet" href="css/articleReading.css" />
@@ -12,47 +13,41 @@
     </head>
     
     <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h2>Menu</h2>
-            <div class="close-sidebar">
-                <i class="fas fa-times"></i>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Menu</h2>
+                <div class="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-briefcase"></i> Business</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-running"></i> Sports</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-film"></i> Entertainment</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-flask"></i> Science</a>
+                </li>
+                <li>
+                    <a href="blog.html"><i class="fas fa-blog"></i> Blogs</a>
+                </li>
+                <li>
+                    <a href="userBlogPost.html"><i class="fas fa-pen-nib"></i> Post Blog</a>
+                </li>
+            </ul>
         </div>
-        <ul class="sidebar-menu">
-            <li>
-                <a href="dashboard.html"><i class="fas fa-home"></i> Home</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-briefcase"></i> Business</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-running"></i> Sports</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-laptop-code"></i> Technology</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-film"></i> Entertainment</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-flask"></i> Science</a>
-            </li>
-            <li>
-                <a href="blog.html"><i class="fas fa-blog"></i> Blogs</a>
-            </li>
-            <li>
-                <a href="userBlogPost.html"><i class="fas fa-pen-nib"></i> Post Blog</a>
-            </li>
-            <li>
-                <a href="#"><i class="fas fa-bookmark"></i> Saved Articles</a>
-            </li>
-            <li>
-                <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
-            </li>
-        </ul>
-    </div>
     
         <!-- Overlay -->
         <div class="overlay"></div>
@@ -64,7 +59,7 @@
                         <i class="fas fa-bars"></i>
                     </div>
                     <div class="logo">
-                        <a href="dashboard.html">
+                        <a href="dashboard.html" title="Go to User Dashboard">
                             <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
                         </a>
                     </div>
@@ -74,25 +69,29 @@
                         <button><i class="fas fa-search"></i></button>
                         <input type="text" placeholder="Search..." />
                     </div>
-                    <div class="notifications">
+                    <div class="notifications" id="notif-bell" style="position: relative; cursor: pointer;">
                         <i class="fas fa-bell"></i>
-                        <span class="badge">1</span>
+                        <span class="badge" id="notif-count">0</span>
+                        <div id="notif-dropdown" class="notif-dropdown"></div>
                     </div>
                     <div class="user-profile">
                         <i class="fas fa-user"></i>
                     </div>
-                    <button id="logoutBtn">Logout</button>
+                    <div class="kebab-menu">
+                        <i class="fas fa-ellipsis-v" id="kebabToggle"></i>
+                        <div class="kebab-dropdown" id="kebabDropdown">
+                            <button id="profileBtn">My Profile</button>
+                            <button id="logoutBtn">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <nav class="main-nav">
-                <div class="nav-links back-container">
-                    <a href="dashboard.html#article" class="back-btn">
-                        <i class="fas fa-arrow-left"></i>
-                        <span>Back to Articles</span>
-                    </a>
+                <div class="nav-links">
+                    <a href="#" class="active" data-category="all">Home</a>
                 </div>
+                <div class="nav-date" id="navDate"></div>
             </nav>
-                          
             </header>
 
     <main>
@@ -204,7 +203,7 @@
         </div>
 
     <script src="js/articleReading.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 
 </html>
