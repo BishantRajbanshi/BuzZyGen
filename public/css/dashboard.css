@@ -111,12 +111,16 @@
 #editProfileBtn {
   width: 100%;
   padding: 0.8rem;
-  background-color: #1a73e8;
+  background-color: #000;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 1rem;
+}
+
+#editProfileBtn:hover {
+  background-color: #333;
 }
 
 /* Admin-style article cards for Articles section */
@@ -458,4 +462,18 @@
   color: #fff;
   border: 2px solid #000;
   font-weight: bold;
+}
+
+/* Profile Pic */
+.profile-avatar-wrapper {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.profile-avatar-wrapper img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
 }

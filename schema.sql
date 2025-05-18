@@ -66,8 +66,11 @@ CREATE TABLE bookmarks (
   FOREIGN KEY (article_id) REFERENCES news(id)
 );
 
+ALTER TABLE users ADD COLUMN profile_picture LONGTEXT;
+
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@newsportal.com', '$2a$10$ZVtYxCsmmFk0WGWJlZJP7ec6EUtNIGaPW4WiqsFH4rksy2qQMaKhO', 'admin')
 ON DUPLICATE KEY UPDATE role = 'admin';
+

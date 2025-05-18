@@ -11,7 +11,8 @@ const blogsRoutes = require("./routes/blogs");
 const bookmarkRoutes = require("./routes/bookmark");
 const { auth } = require("./middleware/auth");
 const db = require("./config/db"); // optional if used elsewhere
-const userRoutes = require("./routes/user"); // 👈 add this
+const userRoutes = require("./routes/user"); 
+
 
 
 // Load environment variables

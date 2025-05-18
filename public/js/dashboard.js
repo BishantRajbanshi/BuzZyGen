@@ -1423,3 +1423,33 @@ function showGlobalError(title, message) {
     }
   }, 8000);
 }
+
+// Sample API call to fetch user info
+async function loadUserProfile() {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const res = await fetch("/api/user/me", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const user = await res.json();
+
+    // Set name/email/date
+    document.getElementById("profileName").textContent = user.name;
+    document.getElementById("profileEmail").textContent = user.email;
+    document.getElementById("memberSince").textContent = new Date(user.created_at).toLocaleDateString();
+
+    // 👇 Set profile image if exists, fallback otherwise
+    const avatarImg = document.getElementById("profileAvatar");
+    avatarImg.src = user.profile_picture || "https://via.placeholder.com/100";
+  } catch (err) {
+    console.error("Failed to load user profile:", err);
+  }
+}
+
+//edit profile button 
+document.getElementById("editProfileBtn").addEventListener("click", () => {
+  window.location.href = "userprofile.html";
+});

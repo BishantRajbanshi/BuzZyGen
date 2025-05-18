@@ -47,14 +47,37 @@ function switchTab(tabId) {
   });
   
   // Save profile picture (mock functionality)
-  function saveProfilePic() {
-    const previewSrc = document.getElementById('previewImg').src;
-    if (previewSrc) {
-      document.querySelector('.avatar img').src = previewSrc;
-      closeModal();
-      // In a real application, you would upload the image to a server here
+  async function saveProfilePic() {
+    const previewImg = document.getElementById('previewImg');
+    const imageData = previewImg.src;
+  
+    if (!imageData || !imageData.startsWith("data:image")) {
+      alert("Invalid image format.");
+      return;
     }
-  }
+  
+    const token = localStorage.getItem("token");
+  
+    try {
+      const response = await fetch("/api/user/profile-picture", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ profile_picture: imageData }),
+      });
+  
+      if (!response.ok) throw new Error("Failed to upload profile picture");
+  
+      // Refresh avatar on success
+      document.querySelector('.avatar img').src = imageData;
+      closeModal();
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Failed to upload profile picture");
+    }
+  }  
   
   // Load saved bookmarked articles
   async function loadSavedArticles() {
@@ -131,9 +154,11 @@ function switchTab(tabId) {
     }
   }
   
+  
   //userinfo 
   async function loadUserProfile() {
     const token = localStorage.getItem("token");
+  
     try {
       const res = await fetch("/api/user/me", {
         headers: {
@@ -145,18 +170,33 @@ function switchTab(tabId) {
   
       const user = await res.json();
   
+      // ⬇️ SET PROFILE PICTURE if exists
+      if (user.profile_picture) {
+        document.querySelector(".avatar img").src = user.profile_picture;
+        document.querySelector(".avatar img").style.display = "block";
+        document.querySelector(".avatar-fallback").style.display = "none";
+      }
+  
+      // Other user info
       document.getElementById("profileName").textContent = user.name;
       document.getElementById("profileSince").textContent = "Member since " + new Date(user.created_at).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long"
       });
-      document.getElementById("profileSavedCount").textContent = user.savedCount;
+  
+      document.querySelector(".profileEmail").textContent = user.email || "Not Available";
+      document.querySelector(".role").textContent = user.role || "Standard";
+  
+      const countEl = document.getElementById("profileSavedCount");
+      if (countEl) countEl.textContent = user.savedCount;
+  
     } catch (err) {
       console.error("Failed to load profile:", err);
     }
   }
-   
   
+  
+  // Call loadSavedArticles and loadUserProfile on DOMContentLoaded
   document.addEventListener("DOMContentLoaded", () => {
     loadSavedArticles();
     loadUserProfile();
