@@ -155,9 +155,10 @@ function switchTab(tabId) {
   }
   
   
-  //userinfo 
+  //userinfo //userinfo 
   async function loadUserProfile() {
     const token = localStorage.getItem("token");
+    if (!token) return;
   
     try {
       const res = await fetch("/api/user/me", {
@@ -166,34 +167,117 @@ function switchTab(tabId) {
         },
       });
   
-      if (!res.ok) throw new Error("Failed to load user profile");
+      if (!res.ok) throw new Error("Failed to load profile");
   
       const user = await res.json();
+
+      console.log("User loaded:", user);
+
+      // ✅ Set profile image if exists
+      const avatarImg = document.querySelector(".avatar img");
+      const avatarFallback = document.querySelector(".avatar-fallback");
   
-      // ⬇️ SET PROFILE PICTURE if exists
       if (user.profile_picture) {
-        document.querySelector(".avatar img").src = user.profile_picture;
-        document.querySelector(".avatar img").style.display = "block";
-        document.querySelector(".avatar-fallback").style.display = "none";
+        avatarImg.src = user.profile_picture;
+        avatarImg.style.display = "block";
+        avatarFallback.style.display = "none";
+      } else {
+        avatarImg.style.display = "none";
+        avatarFallback.style.display = "flex";
       }
   
-      // Other user info
+      // ✅ Set name, email, join date
       document.getElementById("profileName").textContent = user.name;
-      document.getElementById("profileSince").textContent = "Member since " + new Date(user.created_at).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long"
-      });
-  
-      document.querySelector(".profileEmail").textContent = user.email || "Not Available";
+      document.querySelector(".profileEmail").textContent = user.email;
       document.querySelector(".role").textContent = user.role || "Standard";
+      document.getElementById("profileSince").textContent =
+        "Member since " +
+        new Date(user.created_at).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+        });
   
+      // ✅ Set saved count
       const countEl = document.getElementById("profileSavedCount");
       if (countEl) countEl.textContent = user.savedCount;
+  
+      // ✅ Set notifications toggle
+      const notifToggle = document.getElementById("email-notifications");
+if (notifToggle) {
+  console.log("Toggle set with value:", user.notifications_enabled); // Debug log
+  notifToggle.checked = user.notifications_enabled == 1;
+}
+
   
     } catch (err) {
       console.error("Failed to load profile:", err);
     }
   }
+  
+
+
+  //delete account 
+  document.querySelector(".btn-danger").addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete your account? This cannot be undone.")) return;
+  
+    try {
+      const res = await fetch("/api/user/delete", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      } else {
+        alert("Error deleting account: " + data.message);
+      }
+    } catch (err) {
+      console.error("Delete request failed:", err);
+      alert("Error deleting account.");
+    }
+  });  
+  
+  //Password change 
+  document.querySelector(".btn.btn-primary").addEventListener("click", async () => {
+    const currentPassword = document.getElementById("current-password").value;
+    const newPassword = document.getElementById("new-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+  
+    if (newPassword !== confirmPassword) {
+      return alert("New passwords do not match.");
+    }
+  
+    try {
+      const token = localStorage.getItem("token");
+  
+      const res = await fetch("/api/user/change-password", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        alert("Password updated successfully!");
+        window.location.reload(); // 👈 This refreshes the page
+      } else {
+        alert(data.message || "Failed to update password");
+      }
+    } catch (err) {
+      console.error("Error updating password:", err);
+      alert("An error occurred. Please try again.");
+    }
+  });
+
   
   
   // Call loadSavedArticles and loadUserProfile on DOMContentLoaded

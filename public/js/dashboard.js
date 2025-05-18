@@ -1449,6 +1449,27 @@ async function loadUserProfile() {
   }
 }
 
+// Sample API call to fetch notification settings
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const res = await fetch("/api/user/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const user = await res.json();
+
+    const notifToggle = document.getElementById("email-notifications");
+    if (notifToggle) {
+      notifToggle.checked = user.notifications_enabled;
+    }
+  } catch (err) {
+    console.error("Failed to load notification settings:", err);
+  }
+});
+
 //edit profile button 
 document.getElementById("editProfileBtn").addEventListener("click", () => {
   window.location.href = "userprofile.html";
