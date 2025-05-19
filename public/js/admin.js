@@ -938,81 +938,91 @@ function initAdminDashboard(token) {
 
     if (!articlesGrid) return;
 
-    // Change page heading to reflect search
-    const articlesHeading = document.querySelector(".articles-section h2");
-    if (articlesHeading) {
-      articlesHeading.textContent = `Search Results for "${query}"`;
-    }
-
     // Check if we have results
     if (!articles || articles.length === 0) {
       articlesGrid.innerHTML = `
-        <div class="no-results">
-          <i class="fas fa-search"></i>
-          <h3>No results found</h3>
-          <p>We couldn't find any articles matching your search. Try different keywords.</p>
-          <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+        <div class="search-results-section">
+          <div class="search-results-header">
+            <h2>Search Results for "${query}"</h2>
+            <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+          </div>
+          <div class="no-results">
+            <i class="fas fa-search"></i>
+            <h3>No results found</h3>
+            <p>We couldn't find any articles matching your search. Try different keywords.</p>
+          </div>
         </div>
       `;
       return;
     }
 
     // Build search results HTML
-    let resultsHTML = `
-      <div class="search-results-info">
-        <p>${articles.length} articles found</p>
-        <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+    articlesGrid.innerHTML = `
+      <div class="search-results-section">
+        <div class="search-results-header">
+          <h2>Search Results for "${query}"</h2>
+          <p>${articles.length} articles found</p>
+          <button class="back-to-admin-btn" onclick="fetchNews()">Back to News</button>
+        </div>
+        <div class="search-results-grid">
+          ${articles
+            .map((article) => {
+              // Check for valid image URL
+              let imageUrl =
+                "https://via.placeholder.com/300x200?text=No+Image";
+
+              // Check all possible image sources
+              if (
+                article.featured_image &&
+                article.featured_image.trim() !== ""
+              ) {
+                imageUrl = article.featured_image;
+              } else if (
+                article.urlToImage &&
+                article.urlToImage.trim() !== ""
+              ) {
+                imageUrl = article.urlToImage;
+              } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+                imageUrl = article.imageUrl;
+              }
+
+              return `
+              <div class="article-card search-result-card">
+                <div class="news-image">
+                  <img src="${imageUrl}" alt="${
+                article.title || "News article"
+              }">
+                </div>
+                <div class="news-content">
+                  <h3>${article.title}</h3>
+                  <p>${article.description || article.subtitle || ""}</p>
+                  <div class="news-meta">
+                    <span class="category">${
+                      article.category || "General"
+                    }</span>
+                    <span class="date">${new Date(
+                      article.publishedAt || article.created_at || new Date()
+                    ).toLocaleDateString()}</span>
+                  </div>
+                  <div class="article-actions">
+                    <a href="${
+                      article.url || `/article/${article.id}` || "#"
+                    }" class="view-btn" target="_blank">View</a>
+                    ${
+                      article.id
+                        ? `<button class="edit-btn" data-id="${article.id}">Edit</button>
+                       <button class="delete-btn" data-id="${article.id}">Delete</button>`
+                        : ""
+                    }
+                  </div>
+                </div>
+              </div>
+            `;
+            })
+            .join("")}
+        </div>
       </div>
     `;
-
-    // Add search results
-    resultsHTML += articles
-      .map((article) => {
-        // Check for valid image URL
-        let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
-
-        // Check all possible image sources
-        if (article.featured_image && article.featured_image.trim() !== "") {
-          imageUrl = article.featured_image;
-        } else if (article.urlToImage && article.urlToImage.trim() !== "") {
-          imageUrl = article.urlToImage;
-        } else if (article.imageUrl && article.imageUrl.trim() !== "") {
-          imageUrl = article.imageUrl;
-        }
-
-        return `
-        <div class="article-card search-result-card">
-          <div class="article-image">
-            <img src="${imageUrl}" alt="${article.title || "News article"}">
-          </div>
-          <div class="article-content">
-            <h3>${article.title}</h3>
-            <p>${article.description || article.subtitle || ""}</p>
-            <div class="article-meta">
-              <span class="category">${article.category || "General"}</span>
-              <span class="date">${new Date(
-                article.publishedAt || article.created_at || new Date()
-              ).toLocaleDateString()}</span>
-            </div>
-            <div class="article-actions">
-              <a href="${
-                article.url || `/article/${article.id}` || "#"
-              }" class="view-btn" target="_blank">View</a>
-              ${
-                article.id
-                  ? `<button class="edit-btn" data-id="${article.id}">Edit</button>
-                 <button class="delete-btn" data-id="${article.id}">Delete</button>`
-                  : ""
-              }
-            </div>
-          </div>
-        </div>
-      `;
-      })
-      .join("");
-
-    // Update the articles grid with search results
-    articlesGrid.innerHTML = resultsHTML;
 
     // Add event listeners for edit and delete buttons
     const editButtons = articlesGrid.querySelectorAll(".edit-btn");
@@ -1021,7 +1031,7 @@ function initAdminDashboard(token) {
     editButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const articleId = button.getAttribute("data-id");
-        showEditNewsForm(articleId);
+        editNews(articleId);
       });
     });
 

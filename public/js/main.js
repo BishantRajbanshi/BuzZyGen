@@ -1966,14 +1966,16 @@ function displaySearchResults(articles, query) {
   // Check if we have results
   if (!articles || articles.length === 0) {
     featuredNews.innerHTML = `
-      <div class="search-results-header">
-        <h2>Search Results for "${query}"</h2>
-        <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
-      </div>
-      <div class="no-results">
-        <i class="fas fa-search"></i>
-        <h3>No results found</h3>
-        <p>We couldn't find any articles matching your search. Try different keywords or check back later.</p>
+      <div class="search-results-section">
+        <div class="search-results-header">
+          <h2>Search Results for "${query}"</h2>
+          <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
+        </div>
+        <div class="no-results">
+          <i class="fas fa-search"></i>
+          <h3>No results found</h3>
+          <p>We couldn't find any articles matching your search. Try different keywords or check back later.</p>
+        </div>
       </div>
     `;
     return;
@@ -1981,48 +1983,53 @@ function displaySearchResults(articles, query) {
 
   // Display search results
   featuredNews.innerHTML = `
-    <div class="search-results-header">
-      <h2>Search Results for "${query}"</h2>
-      <p>${articles.length} articles found</p>
-      <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
-    </div>
-    <div class="search-results-grid">
-      ${articles
-        .map((article) => {
-          // Check for valid image URL
-          let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+    <div class="search-results-section">
+      <div class="search-results-header">
+        <h2>Search Results for "${query}"</h2>
+        <p>${articles.length} articles found</p>
+        <button class="back-to-news-btn" onclick="window.location.reload()">Back to News</button>
+      </div>
+      <div class="search-results-grid">
+        ${articles
+          .map((article) => {
+            // Check for valid image URL
+            let imageUrl = "https://via.placeholder.com/300x200?text=No+Image";
 
-          // Check all possible image sources
-          if (article.featured_image && article.featured_image.trim() !== "") {
-            imageUrl = article.featured_image;
-          } else if (article.urlToImage && article.urlToImage.trim() !== "") {
-            imageUrl = article.urlToImage;
-          } else if (article.imageUrl && article.imageUrl.trim() !== "") {
-            imageUrl = article.imageUrl;
-          }
+            // Check all possible image sources
+            if (
+              article.featured_image &&
+              article.featured_image.trim() !== ""
+            ) {
+              imageUrl = article.featured_image;
+            } else if (article.urlToImage && article.urlToImage.trim() !== "") {
+              imageUrl = article.urlToImage;
+            } else if (article.imageUrl && article.imageUrl.trim() !== "") {
+              imageUrl = article.imageUrl;
+            }
 
-          return `
-          <div class="news-card search-result-card">
-            <div class="news-image">
-              <img src="${imageUrl}" alt="${article.title || "News article"}">
-            </div>
-            <div class="news-content">
-              <h3>${article.title}</h3>
-              <p>${article.description || article.subtitle || ""}</p>
-              <div class="news-meta">
-                <span class="category">${article.category || "General"}</span>
-                <span class="date">${new Date(
-                  article.publishedAt || article.created_at || new Date()
-                ).toLocaleDateString()}</span>
+            return `
+            <div class="news-card search-result-card">
+              <div class="news-image">
+                <img src="${imageUrl}" alt="${article.title || "News article"}">
               </div>
-              <a href="${
-                article.url || `/article/${article.id}` || "#"
-              }" class="read-more">Read More</a>
+              <div class="news-content">
+                <h3>${article.title}</h3>
+                <p>${article.description || article.subtitle || ""}</p>
+                <div class="news-meta">
+                  <span class="category">${article.category || "General"}</span>
+                  <span class="date">${new Date(
+                    article.publishedAt || article.created_at || new Date()
+                  ).toLocaleDateString()}</span>
+                </div>
+                <a href="${
+                  article.url || `/article/${article.id}` || "#"
+                }" class="read-more">Read More</a>
+              </div>
             </div>
-          </div>
-        `;
-        })
-        .join("")}
+          `;
+          })
+          .join("")}
+      </div>
     </div>
   `;
 }
