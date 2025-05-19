@@ -285,7 +285,7 @@ function initAdminDashboard(token) {
                   ? `
               <div class="article-actions">
                 <button onclick="editNews(${article.id})" class="edit-btn"><i class="fas fa-edit"></i> Edit</button>
-                <button onclick="deleteNews(${article.id})" class="delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button onclick="confirmDeleteNews(${article.id})" class="delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
               </div>`
                   : ""
               }
@@ -552,96 +552,64 @@ function initAdminDashboard(token) {
   }
 
   // Delete news article with enhanced animation
-  window.deleteNews = function (id) {
-    // Find the delete button that was clicked
-    const deleteBtn = event.currentTarget;
-
-    // Add a confirmation class to show we're in confirmation mode
-    deleteBtn.classList.add("confirm-delete");
-
-    // Change the button text and icon
-    const originalContent = deleteBtn.innerHTML;
-    deleteBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Confirm';
-
-    // Set a timeout to revert the button if not clicked again
-    const confirmTimeout = setTimeout(() => {
-      deleteBtn.classList.remove("confirm-delete");
-      deleteBtn.innerHTML = originalContent;
-    }, 3000); // Revert after 3 seconds
-
-    // Set up the confirmation click
-    const confirmHandler = function (e) {
-      e.stopPropagation();
-
-      // Clear the timeout
-      clearTimeout(confirmTimeout);
-
-      // Remove the event listener
-      deleteBtn.removeEventListener("click", confirmHandler);
-
-      // Show loading indicator
-      showGlobalLoading();
-
-      // Add a deleting class for animation
-      deleteBtn.classList.remove("confirm-delete");
-      deleteBtn.classList.add("deleting");
-      deleteBtn.innerHTML =
-        '<i class="fas fa-spinner fa-spin"></i> Deleting...';
-
-      // Make the API call
-      fetch(`/api/news/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-            // Add success class briefly before refreshing
-            deleteBtn.classList.remove("deleting");
-            deleteBtn.classList.add("success");
-            deleteBtn.innerHTML = '<i class="fas fa-check"></i> Deleted!';
-
-            // Refresh after a short delay to show the success state
-            setTimeout(() => {
-              fetchNews();
-            }, 800);
-          } else {
-            deleteBtn.classList.remove("deleting");
-            deleteBtn.classList.add("error");
-            deleteBtn.innerHTML = '<i class="fas fa-times"></i> Error';
-            setTimeout(() => {
-              deleteBtn.classList.remove("error");
-              deleteBtn.innerHTML = originalContent;
-              alert("Error deleting news article");
-            }, 1500);
-          }
-        })
-        .catch((error) => {
-          console.error("Error deleting news:", error);
-          deleteBtn.classList.remove("deleting");
-          deleteBtn.classList.add("error");
-          deleteBtn.innerHTML = '<i class="fas fa-times"></i> Error';
-          setTimeout(() => {
-            deleteBtn.classList.remove("error");
-            deleteBtn.innerHTML = originalContent;
-            alert("Error deleting news article");
-          }, 1500);
-        })
-        .finally(() => {
-          hideGlobalLoading();
-        });
-    };
-
-    // If this is the first click, set up the confirmation click
-    if (!deleteBtn.classList.contains("confirm-delete-setup")) {
-      deleteBtn.classList.add("confirm-delete-setup");
-      deleteBtn.addEventListener("click", confirmHandler);
-      return; // Exit after the first click
+  window.confirmDeleteNews = function (id) {
+    if (
+      !confirm(
+        "Are you sure you want to delete this article? This action cannot be undone."
+      )
+    ) {
+      return;
     }
 
-    // If we get here, it's the confirmation click
-    confirmHandler(event);
+    // Find the delete button
+    const deleteBtn = document.querySelector(
+      `.delete-btn[onclick="confirmDeleteNews(${id})"]`
+    );
+    if (!deleteBtn) return;
+
+    // Show loading indicator
+    showGlobalLoading();
+
+    // Add a deleting class for animation
+    deleteBtn.classList.add("deleting");
+    deleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+
+    // Make the API call
+    fetch(`/api/news/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Add success class briefly before refreshing
+          deleteBtn.classList.remove("deleting");
+          deleteBtn.classList.add("success");
+          deleteBtn.innerHTML = '<i class="fas fa-check"></i> Deleted!';
+
+          // Refresh after a short delay to show the success state
+          setTimeout(() => {
+            fetchNews();
+          }, 800);
+        } else {
+          throw new Error("Failed to delete article");
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting news:", error);
+        deleteBtn.classList.remove("deleting");
+        deleteBtn.classList.add("error");
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i> Error';
+        setTimeout(() => {
+          deleteBtn.classList.remove("error");
+          deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+          alert("Error deleting news article. Please try again.");
+        }, 1500);
+      })
+      .finally(() => {
+        hideGlobalLoading();
+      });
   };
 
   // Edit news article with enhanced animation
