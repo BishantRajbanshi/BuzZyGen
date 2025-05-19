@@ -11,14 +11,20 @@ router.get("/me", auth, async (req, res) => {
 
   try {
     const [[user]] = await pool.query(
-      "SELECT name, email, role, created_at, profile_picture, notifications_enabled  FROM users WHERE id = ?",
+      "SELECT name, email, role, created_at, profile_picture FROM users WHERE id = ?",
       [userId]
     );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const [[{ count }]] = await pool.query(
       "SELECT COUNT(*) AS count FROM bookmarks WHERE user_id = ?",
       [userId]
     );
+
+    console.log("👉 User found:", user); // 🔥 ADD THIS LINE
 
     res.status(200).json({
       ...user,
@@ -29,6 +35,7 @@ router.get("/me", auth, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch profile" });
   }
 });
+
 
 // Configure storage
 router.put("/profile-picture", auth, async (req, res) => {
