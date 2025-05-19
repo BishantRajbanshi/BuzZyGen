@@ -67,7 +67,6 @@ CREATE TABLE bookmarks (
 );
 
 ALTER TABLE users ADD COLUMN profile_picture LONGTEXT;
-ALTER TABLE users ADD COLUMN notifications_enabled BOOLEAN DEFAULT TRUE;
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)

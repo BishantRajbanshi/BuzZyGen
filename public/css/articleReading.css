@@ -1426,3 +1426,25 @@ footer {
 .bookmarked {
     color: gold;
 }
+
+/* ========================================================
+     Back Button
+  ======================================================== */
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    /* Increased from 20px */
+    cursor: pointer;
+    margin-right: 15px;
+    color: white;
+    /* Match your dark header */
+    padding: 0;
+    line-height: 1;
+}
+
+.back-button:hover {
+    color: #ccc;
+    /* Optional hover effect */
+}

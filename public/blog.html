@@ -21,33 +21,23 @@
   <header>
     <div class="top-nav">
       <div class="left-section">
+        <!-- Back Button -->
+        <button onclick="history.back()" class="back-button">←</button>
+    
+        <!-- Logo -->
         <div class="logo">
           <a href="dashboard.html">
             <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
           </a>
         </div>
       </div>
-      <div class="user-actions">
-        <div class="search-container">
-          <button><i class="fas fa-search"></i></button>
-          <input type="text" placeholder="Search..." />
-        </div>
-        <div class="notifications">
-          <i class="fas fa-bell"></i>
-          <span class="badge">1</span>
-        </div>
-        <div class="user-profile">
-          <i class="fas fa-user"></i>
-        </div>
-        <button id="logoutBtn">Logout</button>
-      </div>
     </div>
+    
     <nav class="main-nav">
       <div class="nav-links back-container">
-        <a href="dashboard.html#article" class="back-btn">
-          <i class="fas fa-arrow-left"></i>
-          <span>Back to Articles</span>
-        </a>        
+        <div class="nav-links">
+          <a href="#" class="active" data-category="all">Blogs</a>
+        </div>
       </div>
     </nav>
   </header>

@@ -22,10 +22,11 @@ body {
 }
 
 .welcome-text h1 {
-    font-size: 28px;
+    font-size: 32px;
     margin: 0 0 8px 0;
-    font-weight: bold;
-    color: #222;
+    font-weight: 700;
+    color: #1a1a1a;
+    letter-spacing: -0.5px;
 }
 
 .post-link {
@@ -232,4 +233,26 @@ body {
     .approved-blogs {
         width: 100%;
     }
+}
+
+/* ========================================================
+     Back Button
+  ======================================================== */
+
+.back-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    /* Increased from 20px */
+    cursor: pointer;
+    margin-right: 15px;
+    color: white;
+    /* Match your dark header */
+    padding: 0;
+    line-height: 1;
+}
+
+.back-button:hover {
+    color: #ccc;
+    /* Optional hover effect */
 }
