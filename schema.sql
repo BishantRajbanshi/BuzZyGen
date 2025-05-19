@@ -72,3 +72,18 @@ INSERT INTO users (name, email, password, role)
 VALUES ('Admin', 'admin@newsportal.com', '$2a$10$ZVtYxCsmmFk0WGWJlZJP7ec6EUtNIGaPW4WiqsFH4rksy2qQMaKhO', 'admin')
 ON DUPLICATE KEY UPDATE role = 'admin';
 
+--DB Query--
+ CREATE TABLE users (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(100) NOT NULL,
+  email varchar(100) NOT NULL,
+  password varchar(255) DEFAULT NULL,
+  role enum('user','admin') DEFAULT 'user',
+  created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  google_id varchar(255) DEFAULT NULL,
+  profile_picture longtext,
+  PRIMARY KEY (id),
+  UNIQUE KEY email (email),
+  KEY idx_google_id (google_id)
+);
