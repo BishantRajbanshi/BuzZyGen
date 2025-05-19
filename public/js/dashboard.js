@@ -50,7 +50,7 @@ const searchButton = searchContainer
   : null;
 let searchInteractionTimeout;
 
-//Kebab Menu funcationality 
+//Kebab Menu funcationality
 // Logout & Profile from kebab menu
 const kebabLogout = document.getElementById("logoutBtn");
 const profileBtn = document.getElementById("profileBtn");
@@ -86,7 +86,6 @@ document.addEventListener("click", (e) => {
     kebabDropdown.style.display = "none";
   }
 });
-
 
 // Add animation to search container
 if (searchContainer && searchInput && searchButton) {
@@ -897,8 +896,9 @@ function displayMostRead(articles) {
 // Display news in the original layout (kept for compatibility)
 function displayNews(news) {
   newsGrid.innerHTML = news
-    .map(
-      (article) => `
+    .map((article) => {
+      const articleUrl = article.url || `/article/${article.id}` || "#";
+      return `
         <div class="news-card">
             <img src="${
               article.urlToImage ||
@@ -909,21 +909,66 @@ function displayNews(news) {
                 <h3>${article.title}</h3>
                 <p>${article.description}</p>
                 <div class="news-meta">
-                    <span class="category">${
-                      article.category || "General"
-                    }</span>
-                    <span class="date">${new Date(
-                      article.publishedAt || article.created_at
-                    ).toLocaleDateString()}</span>
+                    <div>
+                        <span class="category">${
+                          article.category || "General"
+                        }</span>
+                        <span class="date">${new Date(
+                          article.publishedAt || article.created_at
+                        ).toLocaleDateString()}</span>
+                    </div>
+                    <button class="share-btn" onclick="shareArticle('${articleUrl}', this)" title="Share article">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
                 </div>
-                <a href="${
-                  article.url || `/article/${article.id}`
-                }" class="read-more">Read More</a>
+                <a href="${articleUrl}" class="read-more">Read More</a>
             </div>
         </div>
-    `
-    )
+    `;
+    })
     .join("");
+
+  // Add event listeners for share buttons
+  const shareButtons = newsGrid.querySelectorAll(".share-btn");
+  shareButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const articleUrl = button.getAttribute("data-url");
+      shareArticle(articleUrl, button);
+    });
+  });
+}
+
+// Add share functionality
+function shareArticle(url, button) {
+  // Create a temporary input element
+  const input = document.createElement("input");
+
+  // Construct the full URL
+  const fullUrl = url.startsWith("http")
+    ? url
+    : `${window.location.origin}${url}`;
+  input.value = fullUrl;
+
+  document.body.appendChild(input);
+
+  // Select and copy the URL
+  input.select();
+  document.execCommand("copy");
+
+  // Remove the temporary input
+  document.body.removeChild(input);
+
+  // Update button appearance
+  const icon = button.querySelector("i");
+  icon.className = "fas fa-check";
+  button.classList.add("copied");
+
+  // Reset button after 2 seconds
+  setTimeout(() => {
+    icon.className = "fas fa-share-alt";
+    button.classList.remove("copied");
+  }, 2000);
 }
 
 //Article Display
@@ -1431,7 +1476,7 @@ async function loadUserProfile() {
 
   try {
     const res = await fetch("/api/user/me", {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     const user = await res.json();
@@ -1439,7 +1484,9 @@ async function loadUserProfile() {
     // Set name/email/date
     document.getElementById("profileName").textContent = user.name;
     document.getElementById("profileEmail").textContent = user.email;
-    document.getElementById("memberSince").textContent = new Date(user.created_at).toLocaleDateString();
+    document.getElementById("memberSince").textContent = new Date(
+      user.created_at
+    ).toLocaleDateString();
 
     // 👇 Set profile image if exists, fallback otherwise
     const avatarImg = document.getElementById("profileAvatar");
@@ -1470,7 +1517,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-//edit profile button 
+//edit profile button
 document.getElementById("editProfileBtn").addEventListener("click", () => {
   window.location.href = "userprofile.html";
 });

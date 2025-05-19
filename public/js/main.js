@@ -1253,6 +1253,8 @@ function displayNews(news) {
         imageUrl = article.imageUrl;
       }
 
+      const articleUrl = article.url || `/article/${article.id}` || "#";
+
       return `
           <div class="news-card">
             <div class="news-image">
@@ -1262,19 +1264,64 @@ function displayNews(news) {
               <h3>${article.title}</h3>
               <p>${article.description || article.subtitle || ""}</p>
               <div class="news-meta">
-                <span class="category">${article.category || "General"}</span>
-                <span class="date">${new Date(
-                  article.publishedAt || article.created_at || new Date()
-                ).toLocaleDateString()}</span>
+                <div>
+                  <span class="category">${article.category || "General"}</span>
+                  <span class="date">${new Date(
+                    article.publishedAt || article.created_at || new Date()
+                  ).toLocaleDateString()}</span>
+                </div>
+                <button class="share-btn" onclick="shareArticle('${articleUrl}', this)" title="Share article">
+                  <i class="fas fa-share-alt"></i>
+                </button>
               </div>
-              <a href="${
-                article.url || `/article/${article.id}` || "#"
-              }" class="read-more">Read More</a>
+              <a href="${articleUrl}" class="read-more">Read More</a>
             </div>
           </div>
         `;
     })
     .join("");
+
+  // Add event listeners for share buttons
+  const shareButtons = featuredNews.querySelectorAll(".share-btn");
+  shareButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      const articleUrl = button.getAttribute("data-url");
+      shareArticle(articleUrl, button);
+    });
+  });
+}
+
+// Add share functionality
+function shareArticle(url, button) {
+  // Create a temporary input element
+  const input = document.createElement("input");
+
+  // Construct the full URL
+  const fullUrl = url.startsWith("http")
+    ? url
+    : `${window.location.origin}${url}`;
+  input.value = fullUrl;
+
+  document.body.appendChild(input);
+
+  // Select and copy the URL
+  input.select();
+  document.execCommand("copy");
+
+  // Remove the temporary input
+  document.body.removeChild(input);
+
+  // Update button appearance
+  const icon = button.querySelector("i");
+  icon.className = "fas fa-check";
+  button.classList.add("copied");
+
+  // Reset button after 2 seconds
+  setTimeout(() => {
+    icon.className = "fas fa-share-alt";
+    button.classList.remove("copied");
+  }, 2000);
 }
 
 // Display breaking news in the banner
