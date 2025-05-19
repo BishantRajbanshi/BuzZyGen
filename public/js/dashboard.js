@@ -754,7 +754,8 @@ function displayTopStories(articles) {
           <button class="share-btn" onclick="shareArticle('${
             mainStory.url || `/article/${mainStory.id}`
           }', this)" title="Share article">
-            <i class="fas fa-share-alt"></i>
+            <i class="fas fa-share-nodes"></i>
+
           </button>
         </div>
       </div>
@@ -785,7 +786,8 @@ function displayTopStories(articles) {
             <button class="share-btn" onclick="shareArticle('${
               story.url || `/article/${story.id}`
             }', this)" title="Share article">
-              <i class="fas fa-share-alt"></i>
+              <i class="fas fa-share-nodes"></i>
+
             </button>
           </div>
         </div>
@@ -875,7 +877,8 @@ function displayCategoryNews(articles) {
               <button class="share-btn" onclick="shareArticle('${
                 article.url || `/article/${article.id}`
               }', this)" title="Share article">
-                <i class="fas fa-share-alt"></i>
+                <i class="fas fa-share-nodes"></i>
+
               </button>
             </div>
             <a href="${
@@ -941,7 +944,8 @@ function displayNews(news) {
                         ).toLocaleDateString()}</span>
                     </div>
                     <button class="share-btn" onclick="shareArticle('${articleUrl}', this)" title="Share article">
-                        <i class="fas fa-share-alt"></i>
+                        <i class="fas fa-share-nodes"></i>
+
                     </button>
                 </div>
                 <a href="${articleUrl}" class="read-more">Read More</a>
