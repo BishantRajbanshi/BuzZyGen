@@ -1917,3 +1917,99 @@ footer {
 .global-error-overlay.fade-out {
   opacity: 0;
 }
+
+/* Notification Popup Styles */
+.notifications {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-popup {
+  position: absolute;
+  top: calc(100% + 15px);
+  right: -10px;
+  width: 280px;
+  background: rgba(0, 0, 0, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 1000;
+}
+
+.notification-popup::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 20px;
+  width: 16px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.95);
+  transform: rotate(45deg);
+}
+
+.notification-popup.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.notification-content {
+  text-align: center;
+  color: white;
+}
+
+.notification-content i {
+  font-size: 24px;
+  color: #bb1919;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.notification-content p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 15px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.login-notification-btn {
+  background: #bb1919;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.login-notification-btn:hover {
+  background: #a00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(187, 25, 25, 0.3);
+}
+
+/* Animation for the notification icon */
+.notifications i {
+  transition: transform 0.3s ease;
+}
+
+.notifications:hover i {
+  transform: scale(1.1);
+}
+
+/* Badge animation */
+.notifications .badge {
+  transition: all 0.3s ease;
+}
+
+.notifications:hover .badge {
+  transform: scale(1.1);
+  background: #bb1919;
+}

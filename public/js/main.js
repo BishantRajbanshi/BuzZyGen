@@ -26,6 +26,11 @@ const searchButton = searchContainer
 let searchTimeout;
 let searchInteractionTimeout;
 
+// Notification popup functionality
+const notifications = document.querySelector(".notifications");
+const notificationPopup = document.querySelector(".notification-popup");
+const loginNotificationBtn = document.querySelector(".login-notification-btn");
+
 // Add animation to search container
 if (searchContainer && searchInput && searchButton) {
   // Hover event for search container
@@ -2032,4 +2037,37 @@ function displaySearchResults(articles, query) {
       </div>
     </div>
   `;
+}
+
+// Notification popup functionality
+if (notifications && notificationPopup && loginNotificationBtn) {
+  // Toggle popup on notification icon click
+  notifications.addEventListener("click", (e) => {
+    e.stopPropagation();
+    notificationPopup.classList.toggle("active");
+  });
+
+  // Handle login button click
+  loginNotificationBtn.addEventListener("click", () => {
+    // Close the popup
+    notificationPopup.classList.remove("active");
+    // Open the login modal
+    if (loginModal) {
+      loginModal.style.display = "block";
+    }
+  });
+
+  // Close popup when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!notifications.contains(e.target)) {
+      notificationPopup.classList.remove("active");
+    }
+  });
+
+  // Close popup when pressing escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && notificationPopup.classList.contains("active")) {
+      notificationPopup.classList.remove("active");
+    }
+  });
 }
