@@ -222,7 +222,7 @@ function initAdminDashboard(token) {
   }
 
   // Display news in the admin dashboard
-  function displayNews(news) {
+  function displayNews(news, showAll = false) {
     const articlesGrid = document.querySelector(".articles-grid");
     if (!articlesGrid) return;
 
@@ -236,10 +236,11 @@ function initAdminDashboard(token) {
       `;
       return;
     }
-    // Take only the latest 5 articles
-    const recentArticles = news.slice(0, 5);
 
-    articlesGrid.innerHTML = recentArticles
+    // Take only the latest 5 articles if not showing all
+    const articlesToShow = showAll ? news : news.slice(0, 5);
+
+    articlesGrid.innerHTML = articlesToShow
       .map((article) => {
         // Handle both database news and API news formats
         const title = article.title || "";
@@ -788,6 +789,8 @@ function initAdminDashboard(token) {
         const category = link.getAttribute("data-category");
 
         const articlesGrid = document.querySelector(".articles-grid");
+        const sectionHeader = document.querySelector(".section-header h2");
+        const viewAllBtn = document.querySelector(".view-all-btn");
         if (!articlesGrid) return;
 
         // Clear grid before loading new content
@@ -795,8 +798,20 @@ function initAdminDashboard(token) {
 
         // Load section content based on category
         if (category === "all") {
+          if (sectionHeader) {
+            sectionHeader.textContent = "Latest 5 Articles";
+          }
+          if (viewAllBtn) {
+            viewAllBtn.style.display = "block";
+          }
           fetchNews(); // Show latest 5 articles
         } else if (category === "approve") {
+          if (sectionHeader) {
+            sectionHeader.textContent = "Blogs Approval";
+          }
+          if (viewAllBtn) {
+            viewAllBtn.style.display = "none";
+          }
           fetchPendingBlogs(); // Show unapproved blogs
         } else {
           articlesGrid.innerHTML = `<div class="no-articles-message"><p>Feature under development for "${category}"</p></div>`;
@@ -1017,6 +1032,57 @@ function initAdminDashboard(token) {
       });
     });
   }
+
+  // Function to toggle between all articles and latest 5 articles
+  window.showAllArticles = function () {
+    // Show loading state
+    showGlobalLoading();
+
+    // Get the button and current state
+    const button = document.querySelector(".view-all-btn");
+    const isShowingAll = button.getAttribute("data-showing-all") === "true";
+
+    // Fetch articles from the database
+    fetch("/api/news/db", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch news");
+        }
+        return response.json();
+      })
+      .then((response) => {
+        // Check if response is in the new format or old format
+        const news = response.articles || response;
+
+        // Display articles based on current state
+        displayNews(news, !isShowingAll);
+
+        // Update section header and button text
+        const sectionHeader = document.querySelector(".section-header h2");
+        if (sectionHeader) {
+          sectionHeader.textContent = !isShowingAll
+            ? "All Articles"
+            : "Latest 5 Articles";
+        }
+
+        // Update button text and state
+        button.textContent = !isShowingAll
+          ? "Show Latest 5"
+          : "View All Articles";
+        button.setAttribute("data-showing-all", !isShowingAll);
+      })
+      .catch((error) => {
+        console.error("Error fetching articles:", error);
+        alert("Error loading articles. Please try again later.");
+      })
+      .finally(() => {
+        hideGlobalLoading();
+      });
+  };
 
   // Initialize all components
   fetchNews();
