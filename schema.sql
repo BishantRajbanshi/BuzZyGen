@@ -87,3 +87,5 @@ ON DUPLICATE KEY UPDATE role = 'admin';
   UNIQUE KEY email (email),
   KEY idx_google_id (google_id)
 );
+
+
