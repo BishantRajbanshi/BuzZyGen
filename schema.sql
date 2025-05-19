@@ -28,7 +28,7 @@ CREATE TABLE `password_reset_otps` (
   CONSTRAINT `password_reset_otps_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
-CREATE TABLE `users` (
+ CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `google_id` varchar(255) DEFAULT NULL,
-  `profile_picture` varchar(255) DEFAULT NULL,
+  `profile_picture` longtext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   KEY `idx_google_id` (`google_id`)
@@ -66,7 +66,6 @@ CREATE TABLE bookmarks (
   FOREIGN KEY (article_id) REFERENCES news(id)
 );
 
-ALTER TABLE users ADD COLUMN profile_picture LONGTEXT;
 
 -- Create admin user (password: admin123)
 INSERT INTO users (name, email, password, role)
