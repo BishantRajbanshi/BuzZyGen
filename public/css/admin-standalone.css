@@ -427,7 +427,6 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   min-width: 100px;
 }
 
@@ -439,14 +438,13 @@ header {
 
 /* Edit Button */
 .article-actions button.edit-btn {
-  background-color: #4285f4;
+  background-color: #111 !important;
   color: white;
 }
 
 .article-actions button.edit-btn:hover {
-  background-color: #2b6ed9;
+  background-color: #111 !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
 }
 
 .article-actions button.edit-btn:hover i {
@@ -455,7 +453,6 @@ header {
 
 .article-actions button.edit-btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(66, 133, 244, 0.3);
 }
 
 /* Edit Button States */
@@ -502,14 +499,14 @@ header {
 
 /* Delete Button */
 .article-actions button.delete-btn {
-  background-color: #ea4335;
-  color: white;
+  background-color: #000 !important;
+  color: #fff !important;
+  border: none !important;
 }
 
 .article-actions button.delete-btn:hover {
-  background-color: #d33426;
+  background-color: #000 !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(234, 67, 53, 0.3);
 }
 
 .article-actions button.delete-btn:hover i {
@@ -518,7 +515,6 @@ header {
 
 .article-actions button.delete-btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(234, 67, 53, 0.3);
 }
 
 /* Delete Button States */
