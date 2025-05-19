@@ -1377,10 +1377,17 @@ function displayTopStories(articles) {
         <h3>${mainStory.title}</h3>
         <p>${mainStory.description || mainStory.subtitle || ""}</p>
         <div class="story-meta">
-          <span class="category">${mainStory.category || "General"}</span>
-          <span class="date">${new Date(
-            mainStory.publishedAt || mainStory.created_at || new Date()
-          ).toLocaleDateString()}</span>
+          <div>
+            <span class="category">${mainStory.category || "General"}</span>
+            <span class="date">${new Date(
+              mainStory.publishedAt || mainStory.created_at || new Date()
+            ).toLocaleDateString()}</span>
+          </div>
+          <button class="share-btn" onclick="shareArticle('${
+            mainStory.url || `/article/${mainStory.id}` || "#"
+          }', this)" title="Share article">
+            <i class="fas fa-share-alt"></i>
+          </button>
         </div>
       </div>
       <a href="${
@@ -1399,10 +1406,17 @@ function displayTopStories(articles) {
         <div class="story-content">
           <h3>${story.title}</h3>
           <div class="story-meta">
-            <span class="category">${story.category || "General"}</span>
-            <span class="date">${new Date(
-              story.publishedAt || story.created_at || new Date()
-            ).toLocaleDateString()}</span>
+            <div>
+              <span class="category">${story.category || "General"}</span>
+              <span class="date">${new Date(
+                story.publishedAt || story.created_at || new Date()
+              ).toLocaleDateString()}</span>
+            </div>
+            <button class="share-btn" onclick="shareArticle('${
+              story.url || `/article/${story.id}` || "#"
+            }', this)" title="Share article">
+              <i class="fas fa-share-alt"></i>
+            </button>
           </div>
         </div>
         <a href="${
@@ -1499,10 +1513,17 @@ function displayCategoryNews(articles) {
             <h3>${article.title}</h3>
             <p>${article.description || article.subtitle || ""}</p>
             <div class="news-meta">
-              <span class="category">${article.category || "General"}</span>
-              <span class="date">${new Date(
-                article.publishedAt || article.created_at || new Date()
-              ).toLocaleDateString()}</span>
+              <div>
+                <span class="category">${article.category || "General"}</span>
+                <span class="date">${new Date(
+                  article.publishedAt || article.created_at || new Date()
+                ).toLocaleDateString()}</span>
+              </div>
+              <button class="share-btn" onclick="shareArticle('${
+                article.url || `/article/${article.id}` || "#"
+              }', this)" title="Share article">
+                <i class="fas fa-share-alt"></i>
+              </button>
             </div>
             <a href="${
               article.url || `/article/${article.id}` || "#"
