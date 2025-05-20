@@ -665,28 +665,72 @@
         stroke-linecap: round;
         stroke-linejoin: round;
       }
+
+      /* ========================================================
+     Back Button
+  ======================================================== */
+
+  .back-button {
+      background: none;
+      border: none;
+      font-size: 28px;
+      /* Increased from 20px */
+      cursor: pointer;
+      margin-right: 15px;
+      color: white;
+      /* Match your dark header */
+      padding: 0;
+      line-height: 1;
+  }
+
+  .back-button:hover {
+      color: #ccc;
+      /* Optional hover effect */
+  }
+
+  /* Input field  */
+  input:invalid {
+  border: 2px solid red;
+}
+
+input.error::placeholder {
+  color: red;
+}
+
+.error-text {
+  font-size: 13px;
+  margin-top: 4px;
+  display: none;
+}
+
     </style>
   </head>
   <!-- Overlay -->
   <div class="overlay"></div>
 
-  <header>
+<header>
     <div class="top-nav">
-      <div class="left-section">
-        <div class="logo">
-          <a href="dashboard.html" title="Go to User Dashboard">
-            <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
-          </a>
+        <div class="left-section">
+            <!-- Back Button -->
+            <button onclick="history.back()" class="back-button">←</button>
+
+            <!-- Logo -->
+            <div class="logo">
+                <a href="dashboard.html">
+                    <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
+                </a>
+            </div>
         </div>
-      </div>
     </div>
+
     <nav class="main-nav">
-      <div class="nav-links">
-        <a href="#" class="active" data-category="all">My Profile</a>
-      </div>
-      <div class="nav-date" id="navDate"></div>
+        <div class="nav-links back-container">
+            <div class="nav-links">
+                <a href="#" class="active" data-category="all">My Profile</a>
+            </div>
+        </div>
     </nav>
-  </header>
+</header>
 
   <body>
     <div class="container">
@@ -882,22 +926,18 @@
                   class="form-control"
                 />
               </div>
-              <div class="form-group">
-                <label class="form-label" for="new-password"
-                  >New Password</label
-                >
+            <div class="form-group">
+                <label class="form-label" for="new-password">New Password</label>
                 <input type="password" id="new-password" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="confirm-password"
-                  >Confirm New Password</label
-                >
-                <input
-                  type="password"
-                  id="confirm-password"
-                  class="form-control"
-                />
-              </div>
+                <small id="new-password-error" style="color: red; display: none;">Password must be strong (8+ chars, uppercase,
+                    lowercase, number, special).</small>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="confirm-password">Confirm New Password</label>
+                <input type="password" id="confirm-password" class="form-control" />
+                <small id="confirm-password-error" style="color: red; display: none;">Passwords do not match.</small>
+            </div>              
             </div>
             <div class="card-footer" style="justify-content: flex-end">
               <button class="btn btn-primary">Update Password</button>

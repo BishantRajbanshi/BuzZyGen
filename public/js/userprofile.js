@@ -228,12 +228,32 @@ document.querySelector(".btn-danger").addEventListener("click", async () => {
 
 // Change password
 document.querySelector(".btn.btn-primary").addEventListener("click", async () => {
-  const currentPassword = document.getElementById("current-password").value;
-  const newPassword = document.getElementById("new-password").value;
-  const confirmPassword = document.getElementById("confirm-password").value;
+  const currentPasswordInput = document.getElementById("current-password");
+  const newPasswordInput = document.getElementById("new-password");
+  const confirmPasswordInput = document.getElementById("confirm-password");
+
+  const currentPassword = currentPasswordInput.value;
+  const newPassword = newPasswordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  // Reset styles and error messages
+  newPasswordInput.style.border = "";
+  confirmPasswordInput.style.border = "";
+  document.getElementById("new-password-error").style.display = "none";
+  document.getElementById("confirm-password-error").style.display = "none";
+
+  const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
   if (newPassword !== confirmPassword) {
-    return alert("New passwords do not match.");
+    confirmPasswordInput.style.border = "2px solid red";
+    document.getElementById("confirm-password-error").style.display = "block";
+    return;
+  }
+
+  if (!strongPasswordRegex.test(newPassword)) {
+    newPasswordInput.style.border = "2px solid red";
+    document.getElementById("new-password-error").style.display = "block";
+    return;
   }
 
   try {
