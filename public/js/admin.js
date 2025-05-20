@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.body.classList.add("loaded");
 
   // Get token from localStorage
-  const token = localStorage.getItem("token");
+ const token = localStorage.getItem("token");
   if (!token) {
     window.location.href = "/";
     return;
@@ -205,7 +205,7 @@ function initAdminDashboard(token) {
       });
   }
 
-  //Fetch Blog
+  // Fetch Blog
   function fetchPendingBlogs() {
     fetch("/api/blogs/pending", {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -300,13 +300,16 @@ function initAdminDashboard(token) {
       .join("");
   }
 
-  //Fetching renderpending blog
+  // Fetching renderpending blog
   function renderPendingBlogs(blogs) {
     const container = document.querySelector(".articles-grid");
     if (!container) return;
 
+    // Clear the container before rendering
+    container.innerHTML = "";
+
     if (!blogs || blogs.length === 0) {
-      container.innerHTML += `<div class="no-articles-message"><p>No pending blogs to approve.</p></div>`;
+      container.innerHTML = `<div class="no-articles-message"><p>No pending blogs to approve.</p></div>`;
       return;
     }
 
@@ -340,7 +343,7 @@ function initAdminDashboard(token) {
       })
       .join("");
 
-    container.innerHTML += html;
+    container.innerHTML = html;
 
     // Attach approve handlers
     document.querySelectorAll(".approve-btn").forEach((button) => {
@@ -351,7 +354,7 @@ function initAdminDashboard(token) {
     });
   }
 
-  //Approve Blogs
+  // Approve Blogs
   function approveBlog(id) {
     if (!confirm("Approve this blog?")) return;
 
@@ -365,8 +368,8 @@ function initAdminDashboard(token) {
       .then((res) => {
         if (res.ok) {
           alert("Blog approved successfully.");
-          fetchNews(); // reload approved articles
-          fetchPendingBlogs(); // reload pending section
+          // Reload only the pending blogs to stay in the approval section
+          fetchPendingBlogs();
         } else {
           alert("Failed to approve blog.");
         }
@@ -552,7 +555,6 @@ function initAdminDashboard(token) {
     createNewsForm.addEventListener("submit", handleFormSubmit);
   }
 
-  
   // Delete news article with enhanced animation
   window.confirmDeleteNews = function (id) {
     if (
@@ -730,25 +732,24 @@ function initAdminDashboard(token) {
     const sidebar = document.querySelector(".sidebar");
     const overlay = document.querySelector(".overlay");
     const closeSidebar = document.querySelector(".close-sidebar");
-  
+
     if (hamburgerMenu && sidebar && overlay && closeSidebar) {
       hamburgerMenu.addEventListener("click", () => {
         sidebar.classList.add("active");
         overlay.classList.add("active");
         document.body.style.overflow = "hidden";
       });
-  
+
       function closeSidebarFunc() {
         sidebar.classList.remove("active");
         overlay.classList.remove("active");
         document.body.style.overflow = "";
       }
-  
+
       closeSidebar.addEventListener("click", closeSidebarFunc);
       overlay.addEventListener("click", closeSidebarFunc);
     }
   }
-  
 
   // Setup logout functionality
   function setupLogout() {
@@ -778,39 +779,38 @@ function initAdminDashboard(token) {
   // Setup navigation links
   function setupNavigation() {
     const allNavLinks = document.querySelectorAll('[data-category]');
-  
+
     function activateTab(category) {
       // Remove active class from all links
       allNavLinks.forEach((link) => {
         link.classList.remove("active");
       });
-  
+
       // Activate current link
       allNavLinks.forEach((link) => {
         if (link.getAttribute("data-category") === category) {
           link.classList.add("active");
         }
       });
-  
+
       const articlesGrid = document.querySelector(".articles-grid");
       const sectionHeader = document.querySelector(".section-header h2");
       const viewAllBtn = document.querySelector(".view-all-btn");
       const userSection = document.getElementById("userSection");
 
       const welcomeSection = document.getElementById("welcomeSection");
-if (welcomeSection) {
-  if (category === "all") {
-    welcomeSection.style.display = "flex";
-  } else {
-    welcomeSection.style.display = "none";
-  }
-}
+      if (welcomeSection) {
+        if (category === "all") {
+          welcomeSection.style.display = "flex";
+        } else {
+          welcomeSection.style.display = "none";
+        }
+      }
 
-  
       // Hide all sections first
       if (articlesGrid) articlesGrid.style.display = "none";
       if (userSection) userSection.style.display = "none";
-  
+
       if (category === "all") {
         if (sectionHeader) sectionHeader.textContent = "Latest 5 Articles";
         if (viewAllBtn) viewAllBtn.style.display = "block";
@@ -827,29 +827,29 @@ if (welcomeSection) {
           articlesGrid.style.display = "grid";
         }
         fetchPendingBlogs();
-      }else if (category === "users") {
+      } else if (category === "users") {
         if (sectionHeader) sectionHeader.textContent = "Manage Users";
         if (viewAllBtn) viewAllBtn.style.display = "none";
-      
+
         document.querySelector(".articles-grid").style.display = "none";
         const userSection = document.getElementById("userSection");
         if (userSection) {
           userSection.style.display = "block";
-          fetchAllUsers(); // 👈 This will load users with role = user
-        } 
-      }else {
+          fetchAllUsers();
+        }
+      } else {
         if (articlesGrid) {
           articlesGrid.innerHTML = `<div class="no-articles-message"><p>Unknown section: ${category}</p></div>`;
           articlesGrid.style.display = "grid";
         }
       }
-  
+
       // Close sidebar (mobile)
       document.querySelector(".sidebar").classList.remove("active");
       document.querySelector(".overlay").classList.remove("active");
       document.body.style.overflow = "";
     }
-  
+
     allNavLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -858,8 +858,7 @@ if (welcomeSection) {
       });
     });
   }
-  
-  
+
   // Setup search bar functionality
   function setupSearchBar() {
     // Get search container
@@ -1154,7 +1153,7 @@ if (welcomeSection) {
       .then((users) => {
         const userSection = document.getElementById("userSection");
         if (!userSection) return;
-  
+
         userSection.innerHTML = users
           .map((user) => {
             const initials = user.name
@@ -1162,10 +1161,9 @@ if (welcomeSection) {
               .map((n) => n[0])
               .join("")
               .toUpperCase();
-              const profileImage = user.profile_picture || "";
-              const fallback = `<div class="avatar-fallback">${initials}</div>`;
+            const profileImage = user.profile_picture || "";
+            const fallback = `<div class="avatar-fallback">${initials}</div>`;
 
-  
             return `
               <div class="profile-card">
                 <div class="avatar-container">
@@ -1194,8 +1192,6 @@ if (welcomeSection) {
           "<p style='color:red;'>Failed to load users</p>";
       });
   }
-  
-  
 
   // Force browser to complete loading
   setTimeout(() => {

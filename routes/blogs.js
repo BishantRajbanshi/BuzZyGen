@@ -5,14 +5,26 @@ const { auth } = require("../middleware/auth");
 
 // GET all approved blogs (for blogListing page)
 router.get("/", auth, async (req, res) => {
+  const limit = parseInt(req.query.limit) || 6;
+  const offset = parseInt(req.query.offset) || 0;
+
   try {
-    const [rows] = await db.query("SELECT * FROM blogs WHERE approved = 1 ORDER BY created_at DESC");
+    const [rows] = await db.query(`
+      SELECT blogs.*, users.name AS author_name 
+      FROM blogs 
+      JOIN users ON blogs.user_id = users.id 
+      WHERE blogs.approved = 1 
+      ORDER BY blogs.created_at DESC
+      LIMIT ? OFFSET ?
+    `, [limit, offset]);
+
     res.json(rows);
   } catch (err) {
     console.error("Error fetching blogs:", err);
     res.status(500).json({ message: "Failed to fetch blogs" });
   }
 });
+
 
 // GET blogs created by the logged-in user
 router.get("/my/posts", auth, async (req, res) => {
@@ -31,7 +43,13 @@ router.get("/my/posts", auth, async (req, res) => {
 // GET public blogs (no auth) - for homepage or blogListing
 router.get("/public/listing", async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM blogs WHERE approved = 1 ORDER BY created_at DESC");
+    const [rows] = await db.query(`
+      SELECT blogs.*, users.name AS author_name 
+      FROM blogs 
+      JOIN users ON blogs.user_id = users.id 
+      WHERE blogs.approved = 1 
+      ORDER BY blogs.created_at DESC
+    `);
     res.json(rows);
   } catch (err) {
     console.error("Error fetching public blogs:", err);

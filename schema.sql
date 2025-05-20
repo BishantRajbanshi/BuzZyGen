@@ -90,3 +90,10 @@ ON DUPLICATE KEY UPDATE role = 'admin';
   UNIQUE KEY email (email),
   KEY idx_google_id (google_id)
 );
+
+-- Update this 
+SELECT blogs.*, users.name AS author_name
+FROM blogs
+JOIN users ON blogs.user_id = users.id
+WHERE blogs.approved = 1
+ORDER BY blogs.created_at DESC;
