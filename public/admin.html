@@ -227,6 +227,120 @@
           max-width: 90%;
         }
       }
+            /* Horizontal Profile Section */
+            .profile-horizontal {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      @media (min-width: 768px) {
+        .profile-horizontal {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+          /* Profile Card */
+          .profile-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .profile-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      .avatar-container {
+        position: relative;
+        margin-bottom: 12px;
+      }
+
+      .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background-color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .avatar-fallback {
+        font-size: 28px;
+        font-weight: bold;
+        color: #999;
+      }
+
+      .change-avatar {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: #222;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        border: 2px solid white;
+        transition: background 0.2s;
+      }
+
+      .change-avatar:hover {
+        background: #000;
+      }
+
+      .profile-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #222;
+      }
+
+      .profile-since {
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+
+      .profile-stats {
+        margin-top: 6px;
+        padding-top: 12px;
+        border-top: 1px solid #f0f0f0;
+        width: 100%;
+      }
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 4px;
+      }
+
+      .stat-label {
+        color: #666;
+        font-size: 13px;
+      }
     </style>
   </head>
   <body class="admin-body">
@@ -248,24 +362,15 @@
       </div>
       <ul class="sidebar-menu">
         <li>
-          <a href="#"><i class="fas fa-home"></i> Home</a>
+          <a href="#" data-category="all"><i class="fas fa-home"></i> Home</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-newspaper"></i> Articles</a>
+          <a href="#" data-category="approve"><i class="fas fa-list"></i> Approval</a>
         </li>
         <li>
-          <a href="#"><i class="fas fa-list"></i> Categories</a>
+          <a href="#" data-category="users"><i class="fas fa-newspaper"></i> Users</a>
         </li>
-        <li>
-          <a href="#"><i class="fas fa-photo-video"></i> Media</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-users"></i> Users</a>
-        </li>
-        <li>
-          <a href="#"><i class="fas fa-cog"></i> Settings</a>
-        </li>
-      </ul>
+      </ul>      
     </div>
 
     <!-- Overlay -->
@@ -281,17 +386,12 @@
             <a href="/admin.html" title="Go to Admin Dashboard">
               <img src="images/logoimage.png" alt="Buzzy Gen Logo" />
             </a>
+          </div>
+          <div class="Heding">
             <h1>ADMIN</h1>
           </div>
         </div>
         <div class="user-actions">
-          <div class="notifications">
-            <i class="fas fa-bell"></i>
-            <span class="badge">1</span>
-          </div>
-          <div class="user-profile">
-            <i class="fas fa-user"></i>
-          </div>
           <button id="logoutBtn">Logout</button>
         </div>
       </div>
@@ -299,12 +399,13 @@
         <div class="nav-links">
           <a href="#" class="active" data-category="all">Home</a>
           <a href="#" data-category="approve">Approval</a>
+          <a href="#" data-category="users">Users</a>
         </div>
       </nav>
     </header>
 
     <main class="admin-main">
-      <section class="admin-welcome">
+      <section class="admin-welcome" id="welcomeSection">
         <div class="welcome-text">
           <h1>Hello Admin,</h1>
           <a href="#" class="post-link">Ready to post new article today !</a>
@@ -313,7 +414,7 @@
           <button class="new-article-btn">+ New Article</button>
         </div>
       </section>
-
+<!-- Home Section -->
       <section class="recent-articles">
         <div class="section-header">
           <h2>Latest 5 Articles</h2>
@@ -325,7 +426,7 @@
             View All Articles
           </button>
         </div>
-
+<!-- Approval Section -->
         <div class="articles-grid">
           <!-- Article 1 -->
           <div class="article-card">
@@ -379,6 +480,32 @@
           </div>
         </div>
       </section>
+
+<!-- User Section -->
+<section id="userSection" class="user-section" style="display: none;">
+  <div class="profile-card">
+    <div class="avatar-container">
+      <div class="avatar">
+        <img src="${profileImage}" alt="${user.name}"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+        <div class="avatar-fallback" style="display: none;">${initials}</div>
+      </div>
+          
+      <div class="change-avatar" onclick="openModal()">
+        <svg class="icon" viewBox="0 0 24 24">
+          <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"></path>
+          <path
+            d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z">
+          </path>
+        </svg>
+      </div>
+    </div>
+    <h1 id="profileName" class="profile-name">Loading...</h1>
+    <p id="profileSince" class="profile-since">Member since ...</p>
+  </div>
+</section>
+
+      
     </main>
 
     <footer>

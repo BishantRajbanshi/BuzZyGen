@@ -121,5 +121,18 @@ router.put('/notifications', auth, async (req, res) => {
   }
 });
 
+// Get all users with role 'user' (for admin panel)
+router.get("/all", auth, async (req, res) => {
+  try {
+    const [users] = await pool.query(
+      "SELECT id, name, email, created_at, profile_picture FROM users WHERE role = 'user'"
+    );
+    res.status(200).json(users);
+  } catch (err) {
+    console.error("Error fetching users for admin:", err);
+    res.status(500).json({ message: "Failed to fetch users" });
+  }
+});
+
 
 module.exports = router;

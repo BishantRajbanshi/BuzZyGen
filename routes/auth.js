@@ -8,6 +8,15 @@ const passport = require("../config/passport");
 const { body, validationResult } = require("express-validator");
 const emailUtil = require("../utils/email");
 const otpUtil = require("../utils/otp");
+const axios = require("axios");
+
+async function fetchAndEncodeImage(url) {
+  const response = await axios.get(url, { responseType: "arraybuffer" });
+  const contentType = response.headers["content-type"];
+  const base64 = Buffer.from(response.data).toString("base64");
+  return `data:${contentType};base64,${base64}`;
+}
+
 
 // Signup route
 router.post(
@@ -220,6 +229,16 @@ router.get(
       );
       console.log("Is new user:", isNewUser);
 
+      // 🟡 Add base64 encoding if new user has Google profile picture
+      if (req.user.profile_picture && isNewUser) {
+        try {
+          const encodedImage = await fetchAndEncodeImage(req.user.profile_picture);
+          req.user.profile_picture = encodedImage;
+        } catch (err) {
+          console.error("Failed to encode Google profile image:", err);
+        }
+      }
+
       // If this is a new user, redirect to complete registration page
       if (isNewUser) {
         // Create a temporary token for the registration page
@@ -261,6 +280,7 @@ router.get(
     }
   }
 );
+
 
 // Google login route (for login button)
 router.get("/google/login", (req, res) => {

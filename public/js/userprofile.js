@@ -149,8 +149,6 @@ async function removeBookmark(articleId) {
 // Load user profile
 async function loadUserProfile() {
   const token = localStorage.getItem("token");
-  console.log("📦 Token:", token); // Debug token
-
   if (!token) return;
 
   try {
@@ -163,10 +161,19 @@ async function loadUserProfile() {
     if (!res.ok) throw new Error("Failed to load profile");
 
     const user = await res.json();
-    console.log("✅ User profile loaded:", user); // Debug log
 
     const avatarImg = document.querySelector(".avatar img");
     const avatarFallback = document.querySelector(".avatar-fallback");
+
+    // ✅ Set fallback initials dynamically
+    if (avatarFallback) {
+      const initials = (user.name || "User")
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+      avatarFallback.textContent = initials;
+    }
 
     if (user.profile_picture) {
       avatarImg.src = user.profile_picture;
@@ -184,15 +191,17 @@ async function loadUserProfile() {
     const createdAt = user.created_at ? new Date(user.created_at) : null;
     document.getElementById("profileSince").textContent =
       createdAt
-        ? "Member since " + createdAt.toLocaleDateString("en-US", { year: "numeric", month: "long" })
+        ? "Member since " +
+          createdAt.toLocaleDateString("en-US", { year: "numeric", month: "long" })
         : "Member since N/A";
 
     const countEl = document.getElementById("profileSavedCount");
     if (countEl) countEl.textContent = user.savedCount;
   } catch (err) {
-    console.error(" Failed to load profile:", err);
+    console.error("Failed to load profile:", err);
   }
 }
+
 
 // On page load
 document.addEventListener("DOMContentLoaded", () => {

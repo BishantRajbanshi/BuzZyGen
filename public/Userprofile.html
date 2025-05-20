@@ -740,10 +740,9 @@ input.error::placeholder {
         <div class="profile-card">
           <div class="avatar-container">
             <div class="avatar">
-              <img src="https://via.placeholder.com/80" alt="User profile" />
-              <!-- Fallback if image fails to load -->
-              <div class="avatar-fallback" style="display: none">JD</div>
-            </div>
+                <img src="" alt="User Avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <div class="avatar-fallback" style="display: none;">UN</div> <!-- initials fallback -->
+            </div>              
             <div class="change-avatar" onclick="openModal()">
               <svg class="icon" viewBox="0 0 24 24">
                 <path
