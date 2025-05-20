@@ -9,15 +9,29 @@ async function loadArticle() {
   }
 
   try {
-    const response = await fetch(`/api/article/${articleId}`);
-    const article = await response.json();
+    let response;
+    let article;
+    const token = localStorage.getItem("token");
+
+    // 🔁 Detect if we're on the blog page
+    if (window.location.pathname.includes("blogRed.html")) {
+      response = await fetch(`/api/blogs/${articleId}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+    } else {
+      response = await fetch(`/api/article/${articleId}`);
+    }
+
+    if (!response.ok) throw new Error("Failed to fetch content.");
+
+    article = await response.json();
 
     const imageDiv = document.getElementById("articleImage");
     const imageUrl = article.featured_image || "https://via.placeholder.com/1200x500?text=No+Image";
     imageDiv.innerHTML = `<img src="${imageUrl}" alt="${article.title}" />`;
 
     document.getElementById("articleTitle").textContent = article.title || "Untitled";
-    document.getElementById("articleAuthor").textContent = `Written by: Admin`;
+    document.getElementById("articleAuthor").textContent = `Written by: ${article.author_name || "Unknown"}`;
     document.getElementById("articleDate").textContent = new Date(article.created_at).toLocaleDateString();
 
     const contentDiv = document.getElementById("articleContent");

@@ -50,10 +50,17 @@ router.get("/pending", auth, async (req, res) => {
   }
 });
 
-// GET a single blog by ID
+// GET a single blog by ID (with user name)
 router.get("/:id", auth, async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM blogs WHERE id = ?", [req.params.id]);
+    const [rows] = await db.query(
+      `SELECT blogs.*, users.name AS author_name 
+       FROM blogs 
+       JOIN users ON blogs.user_id = users.id 
+       WHERE blogs.id = ?`,
+      [req.params.id]
+    );
+
     if (rows.length === 0) return res.status(404).json({ error: "Blog not found" });
     res.json(rows[0]);
   } catch (err) {
@@ -61,6 +68,7 @@ router.get("/:id", auth, async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 });
+
 
 // CREATE a new blog (approved = 0 by default)
 router.post("/", auth, async (req, res) => {

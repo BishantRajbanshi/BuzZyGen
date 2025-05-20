@@ -1162,8 +1162,34 @@ if (navContainer) {
 }
 
 // Initialize News + Date Setup After DOM Loads
-document.addEventListener("DOMContentLoaded", () => {
-  fetchNews(); // This will fetch and render news when page loads
+document.addEventListener("DOMContentLoaded", async () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  // Load notification count
+  try {
+    const res = await fetch("/api/news/db", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await res.json();
+    const articles = data.articles || data;
+
+    const validArticles = articles.filter((a) => a.title);
+    validArticles.sort(
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
+    );
+
+    const recent = validArticles.slice(0, 5);
+    document.getElementById("notif-count").textContent = recent.length;
+  } catch (err) {
+    console.error("Failed to load notification count:", err);
+    document.getElementById("notif-count").textContent = "0";
+  }
+
+  // Already existing logic (keep this)
+  fetchNews();
 
   const navDateEl = document.getElementById("navDate");
   if (navDateEl) {
@@ -1175,7 +1201,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     navDateEl.textContent = `${day} ${month} ${year}, ${weekday}`;
   }
+
+  // Load notification toggle state (if it exists)
+  try {
+    const res = await fetch("/api/user/me", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const user = await res.json();
+    const notifToggle = document.getElementById("email-notifications");
+    if (notifToggle) {
+      notifToggle.checked = user.notifications_enabled;
+    }
+  } catch (err) {
+    console.error("Failed to load notification settings:", err);
+  }
 });
+
 
 const bell = document.getElementById("notif-bell");
 const dropdown = document.getElementById("notif-dropdown");
@@ -1183,8 +1225,14 @@ const notifCount = document.getElementById("notif-count");
 
 bell.addEventListener("click", async (e) => {
   e.stopPropagation();
+
+  // Toggle dropdown visibility
   dropdown.style.display =
     dropdown.style.display === "block" ? "none" : "block";
+
+  // Reset notif count visually
+  notifCount.textContent = "0";
+
   dropdown.innerHTML = "<div style='padding: 10px;'>Loading...</div>";
 
   try {
@@ -1199,7 +1247,6 @@ bell.addEventListener("click", async (e) => {
     const articles = data.articles || data;
 
     if (!Array.isArray(articles) || articles.length === 0) {
-      notifCount.textContent = "0";
       dropdown.innerHTML =
         "<div style='padding: 10px;'>No articles found.</div>";
       return;
@@ -1211,15 +1258,14 @@ bell.addEventListener("click", async (e) => {
     );
 
     const recent = validArticles.slice(0, 5);
-    notifCount.textContent = recent.length.toString();
 
     dropdown.innerHTML = recent
       .map(
         (item) => `
       <div>
         <a href="articleReading.html?id=${item.id}">
-        <strong>${item.title}</strong>
-        <small>${new Date(item.created_at).toLocaleDateString()}</small>
+          <strong>${item.title}</strong><br />
+          <small>${new Date(item.created_at).toLocaleDateString()}</small>
         </a>
       </div>
     `
@@ -1227,11 +1273,11 @@ bell.addEventListener("click", async (e) => {
       .join("");
   } catch (error) {
     console.error("Failed to load articles for notification:", error);
-    notifCount.textContent = "0";
     dropdown.innerHTML =
       "<div style='padding: 10px;'>Error loading notifications.</div>";
   }
 });
+
 
 document.addEventListener("click", (e) => {
   if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
